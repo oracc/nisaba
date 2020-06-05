@@ -1,0 +1,65 @@
+{
+    "name": "language-configuration-sample",
+    "displayName": "Language Configuration Sample",
+    "description": "Language Configuration Sample",
+    "version": "0.0.1",
+    "publisher": "ucl-rsdg",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/oracc/nammu.git"
+    },
+    "engines": {
+        "vscode": "^1.44.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "onCommand:ucl-rsdg.helloWorld"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "ucl-rsdg.helloWorld",
+                "title": "This is the title: Hello World",
+                "icon": {
+                    "light": "media/preview_light.svg",
+                    "dark": "media/preview_dark.svg"
+                }
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceFilename == foo.sj",
+                    "command": "ucl-rsdg.helloWorld",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "languages": [
+            {
+                "id": "scriptjava",
+                "extensions": [
+                    ".sj"
+                ],
+                "aliases": [
+                    "sj",
+                    "ScriptJava"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ]
+    },
+    "scripts": {
+        "compile": "tsc -p ./",
+        "package": "vsce package"
+    },
+    "dependencies": {
+        "@types/vscode": "^1.44.0"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.44.0"
+    }
+}

@@ -1,32 +1,53 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "ATF",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.atf",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.atf",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.atf",
-					"match": "\\\\."
-				}
-			]
-		}
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "ATF",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+	{
+	    "include": "#support"
 	},
-	"scopeName": "source.atf"
+        {
+            "include": "#strings"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.at.atf",
+                    "match": "^@\\b[[:alpha:]]+\\b"
+                },
+                {
+                    "name": "keyword.other.ampersand.atf",
+                    "match": "^&.*$"
+                }
+            ]
+        },
+        "support": {
+            "patterns": [
+                {
+                    "name": "support.class.hash.atf",
+                    "match": "^#\\b[[:alpha:]]+\\b"
+                },
+                {
+                    "name": "support.variable.dollar.atf",
+                    "match": "^\\$\\b[[:alnum:]]+\\b"
+                }
+            ]
+        },
+	"strings": {
+            "name": "string.quoted.double.atf",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.atf",
+                    "match": "\\\\."
+                }
+            ]
+        }
+    },
+    "scopeName": "source.atf"
 }

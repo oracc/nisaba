@@ -1,20 +1,15 @@
-/**@type {import('eslint').Linter.Config} */
-// eslint-disable-next-line no-undef
-module.exports = {
-	root: true,
-	parser: '@typescript-eslint/parser',
-	plugins: [
-		'@typescript-eslint',
-	],
-	extends: [
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-	],
-	rules: {
-		'semi': [2, "always"],
-		'@typescript-eslint/no-unused-vars': 0,
-		'@typescript-eslint/no-explicit-any': 0,
-		'@typescript-eslint/explicit-module-boundary-types': 0,
-		'@typescript-eslint/no-non-null-assertion': 0,
-	}
-};
+&X001001 = JCS 48, 089
+#project: cams/gkab
+#atf: lang akk-x-stdbab
+#atf: use unicode
+#atf: use math
+@tablet
+@obverse
+
+1.	[MU] 1.03-KAM {iti}AB GE₆ U₄ 2-KAM
+#lem: šatti[year]N; n; Ṭebetu[1]MN; mūša[at night]AV; ūm[day]N; n
+
+@translation parallel ar project
+@obverse
+
+1. في شتة ٦٣ في شهر تبت، يوم ٢

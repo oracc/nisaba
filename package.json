@@ -1,7 +1,7 @@
 {
-    "name": "language-configuration-sample",
-    "displayName": "Language Configuration Sample",
-    "description": "Language Configuration Sample",
+    "name": "atf",
+    "displayName": "ATF",
+    "description": "Support for ATF files",
     "version": "0.0.1",
     "publisher": "ucl-rsdg",
     "repository": {
@@ -32,7 +32,7 @@
         "menus": {
             "editor/title": [
                 {
-                    "when": "resourceFilename == foo.sj",
+                    "when": "resourceFilename == foo.atf",
                     "command": "ucl-rsdg.helloWorld",
                     "group": "navigation"
                 }
@@ -40,15 +40,22 @@
         },
         "languages": [
             {
-                "id": "scriptjava",
-                "extensions": [
-                    ".sj"
-                ],
+                "id": "atf",
                 "aliases": [
-                    "sj",
-                    "ScriptJava"
+                    "ATF",
+                    "atf"
+                ],
+                "extensions": [
+                    ".atf"
                 ],
                 "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "atf",
+                "scopeName": "source.atf",
+                "path": "./syntaxes/atf.tmLanguage.json"
             }
         ]
     },

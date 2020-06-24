@@ -38,6 +38,14 @@
                 }
             ]
         },
+        "keybindings": [
+            {
+                "command": "ucl-rsdg.helloWorld",
+                "key": "ctrl+I",
+                "mac": "cmd+I",
+                "when": "editorTextFocus && editorLangId == atf"
+            }
+        ],
         "languages": [
             {
                 "id": "atf",

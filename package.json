@@ -32,7 +32,7 @@
         "menus": {
             "editor/title": [
                 {
-                    "when": "resourceFilename == foo.atf",
+                    "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.helloWorld",
                     "group": "navigation"
                 }

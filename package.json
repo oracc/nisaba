@@ -15,11 +15,21 @@
         "Programming Languages"
     ],
     "activationEvents": [
+        "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.helloWorld"
     ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
+            {
+				"command": "ucl-rsdg.arabicPreview",
+				"title": "Show Arabic preview",
+                "category": "Oracc",
+                "icon": {
+                    "light": "media/preview_light.svg",
+                    "dark": "media/preview_dark.svg"
+                }
+            },
             {
                 "command": "ucl-rsdg.helloWorld",
                 "title": "This is the title: Hello World",
@@ -33,7 +43,7 @@
             "editor/title": [
                 {
                     "when": "resourceLangId == atf",
-                    "command": "ucl-rsdg.helloWorld",
+                    "command": "ucl-rsdg.arabicPreview",
                     "group": "navigation"
                 }
             ]

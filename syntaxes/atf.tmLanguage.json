@@ -5,11 +5,17 @@
         {
             "include": "#keywords"
         },
-	{
-	    "include": "#support"
-	},
+        {
+            "include": "#support"
+        },
         {
             "include": "#strings"
+        },
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#variable"
         }
     ],
     "repository": {
@@ -17,7 +23,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.at.atf",
-                    "match": "^@\\b[[:alpha:]]+\\b"
+                    "match": "^@(tablet|envelope|prism|bulla|obverse|reverse|left|right|top|bottom|catchline|colophon|date|signatures|signature|summary|face|edge|column|seal|sealings|witnesses|translation|note|m|composite|label|include|score|Tablet|Envelope|Prism|Bulla|Obverse|Reverse|Left|Right|Top|Bottom|Catchline|Colophon|Date|Signatures|Signature|Summary|Face|Edge|Column|Seal|Sealings|Witnesses|Translation|Note|M|Composite|Label|Include|Score)\\b"
                 },
                 {
                     "name": "keyword.other.ampersand.atf",
@@ -29,15 +35,22 @@
             "patterns": [
                 {
                     "name": "support.class.hash.atf",
-                    "match": "^#\\b[[:alpha:]]+\\b"
+                    "match": "^#([Tt]r\\.[[:alpha:]]+|atf|lem|project|note|link|key|bib|tr|check|lemmatizer|version|var|Atf|Lem|Project|Note|Link|Key|Bib|Tr|Check|Lemmatizer|Version|Var)\\b:[ \t]*(lang|use|math|legacy|mylines|lexical|unicode|def|source|Lang|Use|Math|Legacy|Mylines|Lexical|Unicode|Def|Source)?"
                 },
                 {
                     "name": "support.variable.dollar.atf",
-                    "match": "^\\$\\b[[:alnum:]]+\\b"
+                    "begin": "^\\$",
+                    "end": "\\n",
+                    "patterns": [
+                        {
+                            "name": "support.variable.dollar-keyword.atf",
+                            "match": "\\b(most|least|about|several|some|rest|of|start|beginning|middle|end|columns|line|lines|case|cases|surface|space|blank|broken|effaced|illegible|missing|traces|ruling|single|double|triple|at|Most|Least|About|Several|Some|Rest|Of|Start|Beginning|Middle|End|Columns|Line|Lines|Case|Cases|Surface|Space|Blank|Broken|Effaced|Illegible|Missing|Traces|Ruling|Single|Double|Triple|At)\\b"
+                        }
+                    ]
                 }
             ]
         },
-	"strings": {
+        "strings": {
             "name": "string.quoted.double.atf",
             "begin": "\"",
             "end": "\"",
@@ -45,6 +58,22 @@
                 {
                     "name": "constant.character.escape.atf",
                     "match": "\\\\."
+                }
+            ]
+        },
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign.atf",
+                    "match": "^#.*$"
+                }
+            ]
+        },
+        "variable": {
+            "patterns": [
+                {
+                    "name": "variable.language.text.atf",
+                    "match": "^\\S+\\."
                 }
             ]
         }

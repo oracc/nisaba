@@ -8,14 +8,14 @@ After cloning the repository, enter this directory and install the dependencies
 with the command
 
 ```
-nmp install
+npm install
 ```
 
 Then you can compile, package, and install the extension with
 
 ```
-tsc -p ./
-vsce package
+npm run compile
+npm run package
 code --install-extension atf-0.0.1.vsix
 ```
 

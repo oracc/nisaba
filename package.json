@@ -22,8 +22,8 @@
     "contributes": {
         "commands": [
             {
-				"command": "ucl-rsdg.arabicPreview",
-				"title": "Show Arabic preview",
+                "command": "ucl-rsdg.arabicPreview",
+                "title": "Show Arabic preview",
                 "category": "Oracc",
                 "icon": {
                     "light": "media/preview_light.svg",
@@ -78,13 +78,14 @@
         ]
     },
     "scripts": {
-        "compile": "tsc -p ./",
-        "package": "vsce package"
+        "compile": "npx tsc -p ./",
+        "package": "npx vsce package"
     },
     "dependencies": {
         "@types/vscode": "^1.44.0"
     },
     "devDependencies": {
-        "@types/vscode": "^1.44.0"
+        "@types/vscode": "^1.44.0",
+        "typescript": "^4.0.0"
     }
 }

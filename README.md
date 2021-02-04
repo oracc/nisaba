@@ -8,7 +8,7 @@ After cloning the repository, enter this directory and install the dependencies
 with the command
 
 ```
-nmp install
+npm install
 ```
 
 Then you can compile, package, and install the extension with

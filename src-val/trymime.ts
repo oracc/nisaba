@@ -1,6 +1,6 @@
 const mimemessage = require('mimemessage');
 
-function createEnvelope() {
+function createEnvelope(filename: string) {
     let envelope = mimemessage.factory({
         contentType: 'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
         contentTransferEncoding: 'binary'
@@ -20,7 +20,7 @@ function createEnvelope() {
                            <osc-data:keys>
                                <osc-data:key>atf</osc-data:key>
                                <osc-data:key>cams/gkab</osc-data:key>
-                               <osc-data:key>00atf/belsunu.atf</osc-data:key>
+                               <osc-data:key>00atf/${filename}</osc-data:key>
                            </osc-data:keys>
                            <osc-data:data>
                                <osc-data:item xmime5:contentType="*/*">
@@ -35,18 +35,18 @@ function createEnvelope() {
     return envelope;
 }
 
-function createAttachment() {
+function createAttachment(content: string) {
     let attachment = mimemessage.factory({
         contentType: '*/*',
         contentTransferEncoding: 'binary'
     });
     attachment.header('MIME-Version', '1.0');
     attachment.header('Content-ID', '<request_zip>');
-    attachment.body = 'adfasdfasdfsadfdaf encoded text goes here';
+    attachment.body = content;
     return attachment;
 }
 
-function createMultipart() {
+export function createMultipart(filename: string, encodedText: string) {
     let multipartOptions = {
         charset: 'utf-8',
         type: 'application/xop+xml',
@@ -60,10 +60,8 @@ function createMultipart() {
         body: []
     })
     message.header('MIME-Version', '1.0');
-    message.body.push(createEnvelope());
-    message.body.push(createAttachment());
+    message.body.push(createEnvelope(filename));
+    message.body.push(createAttachment(encodedText));
     return message;
 }
 
-let message = createMultipart();
-console.log(message.toString({noHeaders: true}));

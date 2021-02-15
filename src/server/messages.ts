@@ -1,6 +1,6 @@
 var AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
-import { createMultipart } from './trymime';
+import { createMultipart } from './mime';
 import { parseString } from 'xml2js';
 
 /*

@@ -1,6 +1,7 @@
 var AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
 import { createMultipart } from './trymime';
+import { parseString } from 'xml2js';
 
 /*
 1. Create a client to send message
@@ -65,6 +66,7 @@ $ reverse blank
 `;
 
 export function validate(filename: string, project: string, text: string) {
+    let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
     let zip = new AdmZip();
@@ -105,10 +107,16 @@ export function validate(filename: string, project: string, text: string) {
         console.log(`STATUS: ${res.statusCode}`);
         console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
         res.setEncoding('utf8');
-        // We should parse this to get the response ID instead
+        if (res.statusCode !== 200) {
+            console.error(`Request failed! Status: ${res.statusCode}`);
+            res.resume(); // Apparently needed to free up memory if we don't read the data?
+        }
+        // Parse the response to get the response ID
         res.on('data', (chunk) => {
-            console.log(`BODY: ${chunk}`);
-        });
+            responseID = getResponseCode(chunk);
+            console.log(responseID);
+            }
+        );
     });
     // Time out after 5 seconds
     req.setTimeout(5000, () => {
@@ -137,5 +145,14 @@ export function validate(filename: string, project: string, text: string) {
     console.log(fullMessage.toString());
 }
 
+
+function getResponseCode(xmlResponse: string): string {
+    let code: string;
+    let dom = parseString(xmlResponse, (err, res) => {
+        let response = res['SOAP-ENV:Envelope']['SOAP-ENV:Body'][0]['osc-meth:RequestResponse'][0];
+        code = response['osc-data:keys'][0]['osc-data:key'][0];
+    })
+    return code;
+}
 
 validate('belsunu.atf', 'cams/gkab', sampleText);

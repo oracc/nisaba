@@ -64,3 +64,26 @@ export function createMultipart(filename: string, project: string, encodedText: 
     return message;
 }
 
+export function createResponseMessage(responseID: string) {
+    let envelope = createBaseMessage( 'application/soap+xml');
+    envelope.body = `<?xml version="1.0" encoding="UTF-8"?>
+               <SOAP-ENV:Envelope
+                   xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+                   xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   xmlns:xop="http://www.w3.org/2004/08/xop/include"
+                   xmlns:xmime5="http://www.w3.org/2005/05/xmlmime"
+                   xmlns:osc-data="http://oracc.org/wsdl/ows.xsd"
+                   xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
+                   <SOAP-ENV:Body>
+                       <osc-meth:Response>
+                           <osc-data:keys>
+                               <osc-data:key>${responseID}</osc-data:key>
+                           </osc-data:keys>
+                       </osc-meth:Response>
+                   </SOAP-ENV:Body>
+               </SOAP-ENV:Envelope>`;
+    return envelope;
+}
+

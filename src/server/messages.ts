@@ -1,14 +1,16 @@
 var AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
-import { createMultipart } from './mime';
+import { createMultipart, createResponseMessage } from './mime';
 import { parseString } from 'xml2js';
 
 /*
-1. Create a client to send message
-2. Gather all the information for the message from the text (start with hardcoded)
+1. Gather all the information for the message from the text (start with hardcoded)
 3. Create the message
 4. Figure out address, port etc and send message
-5. Get and print response
+5. Parse response to get ID
+6. Poll server (GET at /p/<responseID>) until done
+7. Send "response" message to server
+8. Unpack response to get validation results
 */
 
 let sampleText = `
@@ -115,6 +117,12 @@ export function validate(filename: string, project: string, text: string) {
         res.on('data', (chunk) => {
             responseID = getResponseCode(chunk);
             console.log(responseID);
+            // Wait until the server has prepared the response
+            if (commandSuccessful(responseID, options.host)) {
+                // Send Response message
+                let ourResponse = createResponseMessage(responseID);
+                // TODO continue...
+            }
             }
         );
     });
@@ -155,4 +163,24 @@ function getResponseCode(xmlResponse: string): string {
     return code;
 }
 
+
+function commandSuccessful(responseID: string, url: string): boolean {
+    let queryURL = `${url}/p/${responseID}`;
+    let done = false;
+    let attempts = 0;
+    while (!done && attempts < 10) {
+        attempts += 1;
+        request({host: queryURL, timeout: 5000}, (res) => {
+            res.on('data', (chunk) => {
+                if (chunk === 'done') {
+                    done = true;
+                } else if (chunk === 'err_stat') {
+                    // TODO: Raise this properly
+                    console.error('Error getting response from server.');
+                }
+            });
+        })
+    }
+    return done;
+}
 validate('belsunu.atf', 'cams/gkab', sampleText);

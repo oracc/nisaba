@@ -1,14 +1,14 @@
 Generate a virtual environment with, for example,
 
-```
-$ mkvirtualenv syntax
+```bash
+$ python -m venv syntax
 ```
 
 where `syntax` is the name we're giving to the environment.  After creating it,
 you can activate this environment with
 
-```
-$ workon syntax
+```bash
+$ source syntax/bin/activate
 ```
 
 Install the dependencies with the command

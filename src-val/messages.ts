@@ -117,10 +117,11 @@ export function validate(project: string, text: string) {
     body = body.replace("\r\n", "\n").replace("\n", "\r\n");
     //console.log(body);
     // This is what it should be? Or perhaps only part of the body
-    // req.setHeader('Content-Length', Buffer.byteLength(body));
+    req.setHeader('Content-Length', Buffer.byteLength(body));
     // This is what Nammu sends
-    req.setHeader('Content-Length', 2779);
-    // console.log(`length: ${Buffer.byteLength(body)}`);
+    // req.setHeader('Content-Length', 2779);
+    console.log(`byte length: ${Buffer.byteLength(body)}`);
+    console.log(`length: ${body.length}`);
     req.write(body);
     console.log(JSON.stringify(req.getHeaders()));
     req.end();

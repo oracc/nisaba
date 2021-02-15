@@ -1,6 +1,4 @@
-//import { AdmZip } from 'adm-zip';
 var AdmZip = require('adm-zip'); // It seems this has to be imported old-style
-import { createClient } from 'soap';
 import { request } from 'http';
 import { createMultipart } from './trymime';
 
@@ -12,14 +10,6 @@ import { createMultipart } from './trymime';
 5. Get and print response
 */
 
-// export function validate(project: string, text: string) {
-//     let serverAddress = "http://build-oracc.museum.upenn.edu:8085?wsdl";
-//     createClient(serverAddress, function(error, client) {
-//         console.log(error);
-//         console.log(typeof(client));
-//         console.log(client.describe());
-//     });
-// }
 let sampleText = `
 &X001001 = JCS 48, 089
 #project: cams/gkab
@@ -74,7 +64,7 @@ $ reverse blank
 8.	Mars was in the Crab.
 `;
 
-export function validate(project: string, text: string) {
+export function validate(filename: string, project: string, text: string) {
     let headers = {
         'Connection': 'close',
         'MIME-Version': '1.0',
@@ -90,9 +80,11 @@ export function validate(project: string, text: string) {
     req.on('response', (res) => {
         console.log("DONE");
         
+        // DEBUG
         console.log(`STATUS: ${res.statusCode}`);
         console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
         res.setEncoding('utf8');
+        // We should parse this to get the response ID instead
         res.on('data', (chunk) => {
             console.log(`BODY: ${chunk}`);
         });
@@ -109,9 +101,9 @@ export function validate(project: string, text: string) {
     let zip = new AdmZip();
     // text.length does not account for the encoding, so using that will allocate
     // less memory that required and truncate the text in the zip!
-    zip.addFile('00atf/belsunu.atf', Buffer.alloc(Buffer.byteLength(text), text));
+    zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
     let encodedText = zip.toBuffer();
-    let fullMessage = createMultipart('belsunu.atf', encodedText);
+    let fullMessage = createMultipart(filename, project, encodedText);
     let body = fullMessage.toString({noHeaders: true});
     // We probably don't need this? It's to convert all line endings to \r\n because reasons (see Nammu)
     body = body.replace("\r\n", "\n").replace("\n", "\r\n");
@@ -126,7 +118,9 @@ export function validate(project: string, text: string) {
     console.log(JSON.stringify(req.getHeaders()));
     req.end();
     console.log('Sent message');
+
+    console.log(fullMessage.toString());
 }
 
 
-validate('aaa', sampleText);
+validate('belsunu.atf', 'cams/gkab', sampleText);

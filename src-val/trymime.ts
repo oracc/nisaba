@@ -1,10 +1,21 @@
-const mimemessage = require('mimemessage');
+import mimemessage = require('mimemessage');
 
-function createEnvelope(filename: string) {
-    let envelope = mimemessage.factory({
-        contentType: 'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
-        contentTransferEncoding: 'binary'
-    })
+function createBaseMessage(contentType: string, isBinary = false) {
+    let message = mimemessage.factory({
+        contentType
+    });
+    if (isBinary) {
+        message.contentTransferEncoding('binary');
+    }
+    message.header('MIME-Version', '1.0');
+    return message;
+}
+
+function createEnvelope(filename: string, project: string) {
+    let envelope = createBaseMessage(
+        'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
+        true);
+    envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
     envelope.body = `<?xml version="1.0" encoding="UTF-8"?>
                <SOAP-ENV:Envelope
                    xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
@@ -19,7 +30,7 @@ function createEnvelope(filename: string) {
                        <osc-meth:Request>
                            <osc-data:keys>
                                <osc-data:key>atf</osc-data:key>
-                               <osc-data:key>cams/gkab</osc-data:key>
+                               <osc-data:key>${project}</osc-data:key>
                                <osc-data:key>00atf/${filename}</osc-data:key>
                            </osc-data:keys>
                            <osc-data:data>
@@ -30,23 +41,18 @@ function createEnvelope(filename: string) {
                        </osc-meth:Request>
                    </SOAP-ENV:Body>
                </SOAP-ENV:Envelope>`;
-    envelope.header('MIME-Version', '1.0');
-    envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
     return envelope;
 }
 
 function createAttachment(content: string) {
-    let attachment = mimemessage.factory({
-        contentType: '*/*',
-        contentTransferEncoding: 'binary'
-    });
-    attachment.header('MIME-Version', '1.0');
+    let attachment = createBaseMessage('*/*', true);
     attachment.header('Content-ID', '<request_zip>');
     attachment.body = content;
     return attachment;
 }
 
-export function createMultipart(filename: string, encodedText: string) {
+export function createMultipart(filename: string, project: string, encodedText: string) {
+    
     let multipartOptions = {
         charset: 'utf-8',
         type: 'application/xop+xml',
@@ -55,12 +61,11 @@ export function createMultipart(filename: string, encodedText: string) {
         boundary: '==========boundary========'
     }
 
-    let message = mimemessage.factory({
-        contentType: 'multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="==========boundary========"',
-        body: []
-    })
-    message.header('MIME-Version', '1.0');
-    message.body.push(createEnvelope(filename));
+    let message = createBaseMessage(
+        'multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="==========boundary========"'
+    );
+    message.body = [];
+    message.body.push(createEnvelope(filename, project));
     message.body.push(createAttachment(encodedText));
     return message;
 }

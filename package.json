@@ -81,7 +81,7 @@
         "compile": "npx tsc -p ./",
         "package": "npx vsce package",
         "lint": "eslint src --ext ts",
-        "pretest": "npm run compile",
+        "pretest": "npm run compile && npm run lint",
         "test": "node ./out/test/runTest.js"
     },
     "dependencies": {
@@ -91,8 +91,8 @@
         "@types/mocha": "^7.0.2",
         "@types/node": "^13.11.0",
         "@types/vscode": "^1.44.0",
-        "@typescript-eslint/eslint-plugin": "^4.15.0",
-        "@typescript-eslint/parser": "^4.15.0",
+        "@typescript-eslint/eslint-plugin": "^4.15.1",
+        "@typescript-eslint/parser": "^4.15.1",
         "eslint": "^6.8.0",
         "mocha": "^7.1.2",
         "typescript": "^4.0.0",

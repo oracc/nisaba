@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 
 // Logging
-var nammuOutputChannel = vscode.window.createOutputChannel("Nammu");
+const nammuOutputChannel = vscode.window.createOutputChannel("Nammu");
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -16,11 +16,11 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
+    const disposable = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
-        var str = 'Hello VS Code from ucl-rsdg!';
+        const str = 'Hello VS Code from ucl-rsdg!';
         vscode.window.showWarningMessage(str);
         nammuOutputChannel.show();
         nammuOutputChannel.append(str + '\n');
@@ -97,7 +97,7 @@ class CatCodingPanel {
 
         // Update the content based on view changes
         this._panel.onDidChangeViewState(
-            e => {
+            () => {
                 if (this._panel.visible) {
                     this._update();
                 }

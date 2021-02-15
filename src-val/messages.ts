@@ -65,10 +65,31 @@ $ reverse blank
 `;
 
 export function validate(filename: string, project: string, text: string) {
+    // First create the body of the message, since we'll need some information
+    // from it to create the headers
+    let zip = new AdmZip();
+    // text.length does not account for the encoding, so using that will allocate
+    // less memory that required and truncate the text in the zip!
+    zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
+    let encodedText = zip.toBuffer();
+    let fullMessage = createMultipart(filename, project, encodedText);
+    let body = fullMessage.toString({noHeaders: true});
+    let boundary = fullMessage.contentType().params.boundary;
+
+    // TODO: Construct the Content-Type from these?
+    let multipartOptions = {
+        charset: 'utf-8',
+        type: 'application/xop+xml',
+        start: '<SOAP-ENV:Envelope>',
+        'start-info': 'application/soap+xml'
+    }
+
     let headers = {
         'Connection': 'close',
         'MIME-Version': '1.0',
-        'Content-Type': 'multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="==========boundary========"',
+        // TODO: What if boundary contains a "? Do we need to escape it?
+        'Content-Type': `multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="${boundary}"`,
+        // TODO: Also add Content-Length here
     }
     let options = {
         host: "build-oracc.museum.upenn.edu",
@@ -98,13 +119,7 @@ export function validate(filename: string, project: string, text: string) {
     req.on('error', (err) => {
         console.log(`ERROR! ${err.message}`);
     })
-    let zip = new AdmZip();
-    // text.length does not account for the encoding, so using that will allocate
-    // less memory that required and truncate the text in the zip!
-    zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    let encodedText = zip.toBuffer();
-    let fullMessage = createMultipart(filename, project, encodedText);
-    let body = fullMessage.toString({noHeaders: true});
+
     // We probably don't need this? It's to convert all line endings to \r\n because reasons (see Nammu)
     body = body.replace("\r\n", "\n").replace("\n", "\r\n");
     //console.log(body);

@@ -52,17 +52,11 @@ function createAttachment(content: string) {
 }
 
 export function createMultipart(filename: string, project: string, encodedText: string) {
-    
-    let multipartOptions = {
-        charset: 'utf-8',
-        type: 'application/xop+xml',
-        start: '<SOAP-ENV:Envelope>',
-        'start-info': 'application/soap+xml',
-        boundary: '==========boundary========'
-    }
 
+    // The exact header may be overwritten later anyway, so we don't need
+    // to include all the details.
     let message = createBaseMessage(
-        'multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="==========boundary========"'
+        'multipart/related; charset="utf-8"'
     );
     message.body = [];
     message.body.push(createEnvelope(filename, project));

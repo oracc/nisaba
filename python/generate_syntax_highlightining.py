@@ -63,7 +63,11 @@ support["patterns"] = [
              "match": f"\\b({dollar_keywords})\\b",
          }
      ],
-     }
+     },
+    # Linkage lines.
+    # TODO: use a different colour for this class of lines.
+    {"name": "support.class.linkage.atf",
+     "match": "^(>>|<<|\\|\\|).*"},
 ]
 
 strings = {}

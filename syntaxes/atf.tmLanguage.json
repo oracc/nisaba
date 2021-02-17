@@ -47,6 +47,10 @@
                             "match": "\\b(most|least|about|several|some|rest|of|start|beginning|middle|end|columns|line|lines|case|cases|surface|space|blank|broken|effaced|illegible|missing|traces|ruling|single|double|triple|at|Most|Least|About|Several|Some|Rest|Of|Start|Beginning|Middle|End|Columns|Line|Lines|Case|Cases|Surface|Space|Blank|Broken|Effaced|Illegible|Missing|Traces|Ruling|Single|Double|Triple|At)\\b"
                         }
                     ]
+                },
+                {
+                    "name": "support.class.linkage.atf",
+                    "match": "^(>>|<<|\\|\\|).*"
                 }
             ]
         },

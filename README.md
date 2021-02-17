@@ -27,6 +27,15 @@ the left.  (Re)start Visual Studio Code to make the changes take effect:
 code
 ```
 
+### Running tests
+
+After having installed all dependencies with `npm install` and compiled the
+package with `npm run compile`, you can run the tests for the package with
+
+```
+npm run test
+```
+
 ### Debugging tips
 
 To debug the syntax highlighting (currently implemented as a [Textmate

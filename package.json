@@ -1,12 +1,12 @@
 {
-    "name": "atf",
-    "displayName": "ATF",
+    "name": "nisaba",
+    "displayName": "Nisaba",
     "description": "Support for ATF files",
     "version": "0.0.1",
     "publisher": "ucl-rsdg",
     "repository": {
         "type": "git",
-        "url": "https://github.com/oracc/nammu.git"
+        "url": "https://github.com/oracc/nisaba.git"
     },
     "engines": {
         "vscode": "^1.44.0"

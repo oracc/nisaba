@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 
 // Logging
-const nammuOutputChannel = vscode.window.createOutputChannel("Nammu");
+const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -22,8 +22,8 @@ export function activate(context: vscode.ExtensionContext) {
         // Display a message box to the user
         const str = 'Hello VS Code from ucl-rsdg!';
         vscode.window.showWarningMessage(str);
-        nammuOutputChannel.show();
-        nammuOutputChannel.append(str + '\n');
+        nisabaOutputChannel.show();
+        nisabaOutputChannel.append(str + '\n');
     });
 
     context.subscriptions.push(disposable);

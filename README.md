@@ -1,6 +1,7 @@
-# atf README
+# Nisaba
 
-This is the README of the extension "atf".
+This is the README of the Visual Studio Code extension "Nisaba", for the [ATF
+format](http://oracc.museum.upenn.edu/doc/help/editinginatf/index.html).
 
 ## Development workflow
 
@@ -16,7 +17,7 @@ Then you can compile, package, and install the extension with
 ```
 npm run compile
 npm run package
-code --install-extension atf-0.0.1.vsix
+code --install-extension nisaba-0.0.1.vsix
 ```
 
 If you open this directory in Visual Studio Code, you should be able to run the

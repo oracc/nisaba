@@ -56,9 +56,13 @@ function validate(filename, project, text) {
             console.log(responseID);
             // Wait until the server has prepared the response
             if (commandSuccessful(responseID, options.host)) {
+                console.log("Request " + responseID + " is done.");
                 // Send Response message
                 // let ourResponse = createResponseMessage(responseID);
                 // TODO continue...
+            }
+            else {
+                console.log('Unsuccessful getting response.');
             }
         });
     });
@@ -96,22 +100,30 @@ function getResponseCode(xmlResponse) {
     return code;
 }
 function commandSuccessful(responseID, url) {
-    var queryURL = url + "/p/" + responseID;
     var done = false;
     var attempts = 0;
     while (!done && attempts < 10) {
         attempts += 1;
-        http_1.request({ host: queryURL, timeout: 5000 }, function (res) {
+        http_1.request({ host: url, path: "/p/" + responseID, timeout: 5000 }, function (res) {
             res.on('data', function (chunk) {
-                if (chunk === 'done') {
-                    done = true;
-                }
-                else if (chunk === 'err_stat') {
-                    // TODO: Raise this properly
-                    console.error('Error getting response from server.');
+                switch (chunk.toString('utf-8').trim()) {
+                    case 'done':
+                        done = true;
+                        console.log('Done!');
+                        break;
+                    case 'err_stat':
+                        // TODO: Raise this properly
+                        console.error('Error getting response from server.');
+                        break;
+                    case 'run':
+                        console.error('Server working on request.');
+                        break;
+                    default:
+                        // TODO: Raise this properly
+                        console.error('Unexpected message from server.');
                 }
             });
-        });
+        }).end();
     }
     return done;
 }

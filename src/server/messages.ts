@@ -111,9 +111,12 @@ export function validate(filename: string, project: string, text: string) {
             console.log(responseID);
             // Wait until the server has prepared the response
             if (commandSuccessful(responseID, options.host)) {
+                console.log(`Request ${responseID} is done.`);
                 // Send Response message
                 // let ourResponse = createResponseMessage(responseID);
                 // TODO continue...
+            } else {
+                console.log('Unsuccessful getting response.')
             }
             }
         );
@@ -157,21 +160,32 @@ function getResponseCode(xmlResponse: string): string {
 
 
 function commandSuccessful(responseID: string, url: string): boolean {
-    const queryURL = `${url}/p/${responseID}`;
     let done = false;
     let attempts = 0;
+    // This is wrong! The requests are sent asynchronously, so the function
+    // will return (false) even if the message returned is "done".
     while (!done && attempts < 10) {
         attempts += 1;
-        request({host: queryURL, timeout: 5000}, (res) => {
-            res.on('data', (chunk) => {
-                if (chunk === 'done') {
-                    done = true;
-                } else if (chunk === 'err_stat') {
-                    // TODO: Raise this properly
-                    console.error('Error getting response from server.');
+        request({host: url, path: `/p/${responseID}`, timeout: 5000}, (res) => {
+            res.on('data', (chunk: Buffer) => {
+                // Message includes a trailing new line character
+                switch (chunk.toString('utf-8').trim()) {
+                    case 'done': // done processing
+                        done = true;
+                        break;
+                    case 'err_stat':
+                        // TODO: Raise this properly
+                        console.error('Error getting response from server.');
+                        break;
+                    case 'run':
+                        console.error('Server working on request.');
+                        break;
+                    default:
+                        // TODO: Raise this properly
+                        console.error('Unexpected message from server.');
                 }
             });
-        })
+        }).end();
     }
     return done;
 }

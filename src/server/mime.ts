@@ -1,7 +1,7 @@
 import mimemessage = require('mimemessage');
 
 function createBaseMessage(contentType: string, isBinary = false) {
-    let message = mimemessage.factory({
+    const message = mimemessage.factory({
         contentType
     });
     if (isBinary) {
@@ -12,7 +12,7 @@ function createBaseMessage(contentType: string, isBinary = false) {
 }
 
 function createEnvelope(filename: string, project: string) {
-    let envelope = createBaseMessage(
+    const envelope = createBaseMessage(
         'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
         true);
     envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
@@ -45,7 +45,7 @@ function createEnvelope(filename: string, project: string) {
 }
 
 function createAttachment(content: string) {
-    let attachment = createBaseMessage('*/*', true);
+    const attachment = createBaseMessage('*/*', true);
     attachment.header('Content-ID', '<request_zip>');
     attachment.body = content;
     return attachment;
@@ -55,7 +55,7 @@ export function createMultipart(filename: string, project: string, encodedText: 
 
     // The exact header may be overwritten later anyway, so we don't need
     // to include all the details.
-    let message = createBaseMessage(
+    const message = createBaseMessage(
         'multipart/related; charset="utf-8"'
     );
     message.body = [];
@@ -65,7 +65,7 @@ export function createMultipart(filename: string, project: string, encodedText: 
 }
 
 export function createResponseMessage(responseID: string) {
-    let envelope = createBaseMessage( 'application/soap+xml');
+    const envelope = createBaseMessage( 'application/soap+xml');
     envelope.body = `<?xml version="1.0" encoding="UTF-8"?>
                <SOAP-ENV:Envelope
                    xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"

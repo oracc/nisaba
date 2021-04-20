@@ -1,6 +1,6 @@
-var AdmZip = require('adm-zip'); // It seems this has to be imported old-style
+const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
-import { createMultipart, createResponseMessage } from './mime';
+import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
 
 /*
@@ -13,7 +13,7 @@ import { parseString } from 'xml2js';
 8. Unpack response to get validation results
 */
 
-let sampleText = `
+const sampleText = `
 &X001001 = JCS 48, 089
 #project: cams/gkab
 #atf: lang akk-x-stdbab
@@ -71,37 +71,29 @@ export function validate(filename: string, project: string, text: string) {
     let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
-    let zip = new AdmZip();
+    const zip = new AdmZip();
     // text.length does not account for the encoding, so using that will allocate
     // less memory that required and truncate the text in the zip!
     zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    let encodedText = zip.toBuffer();
-    let fullMessage = createMultipart(filename, project, encodedText);
+    const encodedText = zip.toBuffer();
+    const fullMessage = createMultipart(filename, project, encodedText);
     let body = fullMessage.toString({noHeaders: true});
-    let boundary = fullMessage.contentType().params.boundary;
+    const boundary = fullMessage.contentType().params.boundary;
 
-    // TODO: Construct the Content-Type from these?
-    let multipartOptions = {
-        charset: 'utf-8',
-        type: 'application/xop+xml',
-        start: '<SOAP-ENV:Envelope>',
-        'start-info': 'application/soap+xml'
-    }
-
-    let headers = {
+    const headers = {
         'Connection': 'close',
         'MIME-Version': '1.0',
         // TODO: What if boundary contains a "? Do we need to escape it?
         'Content-Type': `multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="${boundary}"`,
         // TODO: Also add Content-Length here
     }
-    let options = {
+    const options = {
         host: "build-oracc.museum.upenn.edu",
         port: 8085,
         method: 'POST',
         headers: headers,
     }
-    let req = request(options);
+    const req = request(options);
     req.on('response', (res) => {
         console.log("DONE");
         
@@ -120,7 +112,7 @@ export function validate(filename: string, project: string, text: string) {
             // Wait until the server has prepared the response
             if (commandSuccessful(responseID, options.host)) {
                 // Send Response message
-                let ourResponse = createResponseMessage(responseID);
+                // let ourResponse = createResponseMessage(responseID);
                 // TODO continue...
             }
             }
@@ -156,8 +148,8 @@ export function validate(filename: string, project: string, text: string) {
 
 function getResponseCode(xmlResponse: string): string {
     let code: string;
-    let dom = parseString(xmlResponse, (err, res) => {
-        let response = res['SOAP-ENV:Envelope']['SOAP-ENV:Body'][0]['osc-meth:RequestResponse'][0];
+    parseString(xmlResponse, (err, res) => {
+        const response = res['SOAP-ENV:Envelope']['SOAP-ENV:Body'][0]['osc-meth:RequestResponse'][0];
         code = response['osc-data:keys'][0]['osc-data:key'][0];
     })
     return code;
@@ -165,7 +157,7 @@ function getResponseCode(xmlResponse: string): string {
 
 
 function commandSuccessful(responseID: string, url: string): boolean {
-    let queryURL = `${url}/p/${responseID}`;
+    const queryURL = `${url}/p/${responseID}`;
     let done = false;
     let attempts = 0;
     while (!done && attempts < 10) {

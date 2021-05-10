@@ -78,7 +78,8 @@
         ]
     },
     "scripts": {
-        "compile": "npx tsc -p ./",
+        "clean": "rm -rf ./out",
+        "compile": "npm run clean && npx tsc -p ./",
         "package": "npx vsce package",
         "lint": "eslint src --ext ts",
         "pretest": "npm run compile && npm run lint",

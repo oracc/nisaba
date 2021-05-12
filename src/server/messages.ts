@@ -67,7 +67,7 @@ $ reverse blank
 8.	Mars was in the Crab.
 `;
 
-export function validate(filename: string, project: string, text: string) {
+export function validate(filename: string, project: string, text: string): boolean {
     let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
@@ -96,7 +96,7 @@ export function validate(filename: string, project: string, text: string) {
     const req = request(options);
     req.on('response', (res) => {
         console.log("DONE");
-        
+
         // DEBUG
         console.log(`STATUS: ${res.statusCode}`);
         console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
@@ -146,6 +146,9 @@ export function validate(filename: string, project: string, text: string) {
     console.log('Sent message');
 
     console.log(fullMessage.toString());
+
+    //TODO implement this!
+    return true;
 }
 
 

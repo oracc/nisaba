@@ -10,8 +10,26 @@ import { ServerResult} from '../../client/server_result';
 suite('Validation Test Suite', () => {
     vscode.window.showInformationMessage('Start validation tests.');
 
-    test('Server results test', async() => {
+    test('Server results test for error_belsunu.atf', async() => {
+        const error_belsunu = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/error_belsunu.atf')).toString();
+        const expected_oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/error_oracc.log')).toString();
+        //TODO Do we need the href html labels to make these errors clickable?
+        const expected_val_errors = {
+          46: 'o 4: translation uses undefined label',
+          6: 'unknown block token: tableta'
+        }
+        //TODO send message to server with error_belsunu.atf and check server
+        // results are parsed well
+        assert(true);
+    })
 
+    test('Server results test for belsunu.atf', async() => {
+        const belsunu = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf')).toString();
+        const expected_oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/oracc.log')).toString();
+        //TODO Do we need the href html labels to make these errors clickable?
+        const expected_val_errors = {}
+        //TODO send message to server with belsunu.atf and check server
+        // results are parsed well
         assert(true);
     })
 

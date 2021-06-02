@@ -88,12 +88,13 @@
     "dependencies": {
         "adm-zip": "^0.5.2",
         "mimemessage": "^1.0.5",
+        "split-lines": "^3.0.0",
         "xml2js": "^0.4.23"
     },
     "devDependencies": {
         "@types/adm-zip": "^0.4.33",
         "@types/mocha": "^7.0.2",
-        "@types/node": "^13.11.0",
+        "@types/node": "^13.13.52",
         "@types/vscode": "^1.44.0",
         "@types/xml2js": "^0.4.8",
         "@typescript-eslint/eslint-plugin": "^4.15.1",

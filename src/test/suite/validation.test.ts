@@ -14,16 +14,17 @@ suite('Validation Test Suite', () => {
 
     test('Server results test for error_belsunu.atf', async() => {
         //TODO Do we need the href html labels to make these errors clickable?
-        const expected_user_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/user_log_error.log')).toString();
+        const expected_user_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/user_log_error.log'), 'utf-8');
         const expected_val_errors = {
-          6: 'unknown block token: tableta',
-          46: 'o 4: translation uses undefined label'
+            '0': 'ATF processor ox issued 2 warnings and 0 notices',
+            '6': 'unknown block token: tableta',
+            '44': 'o 4: translation uses undefined label'
         };
 
         // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
-        const oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/error_oracc.log')).toString();
+        const oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/error_oracc.log'), 'utf-8');
 
-        const server_result = new ServerResult(oracc_log, ""); //We don't care about request.log for now
+        const server_result = new ServerResult(oracc_log);
 
         console.log(server_result.user_log);
         console.log(expected_user_log);
@@ -34,21 +35,23 @@ suite('Validation Test Suite', () => {
     });
 
     test('Server results test for belsunu.atf', async() => {
-      //TODO Do we need the href html labels to make these errors clickable?
-      const expected_user_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/user_log_no_errors.log')).toString();
-      const expected_val_errors = {};
+        //TODO Do we need the href html labels to make these errors clickable?
+        const expected_user_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/user_log_no_errors.log'), 'utf-8');
+        const expected_val_errors = {};
 
-      // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
-      const oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/oracc_no_errors.log')).toString();
+        // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
+        const oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/oracc_no_errors.log'), 'utf-8');
 
         const server_result = new ServerResult(oracc_log, ""); //We don't care about request.log for now
 
-      assert(server_result.user_log == expected_user_log);
-      assert(server_result.validation_errors == expected_val_errors);
+        // assert(JSON.stringify(server_result.user_log.split(os.EOL)) == JSON.stringify(expected_user_log.split(os.EOL)));
+        // There's no sensible way to compare dictionaries, JSON.stringify
+
+        assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
     });
 
     test('SOAP client constructor test', async () => {
-        const belsunu = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/belsunu.atf')).toString();
+        const belsunu = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/belsunu.atf'), 'utf-8');
         const client = new SOAPClient("./input/belsunu.atf", belsunu);
         assert(client.atf_filename == "belsunu.atf");
         assert(client.atf_text == belsunu);
@@ -57,7 +60,7 @@ suite('Validation Test Suite', () => {
     test('HTTP validate test', async () => {
 
         // Load salmple text to run Validation
-        const belsunu_text = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf')).toString();
+        const belsunu_text = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf'), 'utf-8');
 
         // Placeholder for testing ATF validation, at the moment it always
         // returns true

@@ -1,4 +1,5 @@
-import splitLines from 'split-lines';
+/* eslint-disable */
+import * as os from 'os';
 
 export class ServerResult {
 
@@ -11,45 +12,52 @@ export class ServerResult {
     // TODO this will also need a lemmatised atf when we tackle lemmatisation
     // TODO request_log is probably useless for the user, but we should record
     // everything that happens in a logger for reference
-    constructor(oracc_log: string, request_log: string){
+    constructor(oracc_log: string, request_log: string = ""){
         this.validation_errors = this.get_validation_errors(oracc_log);
         this.user_log = this.get_user_log();
         this.request_log = request_log;
         this.atf_content = ""; //placeholder
     }
 
-    get_validation_errors(log: string){
+    get_validation_errors(oracc_log: string){
         /* Process the oracc log and extract error line numbers and error
         messages to build a dictionary the front end can use.
         The purpose of this is to show different styling in those line numbers
         and potentially a tooltip that shows the error message.
         */
+        // TODO for some reason the keys are being converted to string, why?
         const validation_errors: { [line_num: number]: string } = {};
-        //TODO process lines containing ":" and build error log dictionary
-        const lines = splitLines(log);
-            for (const line in lines){
-                // Check if this is an error line or the error summary
-                if (line.includes(':')){
-                    // TODO wrap in try/catch in case we get an error when
-                    // trying to access [1] and [0]
-                    const line_number = Number(line.split(':')[1]);
-                    const error_message = line.split(':').reverse[0];
-                    //Note more than one error can exist per line
-                    if (line_number in validation_errors){
-                        // TODO We can do this in a more elegant way with the
-                        // values being string[] rather than everything in one
-                        // string.
-                        validation_errors[line_number] += ". " + error_message;
-                    }
-                    else {
-                        validation_errors[line_number] = error_message;
-                    }
+        let lines = oracc_log.split(os.EOL);
+        // Split os.EOL will always add an empty string at the end, so we have
+        // to remove it manually
+        lines.pop();
+        for (const line of lines){
+            // Check if this is an error line or the error summary
+            if (line.includes(':')){
+                // TODO wrap in try/catch in case we get an error when
+                // trying to access [1] and [0]
+                const line_number = Number(line.split(':')[1]);
+                // Sometimes error messages contain ":", so we can't take the
+                // last element in the split array. We need to join all
+                // elements after the 3rd occurrence of ":".
+                const position = line.split(":", 3).join(":").length;
+                const error_message = line.substr(position + 2);
+                //Note more than one error can exist per line
+                if (line_number in validation_errors){
+                    // TODO We can do this in a more elegant way with the
+                    // values being string[] rather than everything in one
+                    // string.
+                    validation_errors[line_number] += ". " + error_message;
                 }
                 else {
-                    // Save summary line as line 0
-                    validation_errors[0] = line;
+                    validation_errors[line_number] = error_message;
                 }
             }
+            else {
+                // Save summary line as line 0
+                validation_errors[0] = line;
+            }
+        }
         return validation_errors;
     }
 

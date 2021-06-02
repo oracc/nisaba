@@ -1,3 +1,10 @@
+/* eslint-disable */
+const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
+import { request } from 'http';
+import { validate } from '../server/messages';
+import { createMultipart /*, createResponseMessage */} from '../server/mime';
+
+
 export class HTTP_request {
     /* Builds an HTTP GET or POST request that ORACC's server understands to send
     and retrieve ATF data.*/
@@ -11,14 +18,39 @@ export class HTTP_request {
         if (method == "POST") {
             console.log("Method is POST.");
         }
-        this.create_request_message("command", ["a", "b"], "atf_basename", "a");
+        this.create_request_message("command", "project", "atf_basename", "a");
     }
 
-    create_request_message(command: string, keys: string[], atf_basename: string,
+    create_request_message(command: string, project: string, atf_filename: string,
                            atf_text: string) {
         /* Send attachment to server containing ATF file and necessary data to
         run given command (validate, lemmatise, etc).*/
-        console.log("Hello from create_request_message");
+        let responseID:string;
+        // First create the body of the message, since we'll need some information
+        // from it to create the headers
+        const zip = new AdmZip();
+        // text.length does not account for the encoding, so using that will allocate
+        // less memory that required and truncate the text in the zip!
+        zip.addFile(`00atf/${atf_filename}`, Buffer.alloc(Buffer.byteLength(atf_text), atf_text));
+        const encodedText = zip.toBuffer();
+        const fullMessage = createMultipart(atf_filename, project, encodedText);
+        let body = fullMessage.toString({noHeaders: true});
+        const boundary = fullMessage.contentType().params.boundary;
+
+        const headers = {
+            'Connection': 'close',
+            'MIME-Version': '1.0',
+            // TODO: What if boundary contains a "?" Do we need to escape it?
+            'Content-Type': `multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="${boundary}"`,
+            // TODO: Also add Content-Length here
+        }
+        const options = {
+            host: "build-oracc.museum.upenn.edu",
+            port: 8085,
+            method: 'POST',
+            headers: headers,
+        }
+        return request(options);
 
     }
 

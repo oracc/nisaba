@@ -1,12 +1,19 @@
+/* eslint-disable */
 import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { validate } from '../../server/messages';
+import { ServerResult} from '../../client/server_result';
 
 
 suite('Validation Test Suite', () => {
     vscode.window.showInformationMessage('Start validation tests.');
+
+    test('Server results test', async() => {
+
+        assert(true);
+    })
 
     test('HTTP validate test', async () => {
 

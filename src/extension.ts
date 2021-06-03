@@ -1,17 +1,26 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { getExtensionLogger } from '@vscode-logging/logger';
 
-// Logging
+// Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "ucl-rsdg" is now active!');
+    // Set up logging with `@vscode-logging/logger`
+    const extLogger = getExtensionLogger({
+        extName: "Nisaba",
+        level: "info", // See LogLevel type in @vscode-logging/types for possible logLevels
+        logPath: context.logPath, // The logPath is only available from the `vscode.ExtensionContext`
+        logOutputChannel: nisabaOutputChannel, // OutputChannel for the logger
+        sourceLocationTracking: false,
+        logConsole: true // define if messages should be logged to the console
+    });
+
+    extLogger.info('Congratulations, your extension "ucl-rsdg" is now active!');
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
@@ -22,8 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
         // Display a message box to the user
         const str = 'Hello VS Code from ucl-rsdg!';
         vscode.window.showWarningMessage(str);
-        nisabaOutputChannel.show();
-        nisabaOutputChannel.append(str + '\n');
+        extLogger.info(str);
     });
 
     context.subscriptions.push(disposable);

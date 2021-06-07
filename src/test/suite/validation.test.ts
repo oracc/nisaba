@@ -1,7 +1,5 @@
-/* eslint-disable */
 import * as assert from 'assert';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { validate } from '../../server/messages';
@@ -14,37 +12,44 @@ suite('Validation Test Suite', () => {
 
     test('Server results test for error_belsunu.atf', async() => {
         //TODO Do we need the href html labels to make these errors clickable?
-        const expected_user_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/user_log_error.log'), 'utf-8');
+        const expected_user_log = fs.readFileSync(path.join(
+          __dirname,'../../../src/test/suite/reference/user_log_error.log'),
+          'utf-8').trim(); // trim to avoid editor adding \n
         const expected_val_errors = {
             '0': 'ATF processor ox issued 2 warnings and 0 notices',
             '6': 'unknown block token: tableta',
             '44': 'o 4: translation uses undefined label'
         };
 
-        // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
-        const oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/error_oracc.log'), 'utf-8');
-
+        // TODO Replace this with the actual content of the oracc log that
+        // comes from the server - check in Nammu
+        const oracc_log = fs.readFileSync(
+          path.join(__dirname,
+                    '../../../src/test/suite/input/error_oracc.log'),
+          'utf-8');
         const server_result = new ServerResult(oracc_log);
 
-        console.log(server_result.user_log);
-        console.log(expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-  //      assert(JSON.stringify(server_result.user_log.split(os.EOL)) == JSON.stringify(expected_user_log.split(os.EOL)));
+        assert(JSON.stringify(server_result.user_log) == JSON.stringify(expected_user_log));
         assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
     });
 
     test('Server results test for belsunu.atf', async() => {
         //TODO Do we need the href html labels to make these errors clickable?
-        const expected_user_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/user_log_no_errors.log'), 'utf-8');
+        const expected_user_log = fs.readFileSync(
+          path.join(__dirname,
+                    '../../../src/test/suite/reference/user_log_no_errors.log'),
+          'utf-8').trim(); // trim to avoid editor adding \n
         const expected_val_errors = {};
 
         // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
-        const oracc_log = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/oracc_no_errors.log'), 'utf-8');
-
+        const oracc_log = fs.readFileSync(
+          path.join(__dirname,
+                    '../../../src/test/suite/input/oracc_no_errors.log'),
+          'utf-8');
         const server_result = new ServerResult(oracc_log, ""); //We don't care about request.log for now
 
-        // assert(JSON.stringify(server_result.user_log.split(os.EOL)) == JSON.stringify(expected_user_log.split(os.EOL)));
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert.equal(JSON.stringify(server_result.user_log), JSON.stringify(expected_user_log));

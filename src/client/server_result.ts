@@ -13,10 +13,11 @@ export class ServerResult {
     // TODO request_log is probably useless for the user, but we should record
     // everything that happens in a logger for reference
     constructor(oracc_log: string, request_log: string = ""){
+        //this.errors
         this.validation_errors = this.get_validation_errors(oracc_log);
         this.user_log = this.get_user_log();
         this.request_log = request_log;
-        this.atf_content = ""; //placeholder
+        this.atf_content = ""; //placeholder for lemmatisation
     }
 
     get_validation_errors(oracc_log: string){
@@ -64,17 +65,22 @@ export class ServerResult {
     get_user_log(){
         /* This method will build the log they user will see in the VS code
            console */
-        let user_log = "";
-        for (const line_num in this.validation_errors) {
-            // dict key 0 contains the summary, so skip
-            if (Number(line_num) != 0){
-                const error_msg = this.validation_errors[line_num];
-                //TODO check if \n is valid here or we need <br>
-                user_log += "Line " + line_num + ": " + error_msg + ".\n";
-            }
+        if (Object.keys(this.validation_errors).length == 0){
+            return "ATF validation returned no errors.";
         }
-        // Add summary line at the end
-        user_log += this.validation_errors[0];
-        return user_log;
+        else {
+            let user_log = "";
+            for (const line_num in this.validation_errors) {
+                // dict key 0 contains the summary, so skip
+                if (Number(line_num) != 0){
+                    const error_msg = this.validation_errors[line_num];
+                    //TODO check if \n is valid here or we need <br>
+                    user_log += `Line ${line_num}: ${error_msg}.\n`;
+                }
+            }
+            // Add summary line at the end
+            user_log += this.validation_errors[0];
+            return user_log;
+        }
     }
 }

@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { validate } from '../../server/messages';
@@ -31,7 +32,7 @@ suite('Validation Test Suite', () => {
 
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert.equal(JSON.stringify(server_result.user_log), JSON.stringify(expected_user_log));
+        assert.equal(JSON.stringify(server_result.user_log.split(os.EOL)), JSON.stringify(expected_user_log.split(os.EOL)));
         assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
     });
 
@@ -57,7 +58,7 @@ suite('Validation Test Suite', () => {
 
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert.equal(JSON.stringify(server_result.user_log), JSON.stringify(expected_user_log));
+        assert.equal(JSON.stringify(server_result.user_log.split(os.EOL)), JSON.stringify(expected_user_log.split(os.EOL)));
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
     });
 

@@ -50,6 +50,11 @@ suite('Validation Test Suite', () => {
           'utf-8');
         const server_result = new ServerResult(oracc_log, ""); //We don't care about request.log for now
 
+        console.log("server_result.user_log:");
+        console.log(JSON.stringify(server_result.user_log));
+        console.log("expected_user_log:");
+        console.log(JSON.stringify(expected_user_log));
+
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert.equal(JSON.stringify(server_result.user_log), JSON.stringify(expected_user_log));

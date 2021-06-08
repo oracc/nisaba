@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
+    const disposable1 = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
@@ -26,7 +26,18 @@ export function activate(context: vscode.ExtensionContext) {
         nisabaOutputChannel.append(str + '\n');
     });
 
-    context.subscriptions.push(disposable);
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.goodbyeWorld', () => {
+        // The code you place here will be executed every time your command is executed
+
+        // Display a message box to the user
+        const str = 'See you later!';
+        vscode.window.showWarningMessage(str);
+        nisabaOutputChannel.show();
+        nisabaOutputChannel.append(str + '\n');
+    });
+
+    context.subscriptions.push(disposable1);
+    context.subscriptions.push(disposable2);
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {

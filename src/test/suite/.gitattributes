@@ -1,0 +1,4 @@
+*               text=auto
+*.xml           text=lf
+*.atf           text=lf
+*.log           text=lf

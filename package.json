@@ -85,9 +85,6 @@
         "pretest": "npm run compile && npm run lint",
         "test": "node ./out/test/runTest.js"
     },
-    "dependencies": {
-        "@types/vscode": "^1.44.0"
-    },
     "devDependencies": {
         "@types/mocha": "^7.0.2",
         "@types/node": "^13.11.0",

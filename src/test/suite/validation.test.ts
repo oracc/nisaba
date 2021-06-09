@@ -32,7 +32,8 @@ suite('Validation Test Suite', () => {
 
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert.equal(JSON.stringify(server_result.user_log.split(os.EOL)), JSON.stringify(expected_user_log.split(os.EOL)));
+        // NB: The server response will always have \n as line separators!
+        assert.equal(JSON.stringify(server_result.user_log.split('\n')), JSON.stringify(expected_user_log.split(os.EOL)));
         assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
     });
 

@@ -17,7 +17,7 @@
     "activationEvents": [
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.helloWorld",
-        "onCommand:ucl-rsdg.goodbyeWorld"
+        "onCommand:ucl-rsdg.validationButton"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -34,14 +34,16 @@
             {
                 "command": "ucl-rsdg.helloWorld",
                 "title": "This is the title: Hello World",
+                "category": "Oracc",
                 "icon": {
                     "light": "media/preview_light.svg",
                     "dark": "media/preview_dark.svg"
                 }
             },
             {
-                "command": "ucl-rsdg.goodbyeWorld",
-                "title": "Goodbye World",
+                "command": "ucl-rsdg.validationButton",
+                "title": "Validate ATF",
+                "category": "Oracc",
                 "icon": {
                     "light": "media/preview_light.svg",
                     "dark": "media/preview_dark.svg"
@@ -53,6 +55,11 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.arabicPreview",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == atf",
+                    "command": "ucl-rsdg.validationButton",
                     "group": "navigation"
                 }
             ]

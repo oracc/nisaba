@@ -192,4 +192,3 @@ function commandSuccessful(responseID: string, url: string): boolean {
     }
     return done;
 }
-validate('belsunu.atf', 'cams/gkab', sampleText);

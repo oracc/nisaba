@@ -1,3 +1,5 @@
+import { validate } from './server/messages';
+
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
@@ -26,14 +28,9 @@ export function activate(context: vscode.ExtensionContext) {
         nisabaOutputChannel.append(str + '\n');
     });
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.goodbyeWorld', () => {
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validationButton', () => {
         // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        const str = 'See you later!';
-        vscode.window.showWarningMessage(str);
-        nisabaOutputChannel.show();
-        nisabaOutputChannel.append(str + '\n');
+        validate("///add in VSCode API - extract filename","project","///add in VSCode API - extract text area");
     });
 
     context.subscriptions.push(disposable1);

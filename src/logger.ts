@@ -50,7 +50,10 @@ export function initLogging(outputChannel: vscode.OutputChannel, filename?: stri
         format: format,
         defaultMeta: { service: 'user-service' },
         transports: [
-            new winston.transports.File({ filename: filename }),
+            new winston.transports.File({
+                filename: filename,
+                maxsize: 20000000,
+            }),
         ],
     });
 

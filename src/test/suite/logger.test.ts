@@ -19,9 +19,7 @@ const messages = [
     ['warn', 'This is a warning'],
     ['error', 'This is an error']
 ]
-for (let i = 0; i < messages.length; i++) {
-    nisabaLogger.log(messages[i][0], messages[i][1]);
-}
+messages.forEach(([level, message]) => nisabaLogger.log(level, message))
 
 suite('Logging Test Suite', () => {
     test('Log test', async () => {

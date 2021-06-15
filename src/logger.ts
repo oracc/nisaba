@@ -34,6 +34,12 @@ let consoleLogger;
 let isInitialised: Boolean = false;
 
 export function initLogging(outputChannel: vscode.OutputChannel, filename?: string) {
+
+    if (isInitialised) {
+        warn('Logger already initialised');
+        return;
+    }
+
     const format = winston.format.combine(
         winston.format.label({ label: 'nisaba' }),
         winston.format.timestamp(),

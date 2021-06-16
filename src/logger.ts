@@ -17,6 +17,7 @@ class OutputChannelTransport extends TransportStream {
             this.emit('logged', info);
         });
 
+        this.outputChannel.show();
         this.outputChannel.appendLine(`[${info.label}] ${info.level}: ${info.message}`);
 
         if (callback) {

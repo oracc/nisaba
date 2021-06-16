@@ -29,9 +29,16 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validationButton', () => {
-        // The code you place here will be executed every time your command is executed
-        validate("///add in VSCode API - extract filename","project","///add in VSCode API - extract text area");
-    });
+        // The code you place here will be executed every time your command is 
+        var firstLine = vscode.window.activeTextEditor.document.lineAt(0);
+        var lastLine = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.document.lineCount - 1);
+        var textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
+        var filePath = vscode.window.activeTextEditor.document.uri.fsPath;
+        var fileProject = "cams/gkab";
+        var fileContent = vscode.window.activeTextEditor.document.getText(textRange);
+        // The validate function is currently not mapped to the appropriate logging functions
+        validate(filePath,fileProject,fileContent)
+        });
 
     context.subscriptions.push(disposable1);
     context.subscriptions.push(disposable2);

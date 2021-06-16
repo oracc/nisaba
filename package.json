@@ -70,6 +70,12 @@
                 "key": "ctrl+I",
                 "mac": "cmd+I",
                 "when": "editorTextFocus && editorLangId == atf"
+            },
+            {
+                "command": "ucl-rsdg.validationButton",
+                "key": "ctrl+D",
+                "mac": "cmd+D",
+                "when": "editorTextFocus && editorLangId == atf"
             }
         ],
         "languages": [

@@ -30,12 +30,12 @@ export function activate(context: vscode.ExtensionContext) {
 
     const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validationButton', () => {
         // The code you place here will be executed every time your command is 
-        var firstLine = vscode.window.activeTextEditor.document.lineAt(0);
-        var lastLine = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.document.lineCount - 1);
-        var textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
-        var filePath = vscode.window.activeTextEditor.document.uri.fsPath;
-        var fileProject = "cams/gkab";
-        var fileContent = vscode.window.activeTextEditor.document.getText(textRange);
+        const firstLine = vscode.window.activeTextEditor.document.lineAt(0);
+        const lastLine = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.document.lineCount - 1);
+        const textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
+        const filePath = vscode.window.activeTextEditor.document.uri.fsPath;
+        const fileProject = "cams/gkab";
+        const fileContent = vscode.window.activeTextEditor.document.getText(textRange);
         // The validate function is currently not mapped to the appropriate logging functions
         validate(filePath,fileProject,fileContent)
         });

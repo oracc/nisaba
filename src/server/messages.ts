@@ -13,7 +13,7 @@ import { parseString } from 'xml2js';
 8. Unpack response to get validation results
 */
 
-const sampleText = `
+/*const sampleText = `
 &X001001 = JCS 48, 089
 #project: cams/gkab
 #atf: lang akk-x-stdbab
@@ -65,7 +65,7 @@ $ reverse blank
 6.	[The child] was born in the Bucket in the region of Venus: he will have sons.
 7.	Mercury was in the Goat; Saturn was in the Goat;
 8.	Mars was in the Crab.
-`;
+`;*/
 
 export function validate(filename: string, project: string, text: string): boolean {
     let responseID:string;

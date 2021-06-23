@@ -69,7 +69,7 @@ suite('Validation Test Suite', () => {
         assert(client.atf_text == belsunu);
     });
 
-    test('HTTP validate test', async () => {
+/*    test('HTTP validate test', async () => {
 
         // Load salmple text to run Validation
         const belsunu_text = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf'), 'utf-8');
@@ -78,7 +78,7 @@ suite('Validation Test Suite', () => {
         // returns true
         assert(validate('belsunu.atf', 'cams/gkab', belsunu_text));
 
-    });
+    });*/
 
     test('HTTP Request headers', async () => {
 

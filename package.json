@@ -45,8 +45,8 @@
                 "title": "Validate ATF",
                 "category": "Oracc",
                 "icon": {
-                    "light": "media/preview_light.svg",
-                    "dark": "media/preview_dark.svg"
+                    "light": "media/validation_light.svg",
+                    "dark": "media/validation_dark.svg"
                 }
             }
         ],

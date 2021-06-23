@@ -2,6 +2,7 @@ const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
+import { ServerResult } from '../client/server_result';
 
 /*
 1. Gather all the information for the message from the text (start with hardcoded)
@@ -66,6 +67,10 @@ $ reverse blank
 7.	Mercury was in the Goat; Saturn was in the Goat;
 8.	Mars was in the Crab.
 `;
+
+const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
+00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
+ATF processor ox issued 2 warnings and 0 notices`;
 
 export function validate(filename: string, project: string, text: string): boolean {
     let responseID:string;
@@ -147,8 +152,8 @@ export function validate(filename: string, project: string, text: string): boole
 
     console.log(fullMessage.toString());
 
-    //TODO implement this!
-    return true;
+    //TODO this is just a placeholder
+    return ServerResult(oracc_log);
 }
 
 

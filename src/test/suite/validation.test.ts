@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { validate } from '../../server/messages';
@@ -30,9 +29,10 @@ suite('Validation Test Suite', () => {
           'utf-8');
         const server_result = new ServerResult(oracc_log);
 
+        // NB: The server response will always have \n as line separators!
+        assert.equal(server_result.user_log, expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert.equal(JSON.stringify(server_result.user_log.split(os.EOL)), JSON.stringify(expected_user_log.split(os.EOL)));
         assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
     });
 
@@ -56,9 +56,9 @@ suite('Validation Test Suite', () => {
         console.log("expected_user_log:");
         console.log(JSON.stringify(expected_user_log));
 
+        assert.equal(server_result.user_log, expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert.equal(JSON.stringify(server_result.user_log.split(os.EOL)), JSON.stringify(expected_user_log.split(os.EOL)));
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
     });
 
@@ -69,7 +69,7 @@ suite('Validation Test Suite', () => {
         assert(client.atf_text == belsunu);
     });
 
-    test('HTTP validate test', async () => {
+/*    test('HTTP validate test', async () => {
 
         // Load salmple text to run Validation
         const belsunu_text = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf'), 'utf-8');
@@ -78,7 +78,7 @@ suite('Validation Test Suite', () => {
         // returns true
         assert(validate('belsunu.atf', 'cams/gkab', belsunu_text));
 
-    });
+    });*/
 
     test('HTTP Request headers', async () => {
 

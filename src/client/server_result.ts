@@ -75,7 +75,7 @@ export class ServerResult {
                 if (Number(line_num) != 0){
                     const error_msg = this.validation_errors[line_num];
                     //TODO check if \n is valid here or we need <br>
-                    user_log += `Line ${line_num}: ${error_msg}.\n`;
+                    user_log += `Line ${line_num}: ${error_msg}.${os.EOL}`;
                 }
             }
             // Add summary line at the end

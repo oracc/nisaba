@@ -87,7 +87,6 @@
     },
     "dependencies": {
         "mimemessage": "^1.0.5",
-        "package.json": "^2.0.1",
         "winston": "^3.3.3",
         "winston-transport": "^4.4.0"
     },

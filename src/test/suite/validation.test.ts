@@ -19,6 +19,7 @@ suite('Validation Test Suite', () => {
             '6': 'unknown block token: tableta',
             '44': 'o 4: translation uses undefined label'
         };
+        const expected_summary_line = "ATF processor ox issued 2 warnings and 0 notices";
 
         // TODO Replace this with the actual content of the oracc log that
         // comes from the server - check in Nammu
@@ -33,6 +34,7 @@ suite('Validation Test Suite', () => {
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
+        assert.equal(server_result.summary_line, expected_summary_line);
     });
 
     test('Server results test for belsunu.atf', async() => {
@@ -42,6 +44,7 @@ suite('Validation Test Suite', () => {
                     '../../../src/test/suite/reference/user_log_no_errors.log'),
           'utf-8').trim(); // trim to avoid editor adding \n
         const expected_val_errors = {};
+        const expected_summary_line = "";
 
         // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
         const oracc_log = fs.readFileSync(
@@ -59,6 +62,7 @@ suite('Validation Test Suite', () => {
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
+        assert.equal(server_result.summary_line, expected_summary_line);
     });
 
     test('SOAP client constructor test', async () => {

@@ -74,12 +74,10 @@ export class ServerResult {
         }
         else {
             let user_log = Object.entries(this.validation_errors)
-                // dict key 0 contains the summary, so skip
-                .filter(([line_num, error_msg]) => line_num != 0)
                 .map(([line_num, error_msg]) =>`Line ${line_num}: ${error_msg}.`)
                 .join(os.EOL)
             // Add summary line at the end
-            user_log += this.summary_line;
+            user_log += os.EOL + this.summary_line;
             return user_log;
         }
     }

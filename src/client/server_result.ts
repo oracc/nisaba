@@ -1,11 +1,12 @@
-/* eslint-disable */
 import * as os from 'os';
 
 export class ServerResult {
 
     user_log: string;
     validation_errors: { [line_num: number]: string };
-    request_log: string; //Not being used except for system logging purposes
+    summary_line: string; // This is the last line that shows in the log
+                          // by the Oracc server
+    request_log: string; // Not being used except for system logging purposes
     // TODO: this will be needed for the lemmatisation command
     atf_content: string;
 
@@ -13,11 +14,12 @@ export class ServerResult {
     // TODO request_log is probably useless for the user, but we should record
     // everything that happens in a logger for reference
     constructor(oracc_log: string, request_log: string = ""){
-        //this.errors
+        this.summary_line = "";
         this.validation_errors = this.get_validation_errors(oracc_log);
         this.user_log = this.get_user_log();
         this.request_log = request_log;
         this.atf_content = ""; //placeholder for lemmatisation
+
     }
 
     get_validation_errors(oracc_log: string){
@@ -28,15 +30,17 @@ export class ServerResult {
         */
         // TODO for some reason the keys are being converted to string, why?
         const validation_errors: { [line_num: number]: string } = {};
-        let lines = oracc_log.split(os.EOL);
+        const lines = oracc_log.split(os.EOL);
         // Split os.EOL will always add an empty string at the end, so we have
         // to remove it manually
         lines.pop();
         for (const line of lines){
+            console.log(line);
             // Check if this is an error line or the error summary
             if (line.includes(':')){
                 // TODO wrap in try/catch in case we get an error when
-                // trying to access [1] and [0]
+                // trying to access [1]. That'd mean the oracc log is
+                // not well formed.
                 const line_number = Number(line.split(':')[1]);
                 // Sometimes error messages contain ":", so we can't take the
                 // last element in the split array. We need to join all
@@ -55,8 +59,8 @@ export class ServerResult {
                 }
             }
             else {
-                // Save summary line as line 0
-                validation_errors[0] = line;
+                // Save summary line
+                this.summary_line = line;
             }
         }
         return validation_errors;
@@ -79,7 +83,7 @@ export class ServerResult {
                 }
             }
             // Add summary line at the end
-            user_log += this.validation_errors[0];
+            user_log += this.summary_line;
             return user_log;
         }
     }

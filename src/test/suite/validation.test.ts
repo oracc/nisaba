@@ -31,7 +31,7 @@ suite('Validation Test Suite', () => {
         assert.equal(server_result.user_log, expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
+        assert.strictEqual(JSON.stringify(server_result.validation_errors),  JSON.stringify(expected_val_errors));
         assert.equal(server_result.summary_line, expected_summary_line);
     });
 

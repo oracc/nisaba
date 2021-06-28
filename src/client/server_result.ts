@@ -67,21 +67,17 @@ export class ServerResult {
     }
 
     get_user_log(){
-        /* This method will build the log they user will see in the VS code
+        /* This method will build the log the user will see in the VS code
            console */
         if (Object.keys(this.validation_errors).length == 0){
             return "ATF validation returned no errors.";
         }
         else {
-            let user_log = "";
-            for (const line_num in this.validation_errors) {
+            let user_log = Object.entries(this.validation_errors)
                 // dict key 0 contains the summary, so skip
-                if (Number(line_num) != 0){
-                    const error_msg = this.validation_errors[line_num];
-                    //TODO check if \n is valid here or we need <br>
-                    user_log += `Line ${line_num}: ${error_msg}.${os.EOL}`;
-                }
-            }
+                .filter(([line_num, error_msg]) => line_num != 0)
+                .map(([line_num, error_msg]) =>`Line ${line_num}: ${error_msg}.`)
+                .join(os.EOL)
             // Add summary line at the end
             user_log += this.summary_line;
             return user_log;

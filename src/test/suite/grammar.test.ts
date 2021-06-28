@@ -41,7 +41,7 @@ suite('Grammar Test Suite', () => {
         // Load the ATF grammar and any other grammars included by it async.
         const grammar = await registry.loadGrammar('source.atf');
 
-        const text = fs.readFileSync(path.join(__dirname, '../../../src/test/suite/example.atf')).toString().split(os.EOL)
+        const text = fs.readFileSync(path.join(__dirname, '../../../src/test/suite/input/grammar_example.atf')).toString().split(os.EOL)
         const expected_scopes = [
             ['keyword.other.ampersand.atf'],
             ['support.class.hash.atf', 'source.atf'],

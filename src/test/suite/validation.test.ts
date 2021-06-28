@@ -2,7 +2,6 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { validate } from '../../server/messages';
 import { ServerResult } from '../../client/server_result';
 import { SOAPClient } from '../../client/SOAP_client';
 
@@ -68,17 +67,6 @@ suite('Validation Test Suite', () => {
         assert(client.atf_filename == "belsunu.atf");
         assert(client.atf_text == belsunu);
     });
-
-/*    test('HTTP validate test', async () => {
-
-        // Load salmple text to run Validation
-        const belsunu_text = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf'), 'utf-8');
-
-        // Placeholder for testing ATF validation, at the moment it always
-        // returns true
-        assert(validate('belsunu.atf', 'cams/gkab', belsunu_text));
-
-    });*/
 
     test('HTTP Request headers', async () => {
 

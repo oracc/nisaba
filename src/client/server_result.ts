@@ -67,7 +67,7 @@ export class ServerResult {
     }
 
     get_user_log(){
-        /* This method will build the log they user will see in the VS code
+        /* This method will build the log the user will see in the VS code
            console */
         if (Object.keys(this.validation_errors).length == 0){
             return "ATF validation returned no errors.";

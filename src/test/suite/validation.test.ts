@@ -20,8 +20,7 @@ suite('Validation Test Suite', () => {
         };
         const expected_summary_line = "ATF processor ox issued 2 warnings and 0 notices";
 
-        // TODO Replace this with the actual content of the oracc log that
-        // comes from the server - check in Nammu
+        // Load sample oracc log that comes from server when using Nammu
         const oracc_log = fs.readFileSync(
           path.join(__dirname,
                     '../../../src/test/suite/input/error_oracc.log'),
@@ -45,7 +44,7 @@ suite('Validation Test Suite', () => {
         const expected_val_errors = {};
         const expected_summary_line = "";
 
-        // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
+        // Load sample oracc log that comes from server when using Nammu
         const oracc_log = fs.readFileSync(
           path.join(__dirname,
                     '../../../src/test/suite/input/oracc_no_errors.log'),

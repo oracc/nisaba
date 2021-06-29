@@ -3,6 +3,7 @@ import { validate } from './server/messages';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as os from 'os';
 import * as nisabaLogger from './logger';
 
 // Logging output channel
@@ -162,6 +163,22 @@ class CatCodingPanel {
     }
 
     private _getHtmlForWebview(webview: vscode.Webview) {
+        const lines = vscode.window.activeTextEditor.document.getText().split(os.EOL);
+        var arabic = false;
+        for (let i = 0; i < lines.length; i++) {
+            // `dir` tag: by default we assume left-to-right
+            var dir = "dir=\"ltr\"";
+            if (lines[i].match(/^@translation .* ar/)) {
+                // We start an Arabic translation
+                arabic = true;
+            }
+            if (arabic && lines[i].match(/^\d+\..*/)) {
+                // We're inside Arabic translation and this is a text line: set
+                // `dir` to right-to-left.
+                dir = "dir=\"rtl\"";
+            }
+            lines[i] = lines[i].replace(/^(.*)$/, `<p ${dir}>$1</p>`);
+        }
         return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,59 +194,7 @@ and only allow scripts that have a specific nonce.
 <title>Cat Coding</title>
 </head>
 <body>
-&X001001 = JCS 48, 089
-#project: cams/gkab
-#atf: lang akk-x-stdbab
-#atf: use unicode
-#atf: use math
-@tablet
-@obverse
-
-1.      [MU] 1.03-KAM {iti}AB GE₆ U₄ 2-KAM
-#lem: šatti[year]N; n; Ṭebetu[1]MN; mūša[at night]AV; ūm[day]N; n
-
-2.      [{m}]{d}60--EN-šu₂-nu a-lid
-#lem: Anu-belšunu[1]PN; alid[born]AJ +.
-
-$ ruling
-# I've added various things for test purposes
-
-3.      U₄!-BI? 20* [(ina)] 9.30 ina(DIŠ) MAŠ₂!(BAR)
-#lem: ūmišu[day]N; Šamaš[1]DN; ina[in]PRP; n; +ina[in]PRP$; Suhurmašu[Goatfish]CN
-#note: Note to line.
-
-4.      <30> <(ina)> 12 GU U₄-ME-šu₂ GID₂-MEŠ{{ir-ri-ku}}
-#lem: Sin[1]DN; ina[at]PRP; n; Gula[1]'CN; ūmūšu[day]N; +arāku[be(come) long]V$irrikū +.; irrikū[be(come) long]V
-
-5.      BABBAR# ina SAG GIR₂.TAB ma-ma NUN qat₂-[su DAB]{+bat}
-#lem: +Peṣu[White Star//Jupiter]CN'CN$; ina[in]PRP; rēš[head]N; Zuqaqipu[Scorpion]CN; +mamman[somebody]XP$mamma; rubâ[prince]N; +qātu[hand]N$qātsu; iṣabbat[seize]V +.
-
-6.      [{lu₂}TUR] ina#? GU KI dele-bat a-lid DUMU#-MEŠ TUKU
-#lem: šerru[(young) child]N; ina[in]PRP; Gula[1]'CN; itti[with]PRP; Delebat[Venus]CN; alid[born]AJ; mārī[son]N; irašši[acquire]V +.
-
-7.      [GU₄].U₄ ina MAŠ₂ GENNA ina MIN<(MAŠ₂)>
-#lem: Šihṭu[Mercury]CN; ina[in]PRP; Suhurmašu[Goatfish]CN +.; Kayyamanu[Saturn]CN; ina[in]PRP; Suhurmašu[Goatfish]CN
-
-8.      [AN] ina ALLA <<ALLA>>
-#lem: Ṣalbatanu[Mars]CN; ina[in]PRP; Alluttu[Crab]CN +.
-
-9.    $BI x X |DU.DU| |GA₂×AN| |DU&DU| |LAGAB&LAGAB| DU@g GAN₂@t 4(BAN₂)@v
-#lem: u; u; X; X; X; X; X; X; X; n
-
-@reverse
-$ reverse blank
-
-@translation parallel ar project
-@obverse
-
-1. في شتة ٦٣ في شهر تبت، يوم ٢
-2. Anu-belšunu ولد.
-3. في هذا اليوم كين Šamaš في برج الجدي.
-4. كان Sin في ١٢ Gula.  سكون ايامه طويلة.
-5. النجم الابيض في راس برج ال عقرب.  سيستولى احد يد الامير.
-6.  ولد الوليد في Gula مع Delebat. سيحذ اولاد.
-7. زئبق في برج الجدي. زحل في برج الجدي.
-8. المريخ في برج الشرتان.
+${lines.join(os.EOL)}
 </body>
 </html>`;
     }

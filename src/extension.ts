@@ -28,19 +28,18 @@ export function activate(context: vscode.ExtensionContext) {
         nisabaOutputChannel.append(str + '\n');
     });
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validationButton', () => {
+    context.subscriptions.push(disposable1);
+
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
         // The code you place here will be executed every time your command is 
-        const firstLine = vscode.window.activeTextEditor.document.lineAt(0);
-        const lastLine = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.document.lineCount - 1);
-        const textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
         const filePath = vscode.window.activeTextEditor.document.uri.fsPath;
         const fileProject = "cams/gkab";
-        const fileContent = vscode.window.activeTextEditor.document.getText(textRange);
+        const fileContent = vscode.window.activeTextEditor.document.getText();
+        const statusCode = 200
         // The validate function is currently not mapped to the appropriate logging functions
-        validate(filePath,fileProject,fileContent)
+        validate(filePath,fileProject,fileContent);
         });
 
-    context.subscriptions.push(disposable1);
     context.subscriptions.push(disposable2);
 
     context.subscriptions.push(

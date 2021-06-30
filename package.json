@@ -17,7 +17,7 @@
     "activationEvents": [
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.helloWorld",
-        "onCommand:ucl-rsdg.validationButton"
+        "onCommand:ucl-rsdg.validateAtf"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -41,7 +41,7 @@
                 }
             },
             {
-                "command": "ucl-rsdg.validationButton",
+                "command": "ucl-rsdg.validateAtf",
                 "title": "Validate ATF",
                 "category": "Oracc",
                 "icon": {
@@ -59,7 +59,7 @@
                 },
                 {
                     "when": "resourceLangId == atf",
-                    "command": "ucl-rsdg.validationButton",
+                    "command": "ucl-rsdg.validateAtf",
                     "group": "navigation"
                 }
             ]
@@ -72,7 +72,7 @@
                 "when": "editorTextFocus && editorLangId == atf"
             },
             {
-                "command": "ucl-rsdg.validationButton",
+                "command": "ucl-rsdg.validateAtf",
                 "key": "ctrl+D",
                 "mac": "cmd+D",
                 "when": "editorTextFocus && editorLangId == atf"

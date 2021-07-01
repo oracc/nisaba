@@ -33,7 +33,6 @@ export function activate(context: vscode.ExtensionContext) {
         const filePath = vscode.window.activeTextEditor.document.uri.fsPath;
         const fileProject = "cams/gkab";
         const fileContent = vscode.window.activeTextEditor.document.getText();
-        const statusCode = 200
         // The validate function is currently not mapped to the appropriate logging functions
         validate(filePath,fileProject,fileContent);
         });

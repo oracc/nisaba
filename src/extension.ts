@@ -1,3 +1,5 @@
+import { validate } from './server/messages';
+
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
@@ -15,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
+    const disposable1 = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
@@ -24,7 +26,18 @@ export function activate(context: vscode.ExtensionContext) {
         nisabaLogger.warn(str);
     });
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(disposable1);
+
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
+        // The code you place here will be executed every time your command is 
+        const filePath = vscode.window.activeTextEditor.document.uri.fsPath;
+        const fileProject = "cams/gkab";
+        const fileContent = vscode.window.activeTextEditor.document.getText();
+        // The validate function is currently not mapped to the appropriate logging functions
+        validate(filePath,fileProject,fileContent);
+        });
+
+    context.subscriptions.push(disposable2);
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {

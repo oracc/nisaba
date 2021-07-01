@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -37,8 +36,6 @@ const registry = new vsctm.Registry({
 });
 
 suite('Grammar Test Suite', () => {
-    vscode.window.showInformationMessage('Start all tests.');
-
     test('Tokenization test', async () => {
 
         // Load the ATF grammar and any other grammars included by it async.

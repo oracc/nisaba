@@ -11,7 +11,37 @@ function createBaseMessage(contentType: string, isBinary = false) {
     return message;
 }
 
-function createEnvelope(filename: string, project: string) {
+function createEnvelopeKeys(command: string, filename: string,
+                            project: string, responseID: string){
+    let keys: string;
+    if (responseID == null){
+        keys = `<osc-data:keys>
+                                <osc-data:key>${command}</osc-data:key>
+                                <osc-data:key>${project}</osc-data:key>
+                                <osc-data:key>00atf/${filename}</osc-data:key>
+                            </osc-data:keys>`;
+    }
+    else {
+        keys = `<osc-data:keys>
+                                <osc-data:key>${responseID}</osc-data:key>
+                            </osc-data:keys>`;
+    }
+    return keys;
+}
+
+function createEnvelopeData(responseID: string){
+    let data = "";
+    if (responseID == null){
+        data =  `<osc-data:data>
+                    <osc-data:item xmime5:contentType="*/*">
+                        <xop:Include href="cid:request_zip"/>
+                    </osc-data:item>
+                </osc-data:data>`
+    }
+    return data;
+}
+
+function createEnvelope(keys: string, data: string) {
     const envelope = createBaseMessage(
         'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
         true);
@@ -28,16 +58,8 @@ function createEnvelope(filename: string, project: string) {
                    xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
                    <SOAP-ENV:Body>
                        <osc-meth:Request>
-                           <osc-data:keys>
-                               <osc-data:key>atf</osc-data:key>
-                               <osc-data:key>${project}</osc-data:key>
-                               <osc-data:key>00atf/${filename}</osc-data:key>
-                           </osc-data:keys>
-                           <osc-data:data>
-                               <osc-data:item xmime5:contentType="*/*">
-                                   <xop:Include href="cid:request_zip"/>
-                               </osc-data:item>
-                           </osc-data:data>
+                            ${keys}
+                            ${data}
                        </osc-meth:Request>
                    </SOAP-ENV:Body>
                </SOAP-ENV:Envelope>`;
@@ -51,16 +73,21 @@ function createAttachment(content: string) {
     return attachment;
 }
 
-export function createMultipart(filename: string, project: string, encodedText: string) {
-
+export function createMultipart(command: string, filename: string,
+                                project: string, encodedText: string,
+                                responseID: string) {
     // The exact header may be overwritten later anyway, so we don't need
     // to include all the details.
     const message = createBaseMessage(
         'multipart/related; charset="utf-8"'
     );
+    const keys = createEnvelopeKeys(command, filename, project, responseID);
+    const data = createEnvelopeData(responseID);
     message.body = [];
-    message.body.push(createEnvelope(filename, project));
-    message.body.push(createAttachment(encodedText));
+    message.body.push(createEnvelope(keys, data));
+    if (responseID == null) {
+        message.body.push(createAttachment(encodedText));
+    }
     return message;
 }
 

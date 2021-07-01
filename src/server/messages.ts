@@ -2,6 +2,7 @@ const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
+import { ServerResult } from '../client/server_result';
 
 /*
 1. Gather all the information for the message from the text (start with hardcoded)
@@ -13,7 +14,11 @@ import { parseString } from 'xml2js';
 8. Unpack response to get validation results
 */
 
-export function validate(filename: string, project: string, text: string): boolean {
+const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
+00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
+ATF processor ox issued 2 warnings and 0 notices`;
+
+export function validate(filename: string, project: string, text: string): ServerResult {
     let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
@@ -22,7 +27,9 @@ export function validate(filename: string, project: string, text: string): boole
     // less memory that required and truncate the text in the zip!
     zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
     const encodedText = zip.toBuffer();
-    const fullMessage = createMultipart(filename, project, encodedText);
+    // TODO replace this with appropriate commands and reponse ID params
+    const fullMessage = createMultipart("atf", filename, project, encodedText,
+                                        "responseID");
     let body = fullMessage.toString({noHeaders: true});
     const boundary = fullMessage.contentType().params.boundary;
 
@@ -93,8 +100,8 @@ export function validate(filename: string, project: string, text: string): boole
 
     console.log(fullMessage.toString());
 
-    //TODO implement this!
-    return true;
+    //TODO this is just a placeholder
+    return new ServerResult(oracc_log);
 }
 
 

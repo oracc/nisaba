@@ -2,7 +2,6 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { validate } from '../../server/messages';
 import { ServerResult } from '../../client/server_result';
 import { SOAPClient } from '../../client/SOAP_client';
 
@@ -16,13 +15,12 @@ suite('Validation Test Suite', () => {
           __dirname,'../../../src/test/suite/reference/user_log_error.log'),
           'utf-8').trim(); // trim to avoid editor adding \n
         const expected_val_errors = {
-            '0': 'ATF processor ox issued 2 warnings and 0 notices',
-            '6': 'unknown block token: tableta',
-            '44': 'o 4: translation uses undefined label'
+           '6': 'unknown block token: tableta',
+           '44': 'o 4: translation uses undefined label'
         };
+        const expected_summary_line = "ATF processor ox issued 2 warnings and 0 notices";
 
-        // TODO Replace this with the actual content of the oracc log that
-        // comes from the server - check in Nammu
+        // Load sample oracc log that comes from server when using Nammu
         const oracc_log = fs.readFileSync(
           path.join(__dirname,
                     '../../../src/test/suite/input/error_oracc.log'),
@@ -33,7 +31,8 @@ suite('Validation Test Suite', () => {
         assert.equal(server_result.user_log, expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
-        assert(JSON.stringify(server_result.validation_errors) === JSON.stringify(expected_val_errors));
+        assert.strictEqual(JSON.stringify(server_result.validation_errors),  JSON.stringify(expected_val_errors));
+        assert.equal(server_result.summary_line, expected_summary_line);
     });
 
     test('Server results test for belsunu.atf', async() => {
@@ -43,23 +42,20 @@ suite('Validation Test Suite', () => {
                     '../../../src/test/suite/reference/user_log_no_errors.log'),
           'utf-8').trim(); // trim to avoid editor adding \n
         const expected_val_errors = {};
+        const expected_summary_line = "";
 
-        // TODO Replace this with the actual content of the oracc log that comes from the server - check in Nammu
+        // Load sample oracc log that comes from server when using Nammu
         const oracc_log = fs.readFileSync(
           path.join(__dirname,
                     '../../../src/test/suite/input/oracc_no_errors.log'),
           'utf-8');
         const server_result = new ServerResult(oracc_log, ""); //We don't care about request.log for now
 
-        console.log("server_result.user_log:");
-        console.log(JSON.stringify(server_result.user_log));
-        console.log("expected_user_log:");
-        console.log(JSON.stringify(expected_user_log));
-
         assert.equal(server_result.user_log, expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
+        assert.equal(server_result.summary_line, expected_summary_line);
     });
 
     test('SOAP client constructor test', async () => {
@@ -67,17 +63,6 @@ suite('Validation Test Suite', () => {
         const client = new SOAPClient("./input/belsunu.atf", belsunu);
         assert(client.atf_filename == "belsunu.atf");
         assert(client.atf_text == belsunu);
-    });
-
-    test('HTTP validate test', async () => {
-
-        // Load salmple text to run Validation
-        const belsunu_text = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/reference/belsunu.atf'), 'utf-8');
-
-        // Placeholder for testing ATF validation, at the moment it always
-        // returns true
-        assert(validate('belsunu.atf', 'cams/gkab', belsunu_text));
-
     });
 
     test('HTTP Request headers', async () => {

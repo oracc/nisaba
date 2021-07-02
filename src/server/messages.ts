@@ -1,4 +1,4 @@
-const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
+import * as AdmZip from 'adm-zip';
 import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
@@ -26,7 +26,7 @@ export function validate(filename: string, project: string, text: string): Serve
     // text.length does not account for the encoding, so using that will allocate
     // less memory that required and truncate the text in the zip!
     zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    const encodedText = zip.toBuffer();
+    const encodedText = zip.toBuffer().toString();
     // TODO replace this with appropriate commands and reponse ID params
     const fullMessage = createMultipart("atf", filename, project, encodedText,
                                         "responseID");

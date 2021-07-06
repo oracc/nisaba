@@ -64,6 +64,7 @@ class CatCodingPanel {
     private readonly _panel: vscode.WebviewPanel;
     private readonly _extensionUri: vscode.Uri;
     private _disposables: vscode.Disposable[] = [];
+    private _document: vscode.TextDocument;
 
     public static createOrShow(extensionUri: vscode.Uri) {
         const column = vscode.window.activeTextEditor
@@ -102,7 +103,34 @@ class CatCodingPanel {
         this._extensionUri = extensionUri;
 
         // Set the webview's initial html content
+        this._document = vscode.window.activeTextEditor.document;
         this._update();
+
+        // Update the webview based on text changes
+        const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
+            if (e.document.uri.toString() === this._document.uri.toString()) {
+                this._update();
+            }
+        });
+
+        // Make sure we get rid of the listener when our editor is closed.
+        // TODO Should we be using the extra arguments like in the subscription below?
+        // Or push this into _disposables instead?
+        // Do the multiple calls to onDidDispose stack or overwrite the listeners?
+        this._panel.onDidDispose(() => {
+            changeDocumentSubscription.dispose();
+        });
+
+        const switchDocumentSubscription = vscode.window.onDidChangeActiveTextEditor(e => {
+            if (e.document == undefined) {
+                this._document = e.document;
+                // TODO Delete contents?
+            } else {
+                this._document = e.document;
+                this._update();
+            }
+        });
+        this._panel.onDidDispose(() => switchDocumentSubscription.dispose());
 
         // Listen for when the panel is disposed
         // This happens when the user closes the panel or when the panel is closed programatically
@@ -160,11 +188,11 @@ class CatCodingPanel {
 
     private _updateForCat(webview: vscode.Webview) {
         this._panel.title = "Oracc Preview";
-        this._panel.webview.html = this._getHtmlForWebview(webview);
+        this._panel.webview.html = this._getHtmlForWebview(webview, this._document);
     }
 
-    private _getHtmlForWebview(webview: vscode.Webview) {
-        const lines = vscode.window.activeTextEditor.document.getText().split(os.EOL);
+    private _getHtmlForWebview(webview: vscode.Webview, document: vscode.TextDocument) {
+        const lines = document.getText().split(os.EOL);
         var arabic = false;
         for (let i = 0; i < lines.length; i++) {
             // `dir` tag: by default we assume left-to-right

@@ -192,10 +192,10 @@ class CatCodingPanel {
 
     private _getHtmlForWebview(webview: vscode.Webview, document: vscode.TextDocument) {
         const lines = document.getText().split(os.EOL);
-        var arabic = false;
+        let arabic = false;
         for (let i = 0; i < lines.length; i++) {
             // `dir` tag: by default we assume left-to-right
-            var dir = "dir=\"ltr\"";
+            let dir = "dir=\"ltr\"";
             if (lines[i].match(/^@translation .* ar/)) {
                 // We start an Arabic translation
                 arabic = true;

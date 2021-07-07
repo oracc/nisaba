@@ -3,6 +3,7 @@ import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
 import { ServerResult } from '../client/server_result';
+import * as vscode from 'vscode';
 import { log } from '../logger';
 
 /*
@@ -56,7 +57,8 @@ export function validate(filename: string, project: string, text: string): Serve
         log('debug', `HEADERS: ${JSON.stringify(res.headers)}`);
         res.setEncoding('utf8');
         if (res.statusCode !== 200) {
-            log('error', `Request failed! Status: ${res.statusCode}`);
+            //log('warn', `Request failed! Status: ${res.statusCode}`);
+            vscode.window.showWarningMessage(`Request failed! Status: ${res.statusCode}`);
             res.resume(); // Apparently needed to free up memory if we don't read the data?
         }
         // Parse the response to get the response ID

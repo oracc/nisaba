@@ -80,7 +80,7 @@ class CatCodingPanel {
         const panel = vscode.window.createWebviewPanel(
             CatCodingPanel.viewType,
             'Cat Coding',
-            column || vscode.ViewColumn.One,
+            vscode.ViewColumn.Two,
             {
                 // Enable javascript in the webview
                 enableScripts: true,

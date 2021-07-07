@@ -4,6 +4,7 @@ import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
 import { ServerResult } from '../client/server_result';
 import { log } from '../logger';
+import * as vscode from 'vscode';
 
 /*
 1. Gather all the information for the message from the text (start with hardcoded)
@@ -57,6 +58,7 @@ export function validate(filename: string, project: string, text: string): Serve
         res.setEncoding('utf8');
         if (res.statusCode !== 200) {
             log('error', `Request failed! Status: ${res.statusCode}`);
+            vscode.window.showErrorMessage(`Request failed! See log for details.`);
             res.resume(); // Apparently needed to free up memory if we don't read the data?
         }
         // Parse the response to get the response ID
@@ -66,11 +68,13 @@ export function validate(filename: string, project: string, text: string): Serve
             // Wait until the server has prepared the response
             if (commandSuccessful(responseID, options.host)) {
                 log('info', `Request ${responseID} is done.`);
+                vscode.window.showInformationMessage(`Validation completed.`);
                 // Send Response message
                 // let ourResponse = createResponseMessage(responseID);
                 // TODO continue...
             } else {
-                log('error', 'Unsuccessful getting response.')
+                log('error', 'Unsuccessful getting response.');
+                vscode.window.showErrorMessage(`Unsuccessful getting response.`);
                 }
             }
         );

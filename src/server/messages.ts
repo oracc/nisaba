@@ -65,6 +65,7 @@ export function validate(filename: string, project: string, text: string): Serve
         res.on('data', (chunk) => {
             responseID = getResponseCode(chunk);
             log('debug', responseID);
+            vscode.window.showInformationMessage(`Waiting for the server results...`);
             // Wait until the server has prepared the response
             if (commandSuccessful(responseID, options.host)) {
                 log('info', `Request ${responseID} is done.`);

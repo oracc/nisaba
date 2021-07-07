@@ -31,7 +31,7 @@ export function validate(filename: string, project: string, text: string): Serve
     const encodedText = zip.toBuffer();
     // TODO replace this with appropriate commands and reponse ID params
     const fullMessage = createMultipart("atf", filename, project, encodedText,
-                                        "responseID");
+                                        null);
     let body = fullMessage.toString({noHeaders: true});
     const boundary = fullMessage.contentType().params.boundary;
 

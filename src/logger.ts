@@ -76,6 +76,10 @@ export function initLogging(outputChannel: vscode.OutputChannel, filename?: stri
     isInitialised = true;
 }
 
+export function stopLogging() {
+    isInitialised = false;
+}
+
 export function log(level:string, message:string, logger?: string) {
     if (isInitialised) {
         if (logger === undefined || logger == "file")

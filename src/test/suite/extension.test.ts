@@ -1,15 +1,25 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
+import * as fs from 'fs';
+import * as path from 'path';
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
+import * as nisaba from '../../extension';
 
 suite('Extension Test Suite', () => {
     vscode.window.showInformationMessage('Start all tests.');
-
-    test('Sample test', () => {
-        assert.equal(-1, [1, 2, 3].indexOf(5));
-        assert.equal(-1, [1, 2, 3].indexOf(0));
+    test('Sample test', async () => {
+        // Find all commands we register in package.jsom
+        const package_json = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../package.json')).toString());
+        const ourCommandNames = package_json.contributes.commands.map(cmd => cmd.command);
+        // Activate our extension
+        const context: vscode.ExtensionContext = {
+            subscriptions: [],
+        } as any;
+        nisaba.activate(context);
+        // Make sure all commands registerd in `package.json` are found
+        await vscode.commands.getCommands(true).then(
+            all_commands => assert(ourCommandNames.every(cmdName => all_commands.includes(cmdName)))
+        );
+        // Deactivate extension to stop logger
+        nisaba.deactivate();
     });
 });

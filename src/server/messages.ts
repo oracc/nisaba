@@ -73,7 +73,7 @@ export function validate(filename: string, project: string, text: string): Serve
                 // TODO continue...
             } else {
                 log('error', 'Unsuccessful getting response.')
-                }
+            }
             }
         );
     });

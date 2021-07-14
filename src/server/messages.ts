@@ -57,7 +57,6 @@ export function validate(filename: string, project: string, text: string): Serve
         log('debug', `HEADERS: ${JSON.stringify(res.headers)}`);
         res.setEncoding('utf8');
         if (res.statusCode !== 200) {
-            //log('warn', `Request failed! Status: ${res.statusCode}`);
             vscode.window.showWarningMessage(`Request failed! Status: ${res.statusCode}`);
             res.resume(); // Apparently needed to free up memory if we don't read the data?
         }

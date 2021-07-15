@@ -29,7 +29,7 @@ export class PreviewPanel {
         const panel = vscode.window.createWebviewPanel(
             PreviewPanel.viewType,
             'Nisaba Preview',
-            vscode.ViewColumn.Two,
+            vscode.ViewColumn.Beside,
             {
                 // Enable javascript in the webview
                 enableScripts: true,

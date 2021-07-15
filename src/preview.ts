@@ -55,30 +55,29 @@ export class PreviewPanel {
         this._update();
 
         // Update the webview based on text changes
-        const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
-            if (e.document.uri.toString() === this._document.uri.toString()) {
-                this._update();
-            }
-        });
+        vscode.workspace.onDidChangeTextDocument(
+            e => {
+                if (e.document.uri.toString() === this._document.uri.toString()) {
+                    this._update();
+                }
+            },
+            null,
+            this._disposables);
 
-        // Make sure we get rid of the listener when our editor is closed.
-        // TODO Should we be using the extra arguments like in the subscription below?
-        // Or push this into _disposables instead?
-        // Do the multiple calls to onDidDispose stack or overwrite the listeners?
-        this._panel.onDidDispose(() => {
-            changeDocumentSubscription.dispose();
-        });
 
-        const switchDocumentSubscription = vscode.window.onDidChangeActiveTextEditor(e => {
-            if (e.document == undefined) {
-                this._document = e.document;
-                // TODO Delete contents?
-            } else {
-                this._document = e.document;
-                this._update();
-            }
-        });
-        this._panel.onDidDispose(() => switchDocumentSubscription.dispose());
+        // Update when the user switches to a new editor
+        vscode.window.onDidChangeActiveTextEditor(
+            e => {
+                if (e.document == undefined) {
+                    this._document = e.document;
+                    // TODO Delete contents?
+                } else {
+                    this._document = e.document;
+                    this._update();
+                }
+            },
+            null,
+            this._disposables);
 
         // Listen for when the panel is disposed
         // This happens when the user closes the panel or when the panel is closed programatically

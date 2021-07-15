@@ -67,14 +67,9 @@ export class PreviewPanel {
 
         // Update when the user switches to a new editor
         vscode.window.onDidChangeActiveTextEditor(
-            e => {
-                if (e.document == undefined) {
-                    this._document = e.document;
-                    // TODO Delete contents?
-                } else {
-                    this._document = e.document;
-                    this._update();
-                }
+            e => { 
+                this._document = e.document;
+                this._update();
             },
             null,
             this._disposables);
@@ -139,22 +134,8 @@ export class PreviewPanel {
     }
 
     private _getHtmlForWebview(webview: vscode.Webview, document: vscode.TextDocument) {
-        const lines = document.getText().split(os.EOL);
-        let arabic = false;
-        for (let i = 0; i < lines.length; i++) {
-            // `dir` tag: by default we assume left-to-right
-            let dir = "dir=\"ltr\"";
-            if (lines[i].match(/^@translation .* ar/)) {
-                // We start an Arabic translation
-                arabic = true;
-            }
-            if (arabic && lines[i].match(/^\d+\..*/)) {
-                // We're inside Arabic translation and this is a text line: set
-                // `dir` to right-to-left.
-                dir = "dir=\"rtl\"";
-            }
-            lines[i] = lines[i].replace(/^(.*)$/, `<p ${dir}>$1</p>`);
-        }
+        // document can be undefined if the last active editor was closed
+        const lines = document ? this._getBodyForWebview(document) : [];
         return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -173,5 +154,25 @@ and only allow scripts that have a specific nonce.
 ${lines.join(os.EOL)}
 </body>
 </html>`;
+    }
+
+    private _getBodyForWebview(document: vscode.TextDocument): string[] {
+        let arabic = false;
+        const lines = document.getText().split(os.EOL);
+        for (let i = 0; i < lines.length; i++) {
+            // `dir` tag: by default we assume left-to-right
+            let dir = "dir=\"ltr\"";
+            if (lines[i].match(/^@translation .* ar/)) {
+                // We start an Arabic translation
+                arabic = true;
+            }
+            if (arabic && lines[i].match(/^\d+\..*/)) {
+                // We're inside Arabic translation and this is a text line: set
+                // `dir` to right-to-left.
+                dir = "dir=\"rtl\"";
+            }
+            lines[i] = lines[i].replace(/^(.*)$/, `<p ${dir}>$1</p>`);
+        }
+        return lines
     }
 }

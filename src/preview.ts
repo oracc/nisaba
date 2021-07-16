@@ -15,9 +15,7 @@ export class PreviewPanel {
     private _document: vscode.TextDocument;
 
     public static createOrShow(extensionUri: vscode.Uri) {
-        const column = vscode.window.activeTextEditor
-            ? vscode.window.activeTextEditor.viewColumn
-            : undefined;
+        const column = vscode.ViewColumn.Beside;
 
         // If we already have a panel, show it.
         if (PreviewPanel.currentPanel) {
@@ -29,7 +27,7 @@ export class PreviewPanel {
         const panel = vscode.window.createWebviewPanel(
             PreviewPanel.viewType,
             'Nisaba Preview',
-            vscode.ViewColumn.Beside,
+            column,
             {
                 // Enable javascript in the webview
                 enableScripts: true,

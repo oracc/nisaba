@@ -67,12 +67,16 @@ export class PreviewPanel {
 
         // Update when the user switches to a new editor
         vscode.window.onDidChangeActiveTextEditor(
+            // If the new editor does not have an ATF file,
+            // unset the current document so we don't show anything.
+            // If the new editor is undefined (e.g. because it lost focus),
+            // don't change anything.
             e => {
-                // If the new editor is undefined or does not have an ATF file,
-                // unset the current document so we don't show anything
-                this._document = e?.document?.fileName?.endsWith('.atf')
-                                 ? e.document : undefined;
-                this._update();
+                if (e != undefined) {
+                    this._document = e.document.fileName.endsWith('.atf')
+                                     ? e.document : undefined;
+                    this._update();
+                }
             },
             null,
             this._disposables);

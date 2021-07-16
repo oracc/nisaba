@@ -148,7 +148,7 @@ and only allow scripts that have a specific nonce.
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} https:;">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nisaba Preview</title>
+<title>Oracc Preview</title>
 </head>
 <body>
 ${lines.join(os.EOL)}

@@ -19,7 +19,7 @@ export class PreviewPanel {
 
         // If we already have a panel, show it.
         if (PreviewPanel.currentPanel) {
-            PreviewPanel.currentPanel._panel.reveal(column);
+            PreviewPanel.currentPanel._panel.reveal(column, true);
             return;
         }
 
@@ -27,7 +27,10 @@ export class PreviewPanel {
         const panel = vscode.window.createWebviewPanel(
             PreviewPanel.viewType,
             'Nisaba Preview',
-            column,
+            {
+                viewColumn: column,
+                preserveFocus: true,
+            },
             {
                 // Enable javascript in the webview
                 enableScripts: true,

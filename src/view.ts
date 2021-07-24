@@ -19,8 +19,9 @@ export function initView(): void {
  * Displays the results of a validation or lemmatisation operation in the GUI.
  *
  * @param result -- a ServerResult returned by e.g. `validate`
+ * @param editor -- the TextEditor in which to display the errors
  */
- export function handleResult(result: ServerResult): void {
+ export function handleResult(result: ServerResult, editor: vscode.TextEditor): void {
     // Show a popup with the status of the result
     if (result.contains_errors()) {
         vscode.window.showErrorMessage(
@@ -31,7 +32,6 @@ export function initView(): void {
     // Show the log in the console and the log file
     nisabaLogger.info(result.get_user_log());
     // Highlight the lines with errors, after clearing any existing highlights
-    const editor = vscode.window.activeTextEditor;
     editor.setDecorations(lineErrorStyle, []);
     if (result.contains_errors()) {
         // We create an array of DecorationOptions, each of them specifying

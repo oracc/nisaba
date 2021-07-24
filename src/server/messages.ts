@@ -5,8 +5,6 @@ import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
 import { ServerResult } from '../client/server_result';
-import * as nisabaLogger from '../logger'
-import * as vscode from 'vscode';
 
 /*
 1. Gather all the information for the message from the text (start with hardcoded)
@@ -153,22 +151,4 @@ function commandSuccessful(responseID: string, url: string): boolean {
         }).end();
     }
     return done;
-}
-
-/**
- * Displays the results of a validation or lemmatisation operation in the GUI.
- *
- * @param result -- a ServerResult returned by e.g. `validate`
- */
-export function handleResult(result: ServerResult): void {
-    // Show a popup with the status of the result
-    if (result.contains_errors()) {
-        vscode.window.showErrorMessage(
-            'Validation identified errors. See log for details.');
-    } else {
-        vscode.window.showInformationMessage('Validation successful.');
-    }
-    // Show the log in the console and the log file
-    nisabaLogger.info(result.get_user_log());
-    // TODO Highlight the lines with errors
 }

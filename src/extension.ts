@@ -1,9 +1,10 @@
-import { handleResult, validate } from './server/messages';
+import { validate } from './server/messages';
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as nisabaLogger from './logger';
+import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 
 // Logging output channel
@@ -14,6 +15,7 @@ const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
 export function activate(context: vscode.ExtensionContext) {
 
     nisabaLogger.initLogging(nisabaOutputChannel);
+    initView();
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand

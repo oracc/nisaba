@@ -20,7 +20,8 @@ import * as vscode from 'vscode';
 
 const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
 00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
-ATF processor ox issued 2 warnings and 0 notices`;
+ATF processor ox issued 2 warnings and 0 notices
+`;
 
 export function validate(filename: string, project: string, text: string): ServerResult {
     // FIXME Temporarily commenting out server communication

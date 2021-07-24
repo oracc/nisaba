@@ -1,8 +1,12 @@
+// FIXME temporarily softening linting while server communication is commented out
+/* eslint no-unused-vars: "warn" */
 import * as AdmZip from 'adm-zip';
 import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
 import { ServerResult } from '../client/server_result';
+import * as nisabaLogger from '../logger'
+import * as vscode from 'vscode';
 
 /*
 1. Gather all the information for the message from the text (start with hardcoded)
@@ -19,6 +23,9 @@ const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: table
 ATF processor ox issued 2 warnings and 0 notices`;
 
 export function validate(filename: string, project: string, text: string): ServerResult {
+    // FIXME Temporarily commenting out server communication
+    // to test display of results.
+    /*
     let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
@@ -99,6 +106,7 @@ export function validate(filename: string, project: string, text: string): Serve
     console.log('Sent message');
 
     console.log(fullMessage.toString());
+    */
 
     //TODO this is just a placeholder
     return new ServerResult(oracc_log);
@@ -144,4 +152,22 @@ function commandSuccessful(responseID: string, url: string): boolean {
         }).end();
     }
     return done;
+}
+
+/**
+ * Displays the results of a validation or lemmatisation operation in the GUI.
+ *
+ * @param result -- a ServerResult returned by e.g. `validate`
+ */
+export function handleResult(result: ServerResult): void {
+    // Show a popup with the status of the result
+    if (result.contains_errors()) {
+        vscode.window.showErrorMessage(
+            'Validation identified errors. See log for details.');
+    } else {
+        vscode.window.showInformationMessage('Validation successful.');
+    }
+    // Show the log in the console and the log file
+    nisabaLogger.info(result.get_user_log());
+    // TODO Highlight the lines with errors
 }

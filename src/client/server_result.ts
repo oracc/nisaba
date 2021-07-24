@@ -69,7 +69,7 @@ export class ServerResult {
     get_user_log(){
         /* This method will build the log the user will see in the VS code
            console */
-        if (Object.keys(this.validation_errors).length == 0){
+        if (!this.contains_errors()){
             return "ATF validation returned no errors.";
         }
         else {
@@ -80,5 +80,9 @@ export class ServerResult {
             user_log += os.EOL + this.summary_line;
             return user_log;
         }
+    }
+
+    contains_errors(): boolean {
+        return Object.keys(this.validation_errors).length != 0
     }
 }

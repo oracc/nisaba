@@ -1,4 +1,4 @@
-import { validate } from './server/messages';
+import { handleResult, validate } from './server/messages';
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -35,7 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
         const fileProject = "cams/gkab";
         const fileContent = vscode.window.activeTextEditor.document.getText();
         // The validate function is currently not mapped to the appropriate logging functions
-        validate(filePath,fileProject,fileContent);
+        const result = validate(filePath,fileProject,fileContent);
+        handleResult(result);
         });
 
     context.subscriptions.push(disposable2);

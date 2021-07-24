@@ -33,6 +33,7 @@ suite('Validation Test Suite', () => {
         // seemed the most straight forward
         assert.strictEqual(JSON.stringify(server_result.validation_errors),  JSON.stringify(expected_val_errors));
         assert.equal(server_result.summary_line, expected_summary_line);
+        assert(server_result.contains_errors());
     });
 
     test('Server results test for belsunu.atf', async() => {
@@ -56,6 +57,7 @@ suite('Validation Test Suite', () => {
         // seemed the most straight forward
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
         assert.equal(server_result.summary_line, expected_summary_line);
+        assert(!server_result.contains_errors());
     });
 
     test('SOAP client constructor test', async () => {

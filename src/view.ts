@@ -44,6 +44,16 @@ export function initView(): void {
                 hoverMessage: new vscode.MarkdownString(error)
             });
         }
+        // is this better?
+        /*
+        const highlightOptions = Object.entries(result.validation_errors).map(
+            ([line_number, error]) => ({
+                // line numbers in the editor API start from 0
+                range: editor.document.lineAt(Number(line_number) - 1).range,
+                hoverMessage: new vscode.MarkdownString(error)
+            })
+        )
+        */
         editor.setDecorations(lineErrorStyle, highlightOptions);
     }
 

@@ -29,16 +29,6 @@ export function handleResult(result: ServerResult, editor: vscode.TextEditor): v
         // Highlight the lines with errors
         // We create an array of DecorationOptions, each of them specifying
         // a single line (as a Range) and a message to be displayed on hover
-        const highlightOptions: vscode.DecorationOptions[] = [];
-        for (const [line, error] of Object.entries(result.validation_errors)) {
-            const line_num = Number(line) - 1;  // lines in API start from 0
-            highlightOptions.push({
-                range: editor.document.lineAt(line_num).range,
-                hoverMessage: new vscode.MarkdownString(error)
-            });
-        }
-        // is this better?
-        /*
         const highlightOptions = Object.entries(result.validation_errors).map(
             ([line_number, error]) => ({
                 // line numbers in the editor API start from 0
@@ -46,7 +36,6 @@ export function handleResult(result: ServerResult, editor: vscode.TextEditor): v
                 hoverMessage: new vscode.MarkdownString(error)
             })
         )
-        */
         // Any old highlights will be cleared before the new ones are applied
         editor.setDecorations(lineErrorStyle, highlightOptions);
     } else {

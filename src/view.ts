@@ -30,7 +30,7 @@ export function initView(): void {
         vscode.window.showInformationMessage('Validation successful.');
     }
     // Show the log in the console and the log file
-    nisabaLogger.info(result.get_user_log());
+    nisabaLogger.info(result.get_user_log(editor.document.fileName));
     // Highlight the lines with errors, after clearing any existing highlights
     editor.setDecorations(lineErrorStyle, []);
     if (result.contains_errors()) {

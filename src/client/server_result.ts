@@ -2,7 +2,6 @@ import * as os from 'os';
 
 export class ServerResult {
 
-    user_log: string;
     validation_errors: { [line_num: number]: string };
     summary_line: string; // This is the last line that shows in the log
                           // by the Oracc server
@@ -16,7 +15,6 @@ export class ServerResult {
     constructor(oracc_log: string, request_log: string = ""){
         this.summary_line = "";
         this.validation_errors = this.get_validation_errors(oracc_log);
-        this.user_log = this.get_user_log();
         this.request_log = request_log;
         this.atf_content = ""; //placeholder for lemmatisation
 
@@ -66,15 +64,19 @@ export class ServerResult {
         return validation_errors;
     }
 
-    get_user_log(){
-        /* This method will build the log the user will see in the VS code
-           console */
+    /**
+     * Build the log the user will see in the VS Code console.
+     * @param filepath The path of the ATF file, to be shown with each message
+     * @returns Each message with the filename prepended (for easy navigation)
+     * and a summary line
+     */
+    get_user_log(filepath: string){
         if (!this.contains_errors()){
             return "ATF validation returned no errors.";
         }
         else {
             let user_log = Object.entries(this.validation_errors)
-                .map(([line_num, error_msg]) =>`Line ${line_num}: ${error_msg}.`)
+                .map(([line_num, error_msg]) =>`${filepath}:${line_num}: ${error_msg}.`)
                 .join(os.EOL)
             // Add summary line at the end
             user_log += os.EOL + this.summary_line;

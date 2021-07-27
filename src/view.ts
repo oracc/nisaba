@@ -21,19 +21,12 @@ export function initView(): void {
  * @param result -- a ServerResult returned by e.g. `validate`
  * @param editor -- the TextEditor in which to display the errors
  */
- export function handleResult(result: ServerResult, editor: vscode.TextEditor): void {
-    // Show a popup with the status of the result
+export function handleResult(result: ServerResult, editor: vscode.TextEditor): void {
     if (result.contains_errors()) {
+        // Show a popup with the status of the result
         vscode.window.showErrorMessage(
             'Validation identified errors. See log for details.');
-    } else {
-        vscode.window.showInformationMessage('Validation successful.');
-    }
-    // Show the log in the console and the log file
-    nisabaLogger.info(result.get_user_log(editor.document.fileName));
-    // Highlight the lines with errors, after clearing any existing highlights
-    editor.setDecorations(lineErrorStyle, []);
-    if (result.contains_errors()) {
+        // Highlight the lines with errors
         // We create an array of DecorationOptions, each of them specifying
         // a single line (as a Range) and a message to be displayed on hover
         const highlightOptions: vscode.DecorationOptions[] = [];
@@ -54,7 +47,13 @@ export function initView(): void {
             })
         )
         */
+        // Any old highlights will be cleared before the new ones are applied
         editor.setDecorations(lineErrorStyle, highlightOptions);
+    } else {
+        // Show a success popup and clear all highlights
+        vscode.window.showInformationMessage('Validation successful.');
+        editor.setDecorations(lineErrorStyle, []);
     }
-
+    // Show the log in the console and the log file
+    nisabaLogger.info(result.get_user_log(editor.document.fileName));
 }

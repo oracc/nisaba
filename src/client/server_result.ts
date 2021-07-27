@@ -76,7 +76,7 @@ export class ServerResult {
         }
         else {
             let user_log = Object.entries(this.validation_errors)
-                .map(([line_num, error_msg]) =>`${filepath}:${line_num}: ${error_msg}.`)
+                .map(([line_num, error_msg]) =>`${filepath}:${line_num}:${os.EOL}${error_msg}.`)
                 .join(os.EOL)
             // Add summary line at the end
             user_log += os.EOL + this.summary_line;

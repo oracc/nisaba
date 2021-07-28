@@ -125,7 +125,8 @@ function commandSuccessful(responseID: string, url: string): boolean {
     // will return (false) even if the message returned is "done".
     while (!done && attempts < 10) {
         attempts += 1;
-        request({host: url, path: `/p/${responseID}`, timeout: 5000}, (res) => {
+        let req = request({host: url, path: `/p/${responseID}`, timeout: 5000});
+        req.on('response', (res) => {
             res.on('data', (chunk: Buffer) => {
                 // Message includes a trailing new line character
                 switch (chunk.toString('utf-8').trim()) {
@@ -144,7 +145,8 @@ function commandSuccessful(responseID: string, url: string): boolean {
                         console.error('Unexpected message from server.');
                 }
             });
-        }).end();
+        });
+        req.end();
     }
     return done;
 }

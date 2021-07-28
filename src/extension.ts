@@ -4,6 +4,7 @@ import { validate } from './server/messages';
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as nisabaLogger from './logger';
+import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 
 // Logging output channel
@@ -14,6 +15,7 @@ const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
 export function activate(context: vscode.ExtensionContext) {
 
     nisabaLogger.initLogging(nisabaOutputChannel);
+    initView();
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
@@ -30,12 +32,13 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable1);
 
     const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
-        // The code you place here will be executed every time your command is 
-        const filePath = vscode.window.activeTextEditor.document.uri.fsPath;
+        const editor = vscode.window.activeTextEditor;
+        const filePath = editor.document.uri.fsPath;
         const fileProject = "cams/gkab";
-        const fileContent = vscode.window.activeTextEditor.document.getText();
+        const fileContent = editor.document.getText();
         // The validate function is currently not mapped to the appropriate logging functions
-        validate(filePath,fileProject,fileContent);
+        const result = validate(filePath,fileProject,fileContent);
+        handleResult(result, editor);
         });
 
     context.subscriptions.push(disposable2);

@@ -28,11 +28,12 @@ suite('Validation Test Suite', () => {
         const server_result = new ServerResult(oracc_log);
 
         // NB: The server response will always have \n as line separators!
-        assert.equal(server_result.user_log, expected_user_log);
+        assert.equal(server_result.get_user_log('/fake/path/error_belsunu.atf'), expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert.strictEqual(JSON.stringify(server_result.validation_errors),  JSON.stringify(expected_val_errors));
         assert.equal(server_result.summary_line, expected_summary_line);
+        assert(server_result.contains_errors());
     });
 
     test('Server results test for belsunu.atf', async() => {
@@ -51,11 +52,12 @@ suite('Validation Test Suite', () => {
           'utf-8');
         const server_result = new ServerResult(oracc_log, ""); //We don't care about request.log for now
 
-        assert.equal(server_result.user_log, expected_user_log);
+        assert.equal(server_result.get_user_log('whatever'), expected_user_log);
         // There's no sensible way to compare dictionaries, JSON.stringify
         // seemed the most straight forward
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
         assert.equal(server_result.summary_line, expected_summary_line);
+        assert(!server_result.contains_errors());
     });
 
     test('SOAP client constructor test', async () => {

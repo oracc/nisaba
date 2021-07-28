@@ -1,3 +1,5 @@
+// FIXME temporarily softening linting while server communication is commented out
+/* eslint no-unused-vars: "warn" */
 import * as AdmZip from 'adm-zip';
 import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
@@ -16,9 +18,13 @@ import { ServerResult } from '../client/server_result';
 
 const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
 00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
-ATF processor ox issued 2 warnings and 0 notices`;
+ATF processor ox issued 2 warnings and 0 notices
+`;
 
 export function validate(filename: string, project: string, text: string): ServerResult {
+    // FIXME Temporarily commenting out server communication
+    // to test display of results.
+    /*
     let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
@@ -99,6 +105,7 @@ export function validate(filename: string, project: string, text: string): Serve
     console.log('Sent message');
 
     console.log(fullMessage.toString());
+    */
 
     //TODO this is just a placeholder
     return new ServerResult(oracc_log);

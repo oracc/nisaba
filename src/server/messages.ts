@@ -1,6 +1,6 @@
 import * as AdmZip from 'adm-zip';
 import { request } from 'http';
-import { createMultipart, createResponseMessage } from './mime';
+import { createMultipart, createResponseMessage, extractLogs } from './mime';
 import { parseString } from 'xml2js';
 import { ServerResult } from '../client/server_result';
 import * as vscode from 'vscode';
@@ -162,10 +162,21 @@ function commandSuccessful(responseID: string, url: string): Promise<boolean> {
 function getFinalResult(message: string, url: string, port: number): Promise<string> {
     return new Promise((resolve, reject) => {
         let req = request({host: url, port: port, timeout: 5000, method: 'POST'});
+        let responseParts: Buffer[] = []
         req.on('response', (res) => {
             res.on('data', (chunk: Buffer) => {
-                log('debug', 'Response received');
-                return resolve(chunk.toString());
+                log('info', 'Response received');
+                // append results
+                responseParts.push(chunk);
+            });
+            res.on('end', () => {
+                log('info', 'Complete response received');
+                const allLogs = extractLogs(Buffer.concat(responseParts));
+                allLogs.forEach( (contents, name) => {
+                    log('info', `${name}`)
+                    log('info', `${contents}`)
+                });
+                return resolve(allLogs.get('oracc.log'));
             });
         });
         req.on('error', (err) => {

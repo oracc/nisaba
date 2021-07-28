@@ -1,4 +1,5 @@
 import mimemessage = require('mimemessage');
+import * as AdmZip from 'adm-zip';
 
 function createBaseMessage(contentType: string, isBinary = false) {
     const message = mimemessage.factory({
@@ -114,3 +115,25 @@ export function createResponseMessage(responseID: string) {
     return envelope;
 }
 
+
+/**
+ * Parse the final server response and extract the logs from it.
+ *
+ * @param response The complete response as received from the server
+ * @returns A map from filenames to their contents (logs)
+ */
+export function extractLogs(response: Buffer): Map<string,string> {
+    // Split the response by the barrier. There should be 3 parts.
+    // Get the last part and only keep the last (sixth) "line"
+    const barrierRegEx = /--==.*==/;  // exact barrier changes every time
+    const finalPart = response.toString().split(barrierRegEx)[2].split('\r\n')[5];
+    // Convert back to binary and read as a zip file
+    const zipBuffer = Buffer.from(finalPart);
+    const zip = new AdmZip(zipBuffer);
+    // Read all the files in the zip and return their names and contents
+    let fileMap = new Map<string, string>();
+    zip.getEntries().forEach( e => {
+        fileMap.set(e.name, zip.readAsText(e));
+    })
+    return fileMap;
+}

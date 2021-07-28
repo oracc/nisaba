@@ -62,11 +62,12 @@ export function validate(filename: string, project: string, text: string): Serve
             res.resume(); // Apparently needed to free up memory if we don't read the data?
         }
         // Parse the response to get the response ID
-        res.on('data', (chunk) => {
+        res.on('data', async (chunk) => {
             responseID = getResponseCode(chunk);
             log('debug', responseID);
             // Wait until the server has prepared the response
-            if (commandSuccessful(responseID, options.host)) {
+            const completed = await commandSuccessful(responseID, options.host);
+            if (completed) {
                 log('info', `Request ${responseID} is done.`);
                 // Send Response message
                 // let ourResponse = createResponseMessage(responseID);
@@ -118,35 +119,41 @@ function getResponseCode(xmlResponse: string): string {
 }
 
 
-function commandSuccessful(responseID: string, url: string): boolean {
-    let done = false;
+function commandSuccessful(responseID: string, url: string): Promise<boolean> {
     let attempts = 0;
     // This is wrong! The requests are sent asynchronously, so the function
     // will return (false) even if the message returned is "done".
-    while (!done && attempts < 10) {
-        attempts += 1;
-        let req = request({host: url, path: `/p/${responseID}`, timeout: 5000});
-        req.on('response', (res) => {
-            res.on('data', (chunk: Buffer) => {
-                // Message includes a trailing new line character
-                switch (chunk.toString('utf-8').trim()) {
-                    case 'done': // done processing
-                        done = true;
-                        break;
-                    case 'err_stat':
-                        // TODO: Raise this properly
-                        console.error('Error getting response from server.');
-                        break;
-                    case 'run':
-                        console.error('Server working on request.');
-                        break;
-                    default:
-                        // TODO: Raise this properly
-                        console.error('Unexpected message from server.');
-                }
+    return new Promise((resolve, reject) => {
+        const max_attempts = 10;
+        while (attempts < max_attempts) {
+            attempts += 1;
+            const req = request({host: url, path: `/p/${responseID}`, timeout: 5000});
+            req.on('response', (res) => {
+                res.on('data', (chunk: Buffer) => {
+                    // Message includes a trailing new line character
+                    switch (chunk.toString('utf-8').trim()) {
+                        case 'done': // done processing
+                            return resolve(true);
+                        case 'err_stat':
+                            // TODO: Raise this properly
+                            log('error', 'Error getting response from server.');
+                            return resolve(false);
+                        case 'run':
+                            if (attempts < max_attempts) {
+                                log('info', 'Server working on request.');
+                                break;
+                            } else {
+                                log('error', `Could not get response after ${max_attempts} attempts.`);
+                                return resolve(false);
+                            }
+                        default:
+                            // TODO: Raise this properly
+                            log('error', 'Unexpected message from server.');
+                            return reject('Server error');
+                    }
+                });
             });
-        });
-        req.end();
-    }
-    return done;
+            req.end();
+        }
+    })
 }

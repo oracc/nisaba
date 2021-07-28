@@ -157,7 +157,7 @@ export function extractLogs(response: Buffer): Map<string,string> {
     const zipBuffer = lastPart.slice(charsToSkip, lastPart.length - lineSep.length)
     const zip = new AdmZip(zipBuffer);
     // Read all the files in the zip and return their names and contents
-    let fileMap = new Map<string, string>();
+    const fileMap = new Map<string, string>();
     zip.getEntries().forEach( e => {
         fileMap.set(e.name, zip.readAsText(e));
     })

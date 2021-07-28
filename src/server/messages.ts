@@ -160,13 +160,13 @@ function commandSuccessful(responseID: string, url: string): Promise<boolean> {
 
 
 function getFinalResult(message: string, url: string, port: number): Promise<string> {
-    return new Promise((resolve, reject) => {
-        let req = request({host: url, port: port, timeout: 5000, method: 'POST'});
-        let responseParts: Buffer[] = []
+    return new Promise((resolve) => {
+        const req = request({host: url, port: port, timeout: 5000, method: 'POST'});
+        const responseParts: Buffer[] = []
         req.on('response', (res) => {
             res.on('data', (chunk: Buffer) => {
-                log('info', 'Response received');
-                // append results
+                // The response may come in chunks. We can't be sure it's done
+                // until the end event is fired.
                 responseParts.push(chunk);
             });
             res.on('end', () => {

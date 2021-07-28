@@ -123,12 +123,38 @@ export function createResponseMessage(responseID: string) {
  * @returns A map from filenames to their contents (logs)
  */
 export function extractLogs(response: Buffer): Map<string,string> {
-    // Split the response by the barrier. There should be 3 parts.
-    // Get the last part and only keep the last (sixth) "line"
+    // If we convert the Buffer to text, the data becomes corrupted.
+    // Therefore, we have to do some operations on the text, but also work
+    // with the Buffer directly.
+    /// This mostly involves slicing it to get a subset of the data.
+    // The key property is that, apart from the zip data, all other
+    // characters take up 1 entry in the buffer, so we can mix indices
+    // between the text and then raw buffer.
+
+    // The response message contains 3 parts, separated by a barrier.
+    // First we work with the text to extract that last part.
     const barrierRegEx = /--==.*==/;  // exact barrier changes every time
-    const finalPart = response.toString().split(barrierRegEx)[2].split('\r\n')[5];
-    // Convert back to binary and read as a zip file
-    const zipBuffer = Buffer.from(finalPart);
+    const barrier = response.toString().match(barrierRegEx)[0]
+    // Find where second-to-last barrier appears (last is at the very end of the message)
+    const lastSwitch = response.slice(0, response.length - barrier.length).lastIndexOf(barrier);
+    // Start from right after the end of that barrier,
+    // and also remove the very last barrier and the trailing '--' for convenience
+    const lastPart = response.slice(lastSwitch + barrier.length,
+                                    response.length - barrier.length - 2);
+
+    // Now that we have the last part, we want to get the data of the zip file.
+    // The last part starts with a number of header lines, separated by '\r\n`.
+    // The data of interest comes after 5 such lines (incl. an empty line).
+    // Work with the text to find how many positions we have to skip.
+    const lineSep = '\r\n';
+    const segmentsToSkip = 5;
+    const segmentSizes = lastPart.toString().split(lineSep).map(e => e.length);
+    // Skip all the first 5 segments (including their line changes)
+    const charsToSkip = segmentSizes.slice(0, segmentsToSkip).reduce((x, y) => x + y, 0) + segmentsToSkip * lineSep.length;
+
+    // Now we know where the zip data starts. It ends just before a final '\r\n'.
+    // We can finally read it as a zip file.
+    const zipBuffer = lastPart.slice(charsToSkip, lastPart.length - lineSep.length)
     const zip = new AdmZip(zipBuffer);
     // Read all the files in the zip and return their names and contents
     let fileMap = new Map<string, string>();

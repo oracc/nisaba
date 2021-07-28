@@ -1,6 +1,6 @@
 import * as AdmZip from 'adm-zip';
 import { request } from 'http';
-import { createMultipart /*, createResponseMessage */} from './mime';
+import { createMultipart, createResponseMessage } from './mime';
 import { parseString } from 'xml2js';
 import { ServerResult } from '../client/server_result';
 import * as vscode from 'vscode';
@@ -70,13 +70,13 @@ export function validate(filename: string, project: string, text: string): Serve
             if (completed) {
                 log('info', `Request ${responseID} is done.`);
                 // Send Response message
-                // let ourResponse = createResponseMessage(responseID);
-                // TODO continue...
+                const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
+                const finalResult = await getFinalResult(ourResponse, options.host, options.port);
+                log('info', finalResult);
             } else {
                 log('error', 'Unsuccessful getting response.')
             }
-            }
-        );
+        });
     });
     // Time out after 5 seconds
     req.setTimeout(5000, () => {
@@ -155,5 +155,24 @@ function commandSuccessful(responseID: string, url: string): Promise<boolean> {
             });
             req.end();
         }
+    })
+}
+
+
+function getFinalResult(message: string, url: string, port: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+        let req = request({host: url, port: port, timeout: 5000, method: 'POST'});
+        req.on('response', (res) => {
+            res.on('data', (chunk: Buffer) => {
+                log('debug', 'Response received');
+                return resolve(chunk.toString());
+            });
+        });
+        req.on('error', (err) => {
+            console.error('Something went wrong');
+            return resolve(err.message);
+        })
+        req.write(message);
+        req.end();
     })
 }

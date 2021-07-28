@@ -17,7 +17,7 @@ class OutputChannelTransport extends TransportStream {
             this.emit('logged', info);
         });
 
-        this.outputChannel.show();
+        this.outputChannel.show(true);
         this.outputChannel.appendLine(`[${info.label}] ${info.level}: ${info.message}`);
 
         if (callback) {
@@ -74,6 +74,10 @@ export function initLogging(outputChannel: vscode.OutputChannel, filename?: stri
     });
 
     isInitialised = true;
+}
+
+export function stopLogging() {
+    isInitialised = false;
 }
 
 export function log(level:string, message:string, logger?: string) {

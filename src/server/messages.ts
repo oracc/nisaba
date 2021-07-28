@@ -1,4 +1,6 @@
-const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
+// FIXME temporarily softening linting while server communication is commented out
+/* eslint no-unused-vars: "warn" */
+import * as AdmZip from 'adm-zip';
 import { request } from 'http';
 import { createMultipart /*, createResponseMessage */} from './mime';
 import { parseString } from 'xml2js';
@@ -18,9 +20,13 @@ import { log } from '../logger';
 
 const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
 00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
-ATF processor ox issued 2 warnings and 0 notices`;
+ATF processor ox issued 2 warnings and 0 notices
+`;
 
 export function validate(filename: string, project: string, text: string): ServerResult {
+    // FIXME Temporarily commenting out server communication
+    // to test display of results.
+    /*
     let responseID:string;
     // First create the body of the message, since we'll need some information
     // from it to create the headers
@@ -28,10 +34,10 @@ export function validate(filename: string, project: string, text: string): Serve
     // text.length does not account for the encoding, so using that will allocate
     // less memory that required and truncate the text in the zip!
     zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    const encodedText = zip.toBuffer();
+    const encodedText = zip.toBuffer().toString();
     // TODO replace this with appropriate commands and reponse ID params
     const fullMessage = createMultipart("atf", filename, project, encodedText,
-                                        "responseID");
+                                        null);
     let body = fullMessage.toString({noHeaders: true});
     const boundary = fullMessage.contentType().params.boundary;
 
@@ -101,6 +107,7 @@ export function validate(filename: string, project: string, text: string): Serve
     log('info', 'Sent message');
 
     log('info', fullMessage.toString());
+    */
 
     //TODO this is just a placeholder
     return new ServerResult(oracc_log);

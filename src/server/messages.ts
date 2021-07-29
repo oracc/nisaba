@@ -30,8 +30,7 @@ export function validate(filename: string, project: string, text: string): Serve
     zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
     const encodedText = zip.toBuffer().toString();
     // TODO replace this with appropriate commands and reponse ID params
-    const fullMessage = createMultipart("atf", filename, project, encodedText,
-                                        null);
+    const fullMessage = createMultipart("atf", filename, project, encodedText);
     let body = fullMessage.toString({noHeaders: true});
     const boundary = fullMessage.contentType().params.boundary;
 

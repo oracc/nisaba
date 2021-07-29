@@ -23,12 +23,12 @@ export class HTTP_request {
                            atf_filename: string, atf_text: string) {
         /* Send attachment to server containing ATF file and necessary data to
         run given command (validate, lemmatise, etc).*/
-        let responseID: string;
+        //let responseID: string;
         // First create the body of the message, since we'll need some information
         // from it to create the headers
         const encodedText = this.zip_atf(atf_filename, atf_text);
         const fullMessage = createMultipart(command, atf_filename, project,
-                                            encodedText, responseID);
+                                            encodedText);
         //const body = fullMessage.toString({noHeaders: true});
         const boundary = fullMessage.contentType().params.boundary;
 

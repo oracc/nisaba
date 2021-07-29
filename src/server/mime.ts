@@ -1,5 +1,6 @@
 import mimemessage = require('mimemessage');
 import * as AdmZip from 'adm-zip';
+import { parseString } from 'xml2js';
 
 function createBaseMessage(contentType: string, isBinary = false) {
     const message = mimemessage.factory({
@@ -115,6 +116,20 @@ export function createResponseMessage(responseID: string) {
     return envelope;
 }
 
+/**
+ * Parse a response to get the code for a validation or lemmatisation request.
+ *
+ * @param xmlResponse The server's initial response (assuming success)
+ * @returns The code that can be used to retrieve the results of this request
+ */
+export function getResponseCode(xmlResponse: string): string {
+    let code: string;
+    parseString(xmlResponse, (err, res) => {
+        const response = res['SOAP-ENV:Envelope']['SOAP-ENV:Body'][0]['osc-meth:RequestResponse'][0];
+        code = response['osc-data:keys'][0]['osc-data:key'][0];
+    })
+    return code;
+}
 
 /**
  * Parse the final server response and extract the logs from it.

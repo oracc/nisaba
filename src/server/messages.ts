@@ -1,7 +1,6 @@
 import * as AdmZip from 'adm-zip';
 import { request } from 'http';
-import { createMultipart, createResponseMessage, extractLogs } from './mime';
-import { parseString } from 'xml2js';
+import { createMultipart, createResponseMessage, extractLogs, getResponseCode } from './mime';
 import { ServerResult } from '../client/server_result';
 import * as vscode from 'vscode';
 import { log } from '../logger';
@@ -106,16 +105,6 @@ export function validate(filename: string, project: string, text: string): Serve
 
     //TODO this is just a placeholder
     return new ServerResult(oracc_log);
-}
-
-
-function getResponseCode(xmlResponse: string): string {
-    let code: string;
-    parseString(xmlResponse, (err, res) => {
-        const response = res['SOAP-ENV:Envelope']['SOAP-ENV:Body'][0]['osc-meth:RequestResponse'][0];
-        code = response['osc-data:keys'][0]['osc-data:key'][0];
-    })
-    return code;
 }
 
 

@@ -1,1 +1,24 @@
-Some sample text for now, shouldn't matter. Should replace with real example.
+oracc-exec.sh[2]: uBgjUj /tmp/datazMSVs9 atf cams/gkab 00atf/belsunu.atf
+oracc-exec.plx[v001]: uBgjUj /tmp/datazMSVs9 atf cams/gkab 00atf/belsunu.atf
+oracc_exec: pwd=/home/oracc/tmp/sop/uBgjUj
+xsystem /home/oracc/sbin/osc-create.sh uBgjUj cams/gkab
+tempdir=/home/oracc/tmp/sop/uBgjUj; projdir=/home/oracc/cams/gkab
+create_project cams/gkab
+chmod: cannot access 'cams/gkab': No such file or directory
+/home/oracc/sbin/osc-create.sh: line 8: cd: cams/gkab: No such file or directory
+/home/oracc/tmp/sop/uBgjUj
+ls: cannot access 'cams/gkab/01bld': No such file or directory
+cams/gkab/01bld is not a link ... autofixing ...
+cbd after removing link dirs
+ls: cannot access '02www/cbd': No such file or directory
+xsystem unzip /tmp/datazMSVs9
+Archive:  /tmp/datazMSVs9
+warning [/tmp/datazMSVs9]:  839 extra bytes at beginning or within zipfile
+  (attempting to process anyway)
+error [/tmp/datazMSVs9]:  start of central directory not found;
+  zipfile corrupt.
+  (please check that you have transferred or created the zipfile in the
+  appropriate BINARY mode and that you have compiled UnZip properly)
+xsystem /home/oracc/bin/ox -l /home/oracc/tmp/sop/uBgjUj/oracc.log -cvmD 00atf/belsunu.atf
+xsystem zip -j /home/oracc/tmp/sop/uBgjUj/response.zip /home/oracc/tmp/sop/uBgjUj/request.log /home/oracc/tmp/sop/uBgjUj/oracc.log
+  adding: request.log

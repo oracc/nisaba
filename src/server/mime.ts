@@ -31,7 +31,7 @@ export class MultipartMessage {
         );
         const keys = createEnvelopeKeys(command, filename, project, null);
         const data = createEnvelopeData(null);
-        this.envelope = createEnvelope(keys, data);
+        this.envelope = createEnvelopePart(keys, data);
         message.body = [];
         message.body.push(this.envelope);
         // Now for the attachment...
@@ -119,7 +119,7 @@ function createEnvelopeKeys(command: string, filename: string,
 }
 
 function createEnvelopeData(responseID: string){
-    let data = "";
+    let data = ""; // the final request does not have any data
     if (responseID == null){
         data =  `<osc-data:data>
                     <osc-data:item xmime5:contentType="*/*">
@@ -130,29 +130,41 @@ function createEnvelopeData(responseID: string){
     return data;
 }
 
-function createEnvelope(keys: string, data: string) {
+function createEnvelopePart(keys: string, data: string) {
     const envelope = createBaseMessage(
         'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
         true);
     envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
-    envelope.body = `<?xml version="1.0" encoding="UTF-8"?>
-               <SOAP-ENV:Envelope
-                   xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
-                   xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                   xmlns:xop="http://www.w3.org/2004/08/xop/include"
-                   xmlns:xmime5="http://www.w3.org/2005/05/xmlmime"
-                   xmlns:osc-data="http://oracc.org/wsdl/ows.xsd"
-                   xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
-                   <SOAP-ENV:Body>
-                       <osc-meth:Request>
-                            ${keys}
-                            ${data}
-                       </osc-meth:Request>
-                   </SOAP-ENV:Body>
-               </SOAP-ENV:Envelope>`;
+    envelope.body = createEnvelope(keys, data, false);
     return envelope;
+}
+
+/**
+ * Get a SOAP envelope that can be used as its own message or in a multipart message.
+ * @param keys The <osc-data:keys> element
+ * @param data  The <osc-data:data> element
+ * @param isResponse true if we are getting the result, false if initial request
+ * @returns The body of the envelope
+ */
+function createEnvelope(keys: string, data: string, isResponse: boolean): string {
+    const osc_meth_type = isResponse ? "Response" : "Request";
+    return `<?xml version="1.0" encoding="UTF-8"?>
+        <SOAP-ENV:Envelope
+            xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+            xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xop="http://www.w3.org/2004/08/xop/include"
+            xmlns:xmime5="http://www.w3.org/2005/05/xmlmime"
+            xmlns:osc-data="http://oracc.org/wsdl/ows.xsd"
+            xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
+            <SOAP-ENV:Body>
+                <osc-meth:${osc_meth_type}>
+                    ${keys}
+                    ${data}
+                </osc-meth:${osc_meth_type}>
+            </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>`;
 }
 
 function createAttachment(content: string) {
@@ -163,25 +175,12 @@ function createAttachment(content: string) {
 }
 
 export function createResponseMessage(responseID: string) {
-    const envelope = createBaseMessage( 'application/soap+xml');
-    envelope.body = `<?xml version="1.0" encoding="UTF-8"?>
-               <SOAP-ENV:Envelope
-                   xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
-                   xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                   xmlns:xop="http://www.w3.org/2004/08/xop/include"
-                   xmlns:xmime5="http://www.w3.org/2005/05/xmlmime"
-                   xmlns:osc-data="http://oracc.org/wsdl/ows.xsd"
-                   xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
-                   <SOAP-ENV:Body>
-                       <osc-meth:Response>
-                           <osc-data:keys>
-                               <osc-data:key>${responseID}</osc-data:key>
-                           </osc-data:keys>
-                       </osc-meth:Response>
-                   </SOAP-ENV:Body>
-               </SOAP-ENV:Envelope>`;
+    const envelope = createBaseMessage('application/soap+xml');
+    envelope.body = createEnvelope(
+        createEnvelopeKeys(null, null, null, responseID),
+        createEnvelopeData(responseID),
+        true
+    )
     return envelope;
 }
 

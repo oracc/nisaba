@@ -76,20 +76,17 @@ function createAttachment(content: string) {
 }
 
 export function createMultipart(command: string, filename: string,
-                                project: string, encodedText: string,
-                                responseID: string) {
+                                project: string, encodedText: string) {
     // The exact header may be overwritten later anyway, so we don't need
     // to include all the details.
     const message = createBaseMessage(
         'multipart/related; charset="utf-8"'
     );
-    const keys = createEnvelopeKeys(command, filename, project, responseID);
-    const data = createEnvelopeData(responseID);
+    const keys = createEnvelopeKeys(command, filename, project, null);
+    const data = createEnvelopeData(null);
     message.body = [];
     message.body.push(createEnvelope(keys, data));
-    if (responseID == null) {
-        message.body.push(createAttachment(encodedText));
-    }
+    message.body.push(createAttachment(encodedText));
     return message;
 }
 

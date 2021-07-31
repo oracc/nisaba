@@ -33,13 +33,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable1);
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', async () => {
         const editor = vscode.window.activeTextEditor;
         const fileName = basename(editor.document.uri.fsPath);
         const fileProject = "cams/gkab";
         const fileContent = editor.document.getText();
         // The validate function is currently not mapped to the appropriate logging functions
-        const result = validate(fileName,fileProject,fileContent);
+        const result = await validate(fileName,fileProject,fileContent);
         handleResult(result, editor);
         });
 

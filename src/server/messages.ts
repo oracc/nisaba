@@ -80,14 +80,12 @@ export async function validate(filename: string, project: string, text: string):
     log('info', `Got response code ${responseID}`);
 
     try {
-        const completed = await commandSuccessful(responseID, host);
-        if (completed) {
-            log('info', `Request ${responseID} is done.`);
-            // Send Response message
-            const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
-            const finalResult = await getFinalResult(ourResponse, host, port);
-            log('info', finalResult);
-        }
+        await commandSuccessful(responseID, host);
+        log('info', `Request ${responseID} is done.`);
+        // Send Response message
+        const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
+        const finalResult = await getFinalResult(ourResponse, host, port);
+        log('info', finalResult);
     } catch (err) {
         vscode.window.showErrorMessage(
             "Problem getting response from server, see log for details.")
@@ -100,7 +98,7 @@ export async function validate(filename: string, project: string, text: string):
 }
 
 
-async function commandSuccessful(responseID: string, url: string): Promise<boolean> {
+async function commandSuccessful(responseID: string, url: string): Promise<void> {
     let attempts = 0;
     const max_attempts = 10;
     while (attempts < max_attempts) {
@@ -109,17 +107,19 @@ async function commandSuccessful(responseID: string, url: string): Promise<boole
         const text = await response.text();
         switch (text.trim()) { // Message includes a trailing new line character
             case 'done': // done processing
-                return true;
+                return;
             case 'err_stat':
-                log('error', 'Error getting response from server.');
-                throw 'The server encountered an error while validating.';
+                log('error', `Received err_stat for request ${responseID}.`);
+                throw `The server encountered an error while validating.
+                    Please contact the Oracc server admin to look into this problem.`;
             case 'run':
                 if (attempts < max_attempts) {
                     log('info', 'Server working on request.');
                     break;
                 } else {
-                    log('error', `Could not get response after ${max_attempts} attempts.`);
-                    return false;
+                    throw `The Oracc server was unable to elaborate response
+                    for request with id ${responseID}. Please contact the
+                    Oracc server admin to look into this problem.`;
                 }
             default:
                 // TODO: Raise this properly

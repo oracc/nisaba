@@ -1,6 +1,5 @@
 import * as AdmZip from 'adm-zip';
 import { default as fetch }from 'node-fetch';
-import { request } from 'http';
 import { createMultipart, createResponseMessage, extractLogs, getResponseCode } from './mime';
 import { ServerResult } from '../client/server_result';
 import * as vscode from 'vscode';
@@ -117,31 +116,16 @@ async function commandSuccessful(responseID: string, url: string): Promise<boole
 }
 
 
-function getFinalResult(message: string, url: string, port: number): Promise<string> {
-    return new Promise((resolve) => {
-        const req = request({host: url, port: port, timeout: 5000, method: 'POST'});
-        const responseParts: Buffer[] = []
-        req.on('response', (res) => {
-            res.on('data', (chunk: Buffer) => {
-                // The response may come in chunks. We can't be sure it's done
-                // until the end event is fired.
-                responseParts.push(chunk);
-            });
-            res.on('end', () => {
-                log('info', 'Complete response received');
-                const allLogs = extractLogs(Buffer.concat(responseParts));
-                allLogs.forEach( (contents, name) => {
-                    log('info', `${name}`)
-                    log('info', `${contents}`)
-                });
-                return resolve(allLogs.get('oracc.log'));
-            });
+async function getFinalResult(message: string, url: string, port: number) {
+    const response = await fetch(
+        `${url}:${port}`,
+        {method: 'POST', body: message}
+    );
+    const responseContents = await response.buffer();
+    const allLogs = extractLogs(responseContents);
+    allLogs.forEach( (contents, name) => {
+            log('info', `${name}`)
+            log('info', `${contents}`)
         });
-        req.on('error', (err) => {
-            console.error('Something went wrong');
-            return resolve(err.message);
-        })
-        req.write(message);
-        req.end();
-    })
+    return allLogs.get('oracc.log');
 }

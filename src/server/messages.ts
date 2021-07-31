@@ -57,16 +57,12 @@ export async function validate(filename: string, project: string, text: string):
 
     let responseID: string;
     try {
-        responseID = await fetch(
-            `${host}:${port}`, options)
-            .then((res) => {
-                if (res.status != 200) {
-                    vscode.window.showWarningMessage(`Request failed! Status: ${res.status}`);
-                } else {
-                    return res.text();
-                }
-            })
-            .then((text) => getResponseCode(text));
+        const response = await fetch(`${host}:${port}`, options);
+        if (response.status != 200) {
+            vscode.window.showWarningMessage(`Request failed! Status: ${response.status}`);
+        } else {
+            responseID = getResponseCode(await response.text());
+        }
     } catch (err) {
         log('error', `Problem getting response from server: ${err}`);
         vscode.window.showErrorMessage(
@@ -95,11 +91,9 @@ async function commandSuccessful(responseID: string, url: string): Promise<boole
     const max_attempts = 10;
     while (attempts < max_attempts) {
         attempts += 1;
-        let result = await fetch(`${url}/p/${responseID}`)
-            .then((res) => res.text())
-            // Message includes a trailing new line character)
-            .then((text) => text.trim());
-        switch (result) {
+        const response = await fetch(`${url}/p/${responseID}`);
+        const text = await response.text();
+        switch (text.trim()) { // Message includes a trailing new line character
             case 'done': // done processing
                 return true;
             case 'err_stat':

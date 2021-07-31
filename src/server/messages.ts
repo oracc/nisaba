@@ -75,18 +75,24 @@ export async function validate(filename: string, project: string, text: string):
         log('error', `Problem getting response from server: ${err}`);
         vscode.window.showErrorMessage(
             "Problem getting response from server, see log for details.");
+        return;  // Should return an empty result?
     }
     log('info', `Got response code ${responseID}`);
 
-    const completed = await commandSuccessful(responseID, host);
-    if (completed) {
-        log('info', `Request ${responseID} is done.`);
-        // Send Response message
-        const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
-        const finalResult = await getFinalResult(ourResponse, host, port);
-        log('info', finalResult);
-    } else {
-        log('error', 'Unsuccessful getting response.')
+    try {
+        const completed = await commandSuccessful(responseID, host);
+        if (completed) {
+            log('info', `Request ${responseID} is done.`);
+            // Send Response message
+            const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
+            const finalResult = await getFinalResult(ourResponse, host, port);
+            log('info', finalResult);
+        }
+    } catch (err) {
+        vscode.window.showErrorMessage(
+            "Problem getting response from server, see log for details.")
+        log('error', `A problem has occurred: ${err}`);
+        return;  // Should return an empty result?
     }
     
     //TODO this is just a placeholder
@@ -105,9 +111,8 @@ async function commandSuccessful(responseID: string, url: string): Promise<boole
             case 'done': // done processing
                 return true;
             case 'err_stat':
-                // TODO: Raise this properly
                 log('error', 'Error getting response from server.');
-                return false;
+                throw 'The server encountered an error while validating.';
             case 'run':
                 if (attempts < max_attempts) {
                     log('info', 'Server working on request.');
@@ -118,8 +123,8 @@ async function commandSuccessful(responseID: string, url: string): Promise<boole
                 }
             default:
                 // TODO: Raise this properly
-                log('error', 'Unexpected message from server.');
-                return false;
+                log('error', `Unexpected message from server: ${text.trim()}`);
+                throw `Unexpected message from server: ${text.trim()}`;
         }
     }
 }

@@ -15,11 +15,6 @@ import { log } from '../logger';
 8. Unpack response to get validation results
 */
 
-const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
-00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
-ATF processor ox issued 2 warnings and 0 notices
-`;
-
 export async function validate(filename: string, project: string, text: string): Promise<ServerResult> {
     // First create the body of the message, since we'll need some information
     // from it to create the headers
@@ -79,13 +74,14 @@ export async function validate(filename: string, project: string, text: string):
     }
     log('info', `Got response code ${responseID}`);
 
+    let finalResult: Map<string, string>;
     try {
         await commandSuccessful(responseID, host);
         log('info', `Request ${responseID} is done.`);
         // Send Response message
         const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
-        const finalResult = await getFinalResult(ourResponse, host, port);
-        log('info', finalResult);
+        finalResult = await getFinalResult(ourResponse, host, port);
+        //log('info', finalResult);
     } catch (err) {
         vscode.window.showErrorMessage(
             "Problem getting response from server, see log for details.")
@@ -93,8 +89,8 @@ export async function validate(filename: string, project: string, text: string):
         return;  // Should return an empty result?
     }
     
-    //TODO this is just a placeholder
-    return new ServerResult(oracc_log);
+    return new ServerResult(finalResult.get('oracc.log'),
+                            finalResult.get('request.log'));
 }
 
 
@@ -141,5 +137,5 @@ async function getFinalResult(message: string, url: string, port: number) {
             log('info', `${name}`)
             log('info', `${contents}`)
         });
-    return allLogs.get('oracc.log');
+    return allLogs;
 }

@@ -27,14 +27,23 @@ export async function validate(filename: string, project: string, text: string):
     // text.length does not account for the encoding, so using that will allocate
     // less memory that required and truncate the text in the zip!
     zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    const encodedText = zip.toBuffer().toString();
+    // Use the ISO-8859-1 encoding, to ensure we don't misinterpret the zip contents.
+    const encodedText = zip.toBuffer().toString('latin1');
     // TODO replace this with appropriate commands and reponse ID params
     const fullMessage = createMultipart("atf", filename, project, encodedText);
     log('info', fullMessage.toString());
-    let body = fullMessage.toString({noHeaders: true});
-    // We probably don't need this? It's to convert all line endings to \r\n because reasons (see Nammu)
-    body = body.replace("\r\n", "\n").replace("\n", "\r\n");
+    // Build the message manually so we can control the encoding of the zip
+    // This is mimicking what the mimemessage package does
     const boundary = fullMessage.contentType().params.boundary;
+    const sep = "\r\n";
+    const body: Buffer = Buffer.concat([
+        Buffer.from('--' + boundary + sep),
+        // We may not need this? Holdover from Nammu (changing all line endings to \r\n)
+        Buffer.from(fullMessage._body[0].toString().replace(/\r\n/g, "\n").replace("\n", "\r\n")),
+        Buffer.from('\r\n' + '--' + boundary + sep),
+        Buffer.from(fullMessage._body[1].toString(), 'latin1'),
+        Buffer.from(sep + '--' + boundary + '--')
+    ]);
 
     const host = "http://build-oracc.museum.upenn.edu";
     const port = 8085;
@@ -47,7 +56,7 @@ export async function validate(filename: string, project: string, text: string):
         // TODO: Should this be the whole body or only part? Compare with Nammu.
         'Content-Length': String(Buffer.byteLength(body))
     }
-
+    
     const options = {
         method: 'POST',
         headers: headers,

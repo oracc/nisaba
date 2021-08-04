@@ -1,5 +1,5 @@
 import { default as fetch }from 'node-fetch';
-import { createMultipart, createResponseMessage, extractLogs, getMultipartBody, getResponseCode } from './mime';
+import { MultipartMessage, createResponseMessage, extractLogs, getResponseCode } from './mime';
 import { ServerResult } from '../client/server_result';
 import * as vscode from 'vscode';
 import { log } from '../logger';
@@ -16,22 +16,14 @@ import { log } from '../logger';
 
 export async function validate(filename: string, project: string, text: string): Promise<ServerResult> {
     // TODO replace this with appropriate commands and reponse ID params
-    const fullMessage = createMultipart("atf", filename, project, text);
+    const fullMessage = new MultipartMessage("atf", filename, project, text);
     log('info', fullMessage.toString());
-    const body = getMultipartBody(fullMessage);
-    const boundary = fullMessage.contentType().params.boundary;
+    const body = fullMessage.getBody();
 
     const host = "http://build-oracc.museum.upenn.edu";
     const port = 8085;
 
-    const headers = {
-        'Connection': 'close',
-        'MIME-Version': '1.0',
-        // TODO: What if boundary contains a "? Do we need to escape it?
-        'Content-Type': `multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="${boundary}"`,
-        // TODO: Should this be the whole body or only part? Compare with Nammu.
-        'Content-Length': String(Buffer.byteLength(body))
-    }
+    const headers = fullMessage.getHeaders();
 
     const options = {
         method: 'POST',

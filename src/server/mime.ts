@@ -2,6 +2,93 @@ import mimemessage = require('mimemessage');
 import * as AdmZip from 'adm-zip';
 import { parseString } from 'xml2js';
 
+/**
+ * A wrapper around mimemessage.Entity, for better access and control of encoding.
+ *
+ * This will wrap a multipart MIME message, comprising a SOAP envelope
+ * and a binary-encoded zip file containing the ATF text.
+ */
+export class MultipartMessage {
+    boundary: string;
+    envelope: string;
+    attachment: Buffer;
+    _message: mimemessage.Entity;
+
+    /**
+     * Create an initial request for validation or lemmatisation.
+     *
+     * @param command The type of command to send, "atf" or "lem"
+     * @param filename The name of the ATF file to process
+     * @param project The Oracc project the file belongs to
+     * @param text The text of the ATF file
+     */
+    constructor(command: string, filename: string,
+                project: string, text: string) {
+        // The exact header may be overwritten later anyway, so we don't need
+        // to include all the details.
+        const message = createBaseMessage(
+            'multipart/related; charset="utf-8"'
+        );
+        const keys = createEnvelopeKeys(command, filename, project, null);
+        const data = createEnvelopeData(null);
+        this.envelope = createEnvelope(keys, data);
+        message.body = [];
+        message.body.push(this.envelope);
+        // Now for the attachment...
+        // First create the body of the message, since we'll need some information
+        // from it to create the headers
+        const zip = new AdmZip();
+        // text.length does not account for the encoding, so using that will allocate
+        // less memory that required and truncate the text in the zip!
+        zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
+        // Use the ISO-8859-1 encoding, to ensure we don't misinterpret the zip contents.
+        this.attachment = zip.toBuffer();
+        message.body.push(createAttachment(this.attachment.toString('latin1')));
+        this._message = message;
+        this.boundary = message.contentType().params.boundary;
+    }
+
+    /**
+    * Get the body of this request in the right format for sending.
+    *
+    * The returned Buffer can be used in the body of an HTTP request to the
+    * Oracc server.
+    *
+    * @returns A Buffer with the message contents correctly encoded
+    */
+    getBody(): Buffer {
+        // Build the message manually so we can control the encoding of the zip.
+        // This is mimicking what the mimemessage package does.
+        const sep = "\r\n";
+        const body: Buffer = Buffer.concat([
+            Buffer.from('--' + this.boundary + sep),
+            // We may not need this? Holdover from Nammu (changing all line endings to \r\n)
+            Buffer.from(this._message._body[0].toString().replace(/\r\n/g, "\n").replace("\n", "\r\n")),
+            Buffer.from('\r\n' + '--' + this.boundary + sep),
+            Buffer.from(this._message._body[1].toString(), 'latin1'),
+            Buffer.from(sep + '--' + this.boundary + '--')
+        ]);
+        return body;
+    }
+
+    /**
+     * Get the headers of this request.
+     *
+     * @returns An object that can be used as the headers of an HTTP request
+     */
+    getHeaders() {
+        // TODO Can we avoid computing the body twice, apart from storing it?
+        return {
+            'Connection': 'close',
+            'MIME-Version': '1.0',
+            // TODO: What if boundary contains a "? Do we need to escape it?
+            'Content-Type': `multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="${this.boundary}"`,
+            // TODO: Should this be the whole body or only part? Compare with Nammu.
+            'Content-Length': String(Buffer.byteLength(this.getBody()))
+        }
+    }
+}
+
 function createBaseMessage(contentType: string, isBinary = false) {
     const message = mimemessage.factory({
         contentType
@@ -73,69 +160,6 @@ function createAttachment(content: string) {
     attachment.header('Content-ID', '<request_zip>');
     attachment.body = content;
     return attachment;
-}
-
-/**
- * Create an initial request for validation or lemmatisation.
- *
- * This will be a multipart MIME message, comprising a SOAP envelope
- * and a binary-encoded zip file containing the ATF text.
- *
- * @param command The type of command to send, "atf" or "lem"
- * @param filename The name of the ATF file to process
- * @param project The Oracc project the file belongs to
- * @param text The text of the ATF file
- * @returns A mimemessage.Entity holding the message to be sent to the server
- */
-export function createMultipart(command: string, filename: string,
-                                project: string, text: string) {
-    // The exact header may be overwritten later anyway, so we don't need
-    // to include all the details.
-    const message = createBaseMessage(
-        'multipart/related; charset="utf-8"'
-    );
-    const keys = createEnvelopeKeys(command, filename, project, null);
-    const data = createEnvelopeData(null);
-    message.body = [];
-    message.body.push(createEnvelope(keys, data));
-    // Now for the attachment...
-    // First create the body of the message, since we'll need some information
-    // from it to create the headers
-    const zip = new AdmZip();
-    // text.length does not account for the encoding, so using that will allocate
-    // less memory that required and truncate the text in the zip!
-    zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    // Use the ISO-8859-1 encoding, to ensure we don't misinterpret the zip contents.
-    const encodedText = zip.toBuffer().toString('latin1');
-    message.body.push(createAttachment(encodedText));
-    return message;
-}
-
-/**
- * Get the body of a multipart message in the right format to send.
- *
- * The returned Buffer can be used in the body of an HTTP request to the
- * Oracc server.
- *
- * (Maybe this shouldn't be exported, but it's currently useful for tests._
- *
- * @param message A multipart MIME message generated by createMultipart
- * @returns A Buffer with the message contents correctly encoded
- */
-export function getMultipartBody(message: mimemessage.Entity): Buffer {
-    // Build the message manually so we can control the encoding of the zip.
-    // This is mimicking what the mimemessage package does.
-    const boundary = message.contentType().params.boundary;
-    const sep = "\r\n";
-    const body: Buffer = Buffer.concat([
-        Buffer.from('--' + boundary + sep),
-        // We may not need this? Holdover from Nammu (changing all line endings to \r\n)
-        Buffer.from(message._body[0].toString().replace(/\r\n/g, "\n").replace("\n", "\r\n")),
-        Buffer.from('\r\n' + '--' + boundary + sep),
-        Buffer.from(message._body[1].toString(), 'latin1'),
-        Buffer.from(sep + '--' + boundary + '--')
-    ]);
-    return body;
 }
 
 export function createResponseMessage(responseID: string) {

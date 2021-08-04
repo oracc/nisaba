@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as AdmZip from 'adm-zip';
-import { createMultipart, extractLogs } from '../../server/mime';
+import { MultipartMessage, extractLogs } from '../../server/mime';
 
 suite('Messages test suite', () => {
 
@@ -76,7 +76,7 @@ suite('Messages test suite', () => {
         // Create the initial request to compare against the expected one
         const filename = "belsunu.atf"
         const text = fs.readFileSync(path.join(inputPath, filename)).toString();
-        const msg = createMultipart("atf", filename, "cams/gkab", text);
+        const msg = (new MultipartMessage("atf", filename, "cams/gkab", text))._message;
         const expected = fs.readFileSync(path.join(refPath, 'initial_request_belsunu')).toString();
         // We can't directly compare the results, because the date is encoded
         // in the zip files, so those will differ. We can compare them in parts though.

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { default as fetch }from 'node-fetch';
-import { createResponseMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from '../server/mime';
+import { createEnvelopeMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from '../server/mime';
 import { ServerResult } from './server_result';
 import { log } from '../logger';
 
@@ -103,7 +103,8 @@ export class SOAPClient {
     }
 
     async retrieveReponse(): Promise<Map<string, string>> {
-        const message = createResponseMessage(this.responseID).toString({noHeaders: true});
+        const message = createEnvelopeMessage({responseID: this.responseID})
+                        .toString({noHeaders: true});
         const response = await fetch(
             `${this.url}:${this.port}`,
             {method: 'POST', body: message}

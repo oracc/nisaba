@@ -29,9 +29,11 @@ export class MultipartMessage {
         const message = createBaseMessage(
             'multipart/related; charset="utf-8"'
         );
-        this.envelope = createEnvelopePart({command, filename, project});
+        const envelope = createEnvelopeMessage({command, filename, project});
+        envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
         message.body = [];
-        message.body.push(this.envelope);
+        message.body.push(envelope);
+        this.envelope = envelope;
         // Now for the attachment...
         // First create the body of the message, since we'll need some information
         // from it to create the headers
@@ -146,13 +148,14 @@ function createEnvelopeData(params: RequestParams){
     return data;
 }
 
-function createEnvelopePart(params: RequestParams) {
-    const envelope = createBaseMessage(
-        'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
-        true);
-    envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
-    envelope.body = createEnvelope(params);
-    return envelope;
+export function createEnvelopeMessage(params: RequestParams) {
+    const contentType = ("responseID" in params)
+                        ? 'application/soap+xml'
+                        : 'application/xop+xml; charset="utf-8"; type="application/soap+xml"';
+    const isBinary = !("responseID" in params);
+    const envelope = createBaseMessage(contentType, isBinary);
+    envelope.body = createEnvelope(params)
+    return envelope
 }
 
 /**
@@ -189,11 +192,6 @@ function createAttachment(content: string) {
     return attachment;
 }
 
-export function createResponseMessage(responseID: string) {
-    const envelope = createBaseMessage('application/soap+xml');
-    envelope.body = createEnvelope({responseID})
-    return envelope;
-}
 
 /**
  * Parse a response to get the code for a validation or lemmatisation request.

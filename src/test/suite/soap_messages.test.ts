@@ -2,17 +2,18 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as AdmZip from 'adm-zip';
-import { extractLogs } from '../../server/mime';
+import { createMultipart, extractLogs } from '../../server/mime';
 
 suite('Messages test suite', () => {
 
     let finalResponse: Buffer;
-    const refPath = path.join(__dirname, '../../../src/test/suite/input');
+    const inputPath = path.join(__dirname, '../../../src/test/suite/input');
+    const refPath = path.join(__dirname, '../../../src/test/suite/reference');
     // Our test input files have different names and paths than in the zip.
     // This maps them to their path in the repository.
     const filenameMapping = new Map([
-        ['oracc.log', path.join(refPath, 'error_oracc.log')],
-        ['request.log', path.join(refPath, 'request.log')]
+        ['oracc.log', path.join(inputPath, 'error_oracc.log')],
+        ['request.log', path.join(inputPath, 'request.log')]
     ])
 
     setup(() => {
@@ -21,7 +22,7 @@ suite('Messages test suite', () => {
         const firstPart = `Content-Type: application/xop+xml; charset=utf-8; type="application/soap+xml"
         Content-Transfer-Encoding: binary
         Content-ID: <SOAP-ENV:Envelope>
-        
+
         <?xml version="1.0" encoding="UTF-8"?>
         <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope" xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xop="http://www.w3.org/2004/08/xop/include" xmlns:xmime5="http://www.w3.org/2005/05/xmlmime" xmlns:osc-data="http://oracc.org/wsdl/ows.xsd" xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
         <SOAP-ENV:Body>
@@ -48,7 +49,7 @@ suite('Messages test suite', () => {
         filenameMapping.forEach((pathInRepo, nameInZip) => {
             zip.addLocalFile(pathInRepo, '', nameInZip);
         })
- 
+
         finalResponse = Buffer.concat([
             Buffer.from(boundary + '\r\n'),
             Buffer.from(firstPart + '\r\n'),
@@ -69,6 +70,43 @@ suite('Messages test suite', () => {
                 fs.readFileSync(pathInRepo).toString()
             );
         });
+    })
+
+    test('Generate initial message correctly', () => {
+        // Create the initial request to compare against the expected one
+        const text = fs.readFileSync(path.join(inputPath, 'belsunu.atf')).toString();
+        const oldZip = new AdmZip();
+        oldZip.addFile(`00atf/belsunu.atf`, Buffer.alloc(Buffer.byteLength(text), text));
+        const encodedText = oldZip.toBuffer().toString('latin1');
+        const msg = createMultipart("atf", "belsunu.atf", "cams/gkab", encodedText);
+        const expected = fs.readFileSync(path.join(refPath, 'initial_request_belsunu')).toString();
+        // We can't directly compare the results, because the date is encoded
+        // in the zip files, so those will differ. We can compare them in parts though.
+        // The boundary is the first 7 characters
+        const expectedParts = expected.split('--uafdHS3v');
+        // Compare the first part (SOAP envelope)
+        const expectedSOAP = expectedParts[1]
+                                // skip the first and last line change (not included in message)
+                                .trim()
+                                // ignore how line endings are encoded
+                                .replace(/\r\n/g, "\n")
+        assert.strictEqual(msg._body[0].toString().replace(/\r\n/g, "\n"),
+                           expectedSOAP);
+        // Get and compare the headers for the second part (zip attachment)
+        const attachmentLines: string[] = msg._body[1].toString().split('\r\n');
+        const numHeaders = 4;
+        const attachmentHeaders = attachmentLines.slice(0, numHeaders);
+        const expectedHeaders = expectedParts[2].trim().split(/\r?\n/).slice(0, numHeaders);
+        // Need "deep" equality to compare array contents
+        assert.deepStrictEqual(attachmentHeaders, expectedHeaders);
+        // Get the zip contents, read as a zip file and compare with original text
+        // There should only be one line but just in case \n happens to be in the encoded zip...
+        const zipContents = Buffer.from(attachmentLines.slice(numHeaders + 1).join(""),
+                                        'latin1');
+        fs.writeFileSync('test_zip_buffer', zipContents);
+        const zip = new AdmZip(zipContents);
+        assert.strictEqual(zip.getEntry('00atf/belsunu.atf').getData().toString(),
+                           text);
     })
 
 });

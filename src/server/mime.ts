@@ -98,14 +98,20 @@ export type ServerAction = "atf" | "lem"
 /** The parameters required for forming a message.
  *  Has different fields depending on the stage of the communication.
  */
-type RequestParams = {
+type RequestParams = InitialParams | SubsequentParams;
+type InitialParams = {
     // Initial message needs the type of action, the filename and project name
     command: ServerAction;
     filename: string;
     project: string;
-} | {
+};
+type SubsequentParams = {
     // Later messages require only the response ID issued by the server
     responseID: string;
+};
+
+function isInitialRequest(params: RequestParams): params is InitialParams  {
+    return !("responseID" in params);
 }
 
 function createBaseMessage(contentType: string, isBinary = false) {
@@ -121,7 +127,7 @@ function createBaseMessage(contentType: string, isBinary = false) {
 
 function createEnvelopeKeys(params: RequestParams){
     let keys: string;
-    if (! ("responseID" in params)){
+    if (isInitialRequest(params)){
         keys = `<osc-data:keys>
                         <osc-data:key>${params.command}</osc-data:key>
                         <osc-data:key>${params.project}</osc-data:key>
@@ -138,7 +144,7 @@ function createEnvelopeKeys(params: RequestParams){
 
 function createEnvelopeData(params: RequestParams){
     let data = ""; // the final request does not have any data
-    if (! ("responseID" in params)){
+    if (isInitialRequest(params)){
         data =  `<osc-data:data>
                         <osc-data:item xmime5:contentType="*/*">
                             <xop:Include href="cid:request_zip"/>
@@ -149,10 +155,10 @@ function createEnvelopeData(params: RequestParams){
 }
 
 export function createEnvelopeMessage(params: RequestParams) {
-    const contentType = ("responseID" in params)
-                        ? 'application/soap+xml'
-                        : 'application/xop+xml; charset="utf-8"; type="application/soap+xml"';
-    const isBinary = !("responseID" in params);
+    const contentType = isInitialRequest(params)
+                        ? 'application/xop+xml; charset="utf-8"; type="application/soap+xml"'
+                        : 'application/soap+xml';
+    const isBinary = isInitialRequest(params);
     const envelope = createBaseMessage(contentType, isBinary);
     envelope.body = createEnvelope(params)
     return envelope
@@ -165,7 +171,7 @@ export function createEnvelopeMessage(params: RequestParams) {
  * @returns The body of the envelope
  */
 function createEnvelope(params: RequestParams): string {
-    const osc_meth_type = ("responseID" in params) ? "Response" : "Request";
+    const osc_meth_type = isInitialRequest(params) ? "Request" : "Response";
     return `<?xml version="1.0" encoding="UTF-8"?>
         <SOAP-ENV:Envelope
             xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"

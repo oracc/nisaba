@@ -1,7 +1,7 @@
 /* eslint-disable */
 const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
-import { MultipartMessage } from '../server/mime';
+import { MultipartMessage, ServerAction } from '../server/mime';
 
 
 export class HTTP_request {
@@ -12,7 +12,7 @@ export class HTTP_request {
     method: string; // This can be GET or POST
     request: Object;
 
-    constructor(url: string, method: string, command: string, project: string,
+    constructor(url: string, method: string, command: ServerAction, project: string,
                 atf_filename: string, atf_text: string) {
         this.url = url;
         this.method = method;
@@ -20,7 +20,7 @@ export class HTTP_request {
                                                    atf_filename, atf_text);
     }
 
-    create_request_message(command: string, project: string,
+    create_request_message(command: ServerAction, project: string,
                            atf_filename: string, atf_text: string) {
         /* Send attachment to server containing ATF file and necessary data to
         run given command (validate, lemmatise, etc).*/

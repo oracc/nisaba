@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { default as fetch }from 'node-fetch';
-import { createResponseMessage, extractLogs, getResponseCode, MultipartMessage } from '../server/mime';
+import { createResponseMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from '../server/mime';
 import { ServerResult } from './server_result';
 import { log } from '../logger';
 
@@ -29,7 +29,7 @@ export class SOAPClient {
         this.atf_text = atf_text;
     }
 
-    async executeCommand(command: "lem" | "atf"): Promise<ServerResult> {
+    async executeCommand(command: ServerAction): Promise<ServerResult> {
         try {
             this.responseID = await this.sendInitialRequest(command);
             log('debug', `Got response code ${this.responseID}`);

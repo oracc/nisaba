@@ -75,6 +75,14 @@ suite('Validation Test Suite', () => {
       assert.strictEqual(server_result.summary_line, expected_summary_line);
     });
 
+    test('Validation results for belsunu.atf', async () => {
+      const text = fs.readFileSync(
+        path.join(__dirname,
+                  '../../../src/test/suite/input/belsunu.atf')).toString();
+      const server_result = await validate('belsunu.atf', 'cams/gkab', text);
+      assert(!server_result.contains_errors());
+    });
+
     test('SOAP client constructor test', async () => {
         const belsunu = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/belsunu.atf'), 'utf-8');
         const client = new SOAPClient("./input/belsunu.atf", belsunu);

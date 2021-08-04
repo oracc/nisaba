@@ -74,11 +74,9 @@ suite('Messages test suite', () => {
 
     test('Generate initial message correctly', () => {
         // Create the initial request to compare against the expected one
-        const text = fs.readFileSync(path.join(inputPath, 'belsunu.atf')).toString();
-        const oldZip = new AdmZip();
-        oldZip.addFile(`00atf/belsunu.atf`, Buffer.alloc(Buffer.byteLength(text), text));
-        const encodedText = oldZip.toBuffer().toString('latin1');
-        const msg = createMultipart("atf", "belsunu.atf", "cams/gkab", encodedText);
+        const filename = "belsunu.atf"
+        const text = fs.readFileSync(path.join(inputPath, filename)).toString();
+        const msg = createMultipart("atf", filename, "cams/gkab", text);
         const expected = fs.readFileSync(path.join(refPath, 'initial_request_belsunu')).toString();
         // We can't directly compare the results, because the date is encoded
         // in the zip files, so those will differ. We can compare them in parts though.
@@ -105,7 +103,7 @@ suite('Messages test suite', () => {
                                         'latin1');
         fs.writeFileSync('test_zip_buffer', zipContents);
         const zip = new AdmZip(zipContents);
-        assert.strictEqual(zip.getEntry('00atf/belsunu.atf').getData().toString(),
+        assert.strictEqual(zip.getEntry(`00atf/${filename}`).getData().toString(),
                            text);
     })
 

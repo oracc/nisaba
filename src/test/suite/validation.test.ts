@@ -87,7 +87,7 @@ suite('Validation Test Suite', () => {
 
     test('SOAP client constructor test', async () => {
         const belsunu = fs.readFileSync(path.join(__dirname,'../../../src/test/suite/input/belsunu.atf'), 'utf-8');
-        const client = new SOAPClient("./input/belsunu.atf", belsunu);
+        const client = new SOAPClient("belsunu.atf", "cams/gkab", belsunu);
         assert(client.atf_filename == "belsunu.atf");
         assert(client.atf_text == belsunu);
     });

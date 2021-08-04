@@ -15,6 +15,7 @@ suite('Validation Test Suite', () => {
         const expected_user_log = fs.readFileSync(path.join(
           __dirname,'../../../src/test/suite/reference/user_log_error.log'),
           'utf-8').trim(); // trim to avoid editor adding \n
+
         const expected_val_errors = {
            '6': 'unknown block token: tableta',
            '44': 'o 4: translation uses undefined label'
@@ -25,7 +26,8 @@ suite('Validation Test Suite', () => {
         const oracc_log = fs.readFileSync(
           path.join(__dirname,
                     '../../../src/test/suite/input/error_oracc.log'),
-          'utf-8');
+          'utf-8')
+          .replace(/\r\n/g, "\n"); // for testing on Windows (server always uses \n);
         const server_result = new ServerResult(oracc_log);
 
         // NB: The server response will always have \n as line separators!

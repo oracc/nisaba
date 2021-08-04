@@ -105,10 +105,10 @@ function createEnvelopeKeys(command: string, filename: string,
     let keys: string;
     if (responseID == null){
         keys = `<osc-data:keys>
-                                <osc-data:key>${command}</osc-data:key>
-                                <osc-data:key>${project}</osc-data:key>
-                                <osc-data:key>00atf/${filename}</osc-data:key>
-                            </osc-data:keys>`;
+                        <osc-data:key>${command}</osc-data:key>
+                        <osc-data:key>${project}</osc-data:key>
+                        <osc-data:key>00atf/${filename}</osc-data:key>
+                    </osc-data:keys>`;
     }
     else {
         keys = `<osc-data:keys>
@@ -122,10 +122,10 @@ function createEnvelopeData(responseID: string){
     let data = ""; // the final request does not have any data
     if (responseID == null){
         data =  `<osc-data:data>
-                    <osc-data:item xmime5:contentType="*/*">
-                        <xop:Include href="cid:request_zip"/>
-                    </osc-data:item>
-                </osc-data:data>`
+                        <osc-data:item xmime5:contentType="*/*">
+                            <xop:Include href="cid:request_zip"/>
+                        </osc-data:item>
+                    </osc-data:data>`
     }
     return data;
 }

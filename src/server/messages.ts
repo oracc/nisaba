@@ -54,7 +54,6 @@ export async function validate(filename: string, project: string, text: string):
         // Send Response message
         const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
         finalResult = await getFinalResult(ourResponse, host, port);
-        //log('info', finalResult);
     } catch (err) {
         vscode.window.showErrorMessage(
             "Problem getting response from server, see log for details.")

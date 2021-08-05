@@ -29,7 +29,7 @@ export class HTTP_request {
         // from it to create the headers
         const encodedText = this.zip_atf(atf_filename, atf_text);
         const fullMessage = new MultipartMessage(command, atf_filename, project,
-                                            encodedText);
+                                                 encodedText);
         //const body = fullMessage.toString({noHeaders: true});
         const boundary = fullMessage.boundary;
 

@@ -101,7 +101,6 @@ suite('Messages test suite', () => {
         // There should only be one line but just in case \n happens to be in the encoded zip...
         const zipContents = Buffer.from(attachmentLines.slice(numHeaders + 1).join(""),
                                         'latin1');
-        fs.writeFileSync('test_zip_buffer', zipContents);
         const zip = new AdmZip(zipContents);
         assert.strictEqual(zip.getEntry(`00atf/${filename}`).getData().toString(),
                            text);

@@ -1,4 +1,7 @@
 .vscode/**
 .vscode-test/**
 .gitignore
-vsc-extension-quickstart.md
+python/**
+src/**
+*.vsix
+azure-pipelines.yml

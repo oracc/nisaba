@@ -2,6 +2,10 @@
 .vscode-test/**
 .gitignore
 python/**
+node_modules/**
+out/**
 src/**
 *.vsix
 azure-pipelines.yml
+tsconfig.json
+webpack.config.js

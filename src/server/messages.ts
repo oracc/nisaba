@@ -17,7 +17,7 @@ import { log } from '../logger';
 export async function validate(filename: string, project: string, text: string): Promise<ServerResult> {
     // TODO replace this with appropriate commands and reponse ID params
     const fullMessage = new MultipartMessage("atf", filename, project, text);
-    log('info', fullMessage.toString());
+    log('debug', fullMessage.toString());
     const body = fullMessage.getBody();
 
     const host = "http://build-oracc.museum.upenn.edu";
@@ -45,7 +45,7 @@ export async function validate(filename: string, project: string, text: string):
             "Problem getting response from server, see log for details.");
         return;  // Should return an empty result?
     }
-    log('info', `Got response code ${responseID}`);
+    log('debug', `Got response code ${responseID}`);
 
     let finalResult: Map<string, string>;
     try {

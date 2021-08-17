@@ -1,4 +1,11 @@
 .vscode/**
 .vscode-test/**
 .gitignore
-vsc-extension-quickstart.md
+python/**
+node_modules/**
+out/**
+src/**
+*.vsix
+azure-pipelines.yml
+tsconfig.json
+webpack.config.js

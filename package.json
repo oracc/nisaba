@@ -104,7 +104,6 @@
         "vscode:prepublish": "webpack --mode production",
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
-        "test-compile": "tsc -p ./",
         "compile": "npm run clean && npx tsc -p ./",
         "package": "npx vsce package",
         "lint": "eslint src --ext ts",

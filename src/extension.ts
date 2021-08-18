@@ -1,3 +1,5 @@
+import { basename } from 'path';
+
 import { validate } from './server/messages';
 
 // The module 'vscode' contains the VS Code extensibility API
@@ -31,13 +33,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable1);
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', async () => {
         const editor = vscode.window.activeTextEditor;
-        const filePath = editor.document.uri.fsPath;
+        const fileName = basename(editor.document.uri.fsPath);
         const fileProject = "cams/gkab";
         const fileContent = editor.document.getText();
         // The validate function is currently not mapped to the appropriate logging functions
-        const result = validate(filePath,fileProject,fileContent);
+        const result = await validate(fileName,fileProject,fileContent);
         handleResult(result, editor);
         });
 

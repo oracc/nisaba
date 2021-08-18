@@ -1,9 +1,5 @@
-// FIXME temporarily softening linting while server communication is commented out
-/* eslint no-unused-vars: "warn" */
-import * as AdmZip from 'adm-zip';
-import { request } from 'http';
-import { createMultipart /*, createResponseMessage */} from './mime';
-import { parseString } from 'xml2js';
+import { default as fetch }from 'node-fetch';
+import { MultipartMessage, createResponseMessage, extractLogs, getResponseCode } from './mime';
 import { ServerResult } from '../client/server_result';
 import * as vscode from 'vscode';
 import { log } from '../logger';
@@ -18,139 +14,100 @@ import { log } from '../logger';
 8. Unpack response to get validation results
 */
 
-const oracc_log = `00atf/error_belsunu.atf:6:X001001: unknown block token: tableta
-00atf/error_belsunu.atf:44:X001001: o 4: translation uses undefined label
-ATF processor ox issued 2 warnings and 0 notices
-`;
-
-export function validate(filename: string, project: string, text: string): ServerResult {
-    // FIXME Temporarily commenting out server communication
-    // to test display of results.
-    /*
-    let responseID:string;
-    // First create the body of the message, since we'll need some information
-    // from it to create the headers
-    const zip = new AdmZip();
-    // text.length does not account for the encoding, so using that will allocate
-    // less memory that required and truncate the text in the zip!
-    zip.addFile(`00atf/${filename}`, Buffer.alloc(Buffer.byteLength(text), text));
-    const encodedText = zip.toBuffer().toString();
+export async function validate(filename: string, project: string, text: string): Promise<ServerResult> {
     // TODO replace this with appropriate commands and reponse ID params
-    const fullMessage = createMultipart("atf", filename, project, encodedText,
-                                        null);
-    let body = fullMessage.toString({noHeaders: true});
-    const boundary = fullMessage.contentType().params.boundary;
+    const fullMessage = new MultipartMessage("atf", filename, project, text);
+    log('debug', fullMessage.toString());
+    const body = fullMessage.getBody();
 
-    const headers = {
-        'Connection': 'close',
-        'MIME-Version': '1.0',
-        // TODO: What if boundary contains a "? Do we need to escape it?
-        'Content-Type': `multipart/related; charset="utf-8"; type="application/xop+xml"; start="<SOAP-ENV:Envelope>"; start-info="application/soap+xml"; boundary="${boundary}"`,
-        // TODO: Also add Content-Length here
-    }
+    const host = "http://build-oracc.museum.upenn.edu";
+    const port = 8085;
+
+    const headers = fullMessage.getHeaders();
+
     const options = {
-        host: "build-oracc.museum.upenn.edu",
-        port: 8085,
         method: 'POST',
         headers: headers,
+        body: body
     }
-    const req = request(options);
-    req.on('response', (res) => {
-        log('info', "DONE");
 
-        // DEBUG
-        log('debug', `STATUS: ${res.statusCode}`);
-        log('debug', `HEADERS: ${JSON.stringify(res.headers)}`);
-        res.setEncoding('utf8');
-        if (res.statusCode !== 200) {
-            vscode.window.showWarningMessage(`Request failed! Status: ${res.statusCode}`);
-            res.resume(); // Apparently needed to free up memory if we don't read the data?
+    let responseID: string;
+    try {
+        const response = await fetch(`${host}:${port}`, options);
+        if (response.status != 200) {
+            vscode.window.showWarningMessage(`Request failed! Status: ${response.status}`);
+        } else {
+            responseID = getResponseCode(await response.text());
         }
-        // Parse the response to get the response ID
-        res.on('data', (chunk) => {
-            responseID = getResponseCode(chunk);
-            log('debug', responseID);
-            // Wait until the server has prepared the response
-            if (commandSuccessful(responseID, options.host)) {
-                log('info', `Request ${responseID} is done.`);
-                // Send Response message
-                // let ourResponse = createResponseMessage(responseID);
-                // TODO continue...
-            } else {
-                log('error', 'Unsuccessful getting response.')
-            }
-            }
-        );
-    });
-    // Time out after 5 seconds
-    req.setTimeout(5000, () => {
-        log('info', "No response from server within limit, giving up.");
-        req.destroy();
-    });
-    // DEBUG
-    req.on('error', (err) => {
-        log('error', `ERROR! ${err.message}`);
-    })
-
-    // We probably don't need this? It's to convert all line endings to \r\n because reasons (see Nammu)
-    body = body.replace("\r\n", "\n").replace("\n", "\r\n");
-    //console.log(body);
-    // This is what it should be? Or perhaps only part of the body
-    req.setHeader('Content-Length', Buffer.byteLength(body));
-    // This is what Nammu sends
-    // req.setHeader('Content-Length', 2779);
-    log('info', `byte length: ${Buffer.byteLength(body)}`);
-    log('info', `length: ${body.length}`);
-    req.write(body);
-    log('info', JSON.stringify(req.getHeaders()));
-    req.end();
-    log('info', 'Sent message');
-
-    log('info', fullMessage.toString());
-    */
-
-    //TODO this is just a placeholder
-    return new ServerResult(oracc_log);
-}
-
-
-function getResponseCode(xmlResponse: string): string {
-    let code: string;
-    parseString(xmlResponse, (err, res) => {
-        const response = res['SOAP-ENV:Envelope']['SOAP-ENV:Body'][0]['osc-meth:RequestResponse'][0];
-        code = response['osc-data:keys'][0]['osc-data:key'][0];
-    })
-    return code;
-}
-
-
-function commandSuccessful(responseID: string, url: string): boolean {
-    let done = false;
-    let attempts = 0;
-    // This is wrong! The requests are sent asynchronously, so the function
-    // will return (false) even if the message returned is "done".
-    while (!done && attempts < 10) {
-        attempts += 1;
-        request({host: url, path: `/p/${responseID}`, timeout: 5000}, (res) => {
-            res.on('data', (chunk: Buffer) => {
-                // Message includes a trailing new line character
-                switch (chunk.toString('utf-8').trim()) {
-                    case 'done': // done processing
-                        done = true;
-                        break;
-                    case 'err_stat':
-                        // TODO: Raise this properly
-                        console.error('Error getting response from server.');
-                        break;
-                    case 'run':
-                        console.error('Server working on request.');
-                        break;
-                    default:
-                        // TODO: Raise this properly
-                        console.error('Unexpected message from server.');
-                }
-            });
-        }).end();
+    } catch (err) {
+        log('error', `Problem getting response from server: ${err}`);
+        vscode.window.showErrorMessage(
+            "Problem getting response from server, see log for details.");
+        return;  // Should return an empty result?
     }
-    return done;
+    log('debug', `Got response code ${responseID}`);
+
+    let finalResult: Map<string, string>;
+    try {
+        await commandSuccessful(responseID, host);
+        log('info', `Request ${responseID} is done.`);
+        // Send Response message
+        const ourResponse = createResponseMessage(responseID).toString({noHeaders: true});
+        finalResult = await getFinalResult(ourResponse, host, port);
+    } catch (err) {
+        vscode.window.showErrorMessage(
+            "Problem getting response from server, see log for details.")
+        log('error', `A problem has occurred: ${err}`);
+        return;  // Should return an empty result?
+    }
+
+    return new ServerResult(finalResult.get('oracc.log'),
+                            finalResult.get('request.log'));
+}
+
+
+async function commandSuccessful(responseID: string, url: string): Promise<void> {
+    let attempts = 0;
+    const max_attempts = 10;
+    while (attempts < max_attempts) {
+        attempts += 1;
+        const response = await fetch(`${url}/p/${responseID}`);
+        const text = await response.text();
+        switch (text.trim()) { // Message includes a trailing new line character
+            case 'done': // done processing
+                return;
+            case 'err_stat':
+                log('error', `Received err_stat for request ${responseID}.`);
+                throw `The server encountered an error while validating.
+                    Please contact the Oracc server admin to look into this problem.`;
+            case 'run':
+                if (attempts < max_attempts) {
+                    log('info', 'Server working on request.');
+                    break;
+                } else {
+                    throw `The Oracc server was unable to elaborate response
+                    for request with id ${responseID}. Please contact the
+                    Oracc server admin to look into this problem.`;
+                }
+            default:
+                // TODO: Raise this properly
+                log('error', `Unexpected message from server: ${text.trim()}`);
+                throw `Unexpected message from server: ${text.trim()}`;
+        }
+    }
+}
+
+
+async function getFinalResult(message: string, url: string, port: number) {
+    const response = await fetch(
+        `${url}:${port}`,
+        {method: 'POST', body: message}
+    );
+    const responseContents = await response.buffer();
+    const allLogs = extractLogs(responseContents);
+    allLogs.forEach( (contents, name) => {
+            log('info', `${name}`)
+            log('info', `${contents}`)
+        });
+    return allLogs;
 }

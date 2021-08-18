@@ -4,16 +4,18 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { ServerResult } from '../../client/server_result';
 import { SOAPClient } from '../../client/SOAP_client';
+import { validate } from '../../server/messages';
 
 
 suite('Validation Test Suite', () => {
     vscode.window.showInformationMessage('Start validation tests.');
 
-    test('Server results test for error_belsunu.atf', async() => {
+    test('Server results test when errors exist', async() => {
         //TODO Do we need the href html labels to make these errors clickable?
         const expected_user_log = fs.readFileSync(path.join(
           __dirname,'../../../src/test/suite/reference/user_log_error.log'),
           'utf-8').trim(); // trim to avoid editor adding \n
+
         const expected_val_errors = {
            '6': 'unknown block token: tableta',
            '44': 'o 4: translation uses undefined label'
@@ -24,7 +26,8 @@ suite('Validation Test Suite', () => {
         const oracc_log = fs.readFileSync(
           path.join(__dirname,
                     '../../../src/test/suite/input/error_oracc.log'),
-          'utf-8');
+          'utf-8')
+          .replace(/\r\n/g, "\n"); // for testing on Windows (server always uses \n);
         const server_result = new ServerResult(oracc_log);
 
         // NB: The server response will always have \n as line separators!
@@ -36,7 +39,7 @@ suite('Validation Test Suite', () => {
         assert(server_result.contains_errors());
     });
 
-    test('Server results test for belsunu.atf', async() => {
+    test('Server results test when no errors exist', async() => {
         //TODO Do we need the href html labels to make these errors clickable?
         const expected_user_log = fs.readFileSync(
           path.join(__dirname,
@@ -58,6 +61,28 @@ suite('Validation Test Suite', () => {
         assert(JSON.stringify(server_result.validation_errors) == JSON.stringify(expected_val_errors));
         assert.equal(server_result.summary_line, expected_summary_line);
         assert(!server_result.contains_errors());
+    });
+
+    test('Validation results for error_belsunu.atf', async () => {
+      const text = fs.readFileSync(
+        path.join(__dirname,
+                  '../../../src/test/suite/input/error_belsunu.atf')).toString();
+      const server_result = await validate('error_belsunu.atf', 'cams/gkab', text);
+      const expected_val_errors = {
+         '6': 'unknown block token: tableta',
+         '44': 'o 4: translation uses undefined label'
+      };
+      const expected_summary_line = "ATF processor ox issued 2 warnings and 0 notices";
+      assert.deepStrictEqual(server_result.validation_errors, expected_val_errors);
+      assert.strictEqual(server_result.summary_line, expected_summary_line);
+    });
+
+    test('Validation results for belsunu.atf', async () => {
+      const text = fs.readFileSync(
+        path.join(__dirname,
+                  '../../../src/test/suite/input/belsunu.atf')).toString();
+      const server_result = await validate('belsunu.atf', 'cams/gkab', text);
+      assert(!server_result.contains_errors());
     });
 
     test('SOAP client constructor test', async () => {

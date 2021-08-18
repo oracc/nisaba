@@ -28,12 +28,9 @@ export class ServerResult {
         */
         // TODO for some reason the keys are being converted to string, why?
         const validation_errors: { [line_num: number]: string } = {};
-        const lines = oracc_log.split(os.EOL);
-        // Split os.EOL will always add an empty string at the end, so we have
-        // to remove it manually
-        lines.pop();
+        // Oracc server always uses \n and has an extra one at the end
+        const lines = oracc_log.trim().split('\n');
         for (const line of lines){
-            console.log(line);
             // Check if this is an error line or the error summary
             if (line.includes(':')){
                 // TODO wrap in try/catch in case we get an error when

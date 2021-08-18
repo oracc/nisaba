@@ -1,6 +1,7 @@
+/* eslint-disable */
 const AdmZip = require('adm-zip'); // It seems this has to be imported old-style
 import { request } from 'http';
-import { createMultipart /*, createResponseMessage */} from '../server/mime';
+import { MultipartMessage } from '../server/mime';
 
 
 export class HTTP_request {
@@ -23,14 +24,14 @@ export class HTTP_request {
                            atf_filename: string, atf_text: string) {
         /* Send attachment to server containing ATF file and necessary data to
         run given command (validate, lemmatise, etc).*/
-        let responseID: string;
+        //let responseID: string;
         // First create the body of the message, since we'll need some information
         // from it to create the headers
         const encodedText = this.zip_atf(atf_filename, atf_text);
-        const fullMessage = createMultipart(command, atf_filename, project,
-                                            encodedText, responseID);
+        const fullMessage = new MultipartMessage(command, atf_filename, project,
+                                                 encodedText);
         //const body = fullMessage.toString({noHeaders: true});
-        const boundary = fullMessage.contentType().params.boundary;
+        const boundary = fullMessage.boundary;
 
         const headers = {
             'Connection': 'close',

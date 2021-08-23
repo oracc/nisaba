@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import { default as fetch }from 'node-fetch';
 import { createEnvelopeMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from '../server/mime';
 import { ServerResult } from './server_result';
@@ -39,10 +38,7 @@ export class SOAPClient {
             return new ServerResult(finalResult.get('oracc.log'),
                                     finalResult.get('request.log'));
         } catch (err) {
-            log('error', `Error during communication with server: ${err}`);
-            vscode.window.showErrorMessage(
-                "Problem getting response from server, see log for details.");
-            return;  // Should return an empty result?
+            throw `Error during communication with server: ${err}`;
         }
     }
 
@@ -81,6 +77,7 @@ export class SOAPClient {
             const text = await response.text();
             switch (text.trim()) { // Message includes a trailing new line character
                 case 'done': // done processing
+                    log('debug', `Result ready after ${attempts} attempts.`)
                     return;
                 case 'err_stat':
                     log('error', `Received err_stat for request ${this.responseID}.`);
@@ -88,7 +85,9 @@ export class SOAPClient {
                         Please contact the Oracc server admin to look into this problem.`;
                 case 'run':
                     if (attempts < max_attempts) {
-                        log('info', 'Server working on request.');
+                        if (attempts == 1) { // Only print once to avoid cluttering log
+                            log('info', 'Server working on request.');
+                        }
                         break;
                     } else {
                         throw `The Oracc server was unable to elaborate response

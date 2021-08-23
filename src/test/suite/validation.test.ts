@@ -17,8 +17,8 @@ suite('Validation Test Suite', () => {
           'utf-8').trim(); // trim to avoid editor adding \n
 
         const expected_val_errors = {
-           '6': 'unknown block token: tableta',
-           '44': 'o 4: translation uses undefined label'
+           '6': 'X001001: unknown block token: tableta',
+           '44': 'X001001: o 4: translation uses undefined label'
         };
         const expected_summary_line = "ATF processor ox issued 2 warnings and 0 notices";
 
@@ -69,8 +69,8 @@ suite('Validation Test Suite', () => {
                   '../../../src/test/suite/input/error_belsunu.atf')).toString();
       const server_result = await validate('error_belsunu.atf', 'cams/gkab', text);
       const expected_val_errors = {
-         '6': 'unknown block token: tableta',
-         '44': 'o 4: translation uses undefined label'
+         '6': 'X001001: unknown block token: tableta',
+         '44': 'X001001: o 4: translation uses undefined label'
       };
       const expected_summary_line = "ATF processor ox issued 2 warnings and 0 notices";
       assert.deepStrictEqual(server_result.validation_errors, expected_val_errors);

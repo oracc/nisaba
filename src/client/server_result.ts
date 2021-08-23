@@ -39,9 +39,9 @@ export class ServerResult {
                 const line_number = Number(line.split(':')[1]);
                 // Sometimes error messages contain ":", so we can't take the
                 // last element in the split array. We need to join all
-                // elements after the 3rd occurrence of ":".
-                const position = line.split(":", 3).join(":").length;
-                const error_message = line.substr(position + 2);
+                // elements after the 2nd occurrence of ":".
+                const position = line.split(":", 2).join(":").length;
+                const error_message = line.substr(position + 1);
                 //Note more than one error can exist per line
                 if (line_number in validation_errors){
                     // TODO We can do this in a more elegant way with the

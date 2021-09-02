@@ -8,6 +8,7 @@ import * as vscode from 'vscode';
 import * as nisabaLogger from './logger';
 import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
+import { getProjectCode } from './atf_model';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
@@ -36,8 +37,8 @@ export function activate(context: vscode.ExtensionContext) {
     const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', async () => {
         const editor = vscode.window.activeTextEditor;
         const fileName = basename(editor.document.uri.fsPath);
-        const fileProject = "cams/gkab";
         const fileContent = editor.document.getText();
+        const fileProject = getProjectCode(fileContent);
         // The validate function is currently not mapped to the appropriate logging functions
         const result = await validate(fileName,fileProject,fileContent);
         handleResult(result, editor);

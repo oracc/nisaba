@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import { EOL } from 'os';
 
 /**
@@ -8,9 +9,9 @@ import { EOL } from 'os';
  */
 export function getProjectCode(atfText: string): string {
     const tag = "#project:";
-    for (const line of atfText.split(EOL)) {
-        if (line.startsWith(tag)) {
-            return line.slice(tag.length).trim();
-        }
-    }
+    const codes = atfText.split(EOL)
+                    .filter(line => line.startsWith(tag))
+                    .map(line => line.slice(tag.length).trim());
+    assert(codes.length == 1);
+    return codes[0];
 }

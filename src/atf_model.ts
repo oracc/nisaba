@@ -1,3 +1,5 @@
+import { EOL } from 'os';
+
 /**
  * Extract the project code from an ATF file.
  *
@@ -6,7 +8,7 @@
  */
 export function getProjectCode(atfText: string): string {
     const tag = "#project:";
-    for (const line of atfText.split(/\r?\n/)) {
+    for (const line of atfText.split(EOL)) {
         if (line.startsWith(tag)) {
             return line.slice(tag.length).trim();
         }

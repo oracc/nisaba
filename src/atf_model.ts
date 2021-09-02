@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * Extract the project code from an ATF file.
  *
@@ -6,5 +5,10 @@
  * @returns The code of the Oracc project the file refers to
  */
 export function getProjectCode(atfText: string): string {
-    return "cams/gkab";
+    const tag = "#project:";
+    for (const line of atfText.split(/\r?\n/)) {
+        if (line.startsWith(tag)) {
+            return line.slice(tag.length).trim();
+        }
+    }
 }

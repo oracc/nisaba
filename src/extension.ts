@@ -38,7 +38,13 @@ export function activate(context: vscode.ExtensionContext) {
         const editor = vscode.window.activeTextEditor;
         const fileName = basename(editor.document.uri.fsPath);
         const fileContent = editor.document.getText();
-        const fileProject = getProjectCode(fileContent);
+        let fileProject: string;
+        try {
+            fileProject = getProjectCode(fileContent);
+        } catch (err) {
+            vscode.window.showErrorMessage(`Could not validate: ${err}`);
+            return;
+        }
         // The validate function is currently not mapped to the appropriate logging functions
         const result = await validate(fileName,fileProject,fileContent);
         handleResult(result, editor);

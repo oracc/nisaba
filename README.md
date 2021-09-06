@@ -1,20 +1,20 @@
 # Nisaba: The new text editor for Oracc
 
-1. User Guide
-    * About Nisaba
-        * What is Oracc?
-        * What is Nisaba?
-    * Installing Nisaba
-    * Work with ATF files
-        * Lemmatise an ATF
-        * Validate an ATF
-    * Troubleshooting
-    * Asking for help
-1. Development
-    * Installation for developers
-    * Development workflow
-    * Running tests
-    * Debugging tips
+1. [User Guide](./README.md#user-guide)
+    * [About Nisaba](./README.md#about-nisaba)
+        * [What is Oracc?](./README.md#what-is-oracc)
+        * [What is Nisaba?](./README.md#what-is-nisaba)
+    * [Installing Nisaba](./README.md#installing-nisaba)
+    * [Work with ATF files](./README.md#work-with-atf-file)
+        * [Lemmatise an ATF](./README.md#lemmatise-an-atf)
+        * [Validate an ATF](./README.md#validate-an-atf)
+    * [Troubleshooting](./README.md#troubleshooting)
+    * [Asking for help](./README.md#asking-for-help)
+1. [Development](./README.md#development)
+    * [Installation for developers](./README.md#installation-for-developers)
+    * [Development workflow](./README.md#development-workflow)
+    * [Running tests](./README.md#running-tests)
+    * [Debugging tips](./README.md#debugging-tips)
 
 ## User Guide
 

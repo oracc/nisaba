@@ -8,6 +8,7 @@
     * [Work with ATF files](./README.md#work-with-atf-file)
         * [Lemmatise an ATF](./README.md#lemmatise-an-atf)
         * [Validate an ATF](./README.md#validate-an-atf)
+        * [Right-to-left languages (e.g. Arabic, Farsi, Kurdish, Syriac...)](./README.md#right-to-left-languages-e-g-Arabic-Farsi-Kurdish-Syriac)
     * [Troubleshooting](./README.md#troubleshooting)
     * [Asking for help](./README.md#asking-for-help)
 1. [Development](./README.md#development)
@@ -68,6 +69,7 @@ Once you have an ATF file to load, simple locate the File option on the menu bar
 
 #### Lemmatise an ATF
 #### Validate an ATF
+#### Right-to-left languages (e.g. Arabic, Farsi, Kurdish, Syriac...)
 ### Troubleshooting
 ### Asking for help
 

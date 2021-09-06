@@ -82,9 +82,10 @@ Once you are done viewing or editing an ATF file, simply save and close it and t
 
 #### Validate an ATF
 
-You can validate an ATF file by clicking on the validate button on the top right. It will send the contents of the ATF file to the Oracc server for validation. If the file is valid, the console will display a message saying so. Otherwise, a list of errors appears in the console and the errored lines appear highlighted in the edition panel, as shown in the image below
+You can validate an ATF file by clicking on the validate button on the top right. It will send the contents of the ATF file to the Oracc server for validation. If the file is valid, the console will display a message saying so. Otherwise, a list of errors appears in the console and the errored lines appear highlighted in the edition panel, as shown in the images below
 
-<img src="media/validateATF.png" align="center">
+<img src="media/highlighterrors.png" align="center">
+<img src="media/outputerrors.png" align="center">
 
 #### Lemmatise an ATF
 

@@ -57,7 +57,7 @@ of Oracc, enabling more projects to adopt it.
 Nisaba is currently being developed by the
 [UCL Research Software Development Group](https://www.ucl.ac.uk/research-it-services/about/research-software-development).
 
-<img src="PLACEHOLDER" align="center" width="90%">
+<img src="media/generalUI.png" align="center">
 
 ### Installing Nisaba
 
@@ -72,7 +72,7 @@ Please note you can find numerous ATF files freely available on the
 
 Once Visual Studio has detected you have opened a file with the "atf" extension, it will show the Nisaba extension buttons on the top right of the window, which allow you to lemmatise and validate your ATF file, as well as preview an right-to-left translation with its correct orientation or ask for help:
 
-<img src="PLACEHOLDER" align="center" width="90%">
+<img src="media/buttons.png" align="center">
 
 All the Nisaba buttons have tooltips, so you can hover over them and see which action corresponds to which button.
 
@@ -84,7 +84,7 @@ Once you are done viewing or editing an ATF file, simply save and close it and t
 
 You can validate an ATF file by clicking on the validate button on the top right. It will send the contents of the ATF file to the Oracc server for validation. If the file is valid, the console will display a message saying so. Otherwise, a list of errors appears in the console and the errored lines appear highlighted in the edition panel, as shown in the image below
 
-<img src="PLACEHOLDER" align="center" width="90%">
+<img src="media/validateATF.png" align="center">
 
 #### Lemmatise an ATF
 
@@ -98,7 +98,7 @@ One key feature Nisaba has is the ability to display an ATF translation in right
 
 Please note this feature is not yet available in an "as you type" fashion, so you will have to first type the translation in the main panel first, then use the "Show Arabic Preview" button to check it displays correctly.
 
-<img src="PLACEHOLDER" align="center" width="90%">
+<img src="media/arabicpreview.png" align="center">
 
 ### Troubleshooting
 

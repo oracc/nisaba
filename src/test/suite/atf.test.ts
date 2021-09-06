@@ -15,6 +15,16 @@ suite('ATF Model Test Suite', () => {
                               `../../../src/test/suite/input/${fileName}`)).toString();
                 assert.strictEqual(getProjectCode(text), projectCode);
             });
-        })
+        });
+
+    [["two_projects.atf", 2], ["no_project.atf", 0]]
+        .forEach(function ([fileName, numCodes]) {
+            test(`Getting project fails when ${numCodes} codes present`, async() => {
+                const text = fs.readFileSync(
+                    path.join(__dirname,
+                              `../../../src/test/suite/input/${fileName}`)).toString();
+                assert.throws(() => getProjectCode(text));
+            });
+        });
 
 });

@@ -1,5 +1,5 @@
 /fake/path/error_belsunu.atf:6:
-unknown block token: tableta.
+X001001: unknown block token: tableta.
 /fake/path/error_belsunu.atf:44:
-o 4: translation uses undefined label.
+X001001: o 4: translation uses undefined label.
 ATF processor ox issued 2 warnings and 0 notices

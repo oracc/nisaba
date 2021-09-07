@@ -1,17 +1,17 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest an idea for Nisaba
 
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. For example, "I'm always frustrated when [...]"
+Please describe the problem is. For example, "I'm always frustrated when [...]"
 
 **Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+How would it look like? How would a user interact with this feature? What is its expected behaviour?
 
 **Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Please describe alternative solutions or features you've considered and why you would preferred the solution described above.
 
 **Additional context**
-Add any other context or screenshots about the feature request here.
+Add any other context, screenshots, schemas, etc. about the feature request here. You can follow these [instructions](https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/attaching-files) in order to upload files here.

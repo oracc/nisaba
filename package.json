@@ -70,13 +70,11 @@
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
                     "group": "navigation"
-                }
-            ],
-            "view/title": [
+                },
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.aboutNisaba",
-                    "group": "navigation" 
+                    "group": "navigation"
                 }
             ]
         },

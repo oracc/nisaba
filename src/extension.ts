@@ -43,11 +43,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable2);
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {
-            PreviewPanel.createOrShow(context.extensionUri);
-        })
-    );
+    const disposable3 = vscode.commands.registerCommand('ucl-rsdg.aboutNisaba', () => {
+        // The code you place here will be executed every time your command is executed
+
+        // Display a message box to the user
+        const test1 = 'This is a test message!';
+        vscode.window.showWarningMessage(test1);
+        nisabaLogger.warn(test1);
+    });
+
+    context.subscriptions.push(disposable3);
 }
 
 // this method is called when your extension is deactivated

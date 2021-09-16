@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as AdmZip from 'adm-zip';
-import { MultipartMessage, extractLogs } from '../../server/mime';
+import { MultipartMessage, extractLogs } from '../../client/mime';
 
 suite('Messages test suite', () => {
 

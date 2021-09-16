@@ -1,5 +1,5 @@
 import { default as fetch }from 'node-fetch';
-import { createEnvelopeMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from '../server/mime';
+import { createEnvelopeMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from './mime';
 import { ServerResult } from './server_result';
 import { log } from '../logger';
 

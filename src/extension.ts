@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { lemmatise, validate } from './server/messages';
+import { lemmatise, ServerFunction, validate } from './server/messages';
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -34,37 +34,15 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable1);
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', async () => {
-        const editor = vscode.window.activeTextEditor;
-        const fileName = basename(editor.document.uri.fsPath);
-        const fileContent = editor.document.getText();
-        let fileProject: string;
-        try {
-            fileProject = getProjectCode(fileContent);
-        } catch (err) {
-            vscode.window.showErrorMessage(`Could not validate: ${err}`);
-            return;
-        }
-        // The validate function is currently not mapped to the appropriate logging functions
-        const result = await validate(fileName,fileProject,fileContent);
-        handleResult(result, editor);
+    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
+        workWithServer("validate", validate);
         });
 
     context.subscriptions.push(disposable2);
 
-    context.subscriptions.push(vscode.commands.registerCommand('ucl-rsdg.lemmatiseAtf', async () => {
-            const editor = vscode.window.activeTextEditor;
-            const fileName = basename(editor.document.uri.fsPath);
-            const fileContent = editor.document.getText();
-            let fileProject: string;
-            try {
-                fileProject = getProjectCode(fileContent);
-            } catch (err) {
-                vscode.window.showErrorMessage(`Could not lemmatise: ${err}`);
-                return;
-            }
-            const result = await lemmatise(fileName,fileProject,fileContent);
-            handleResult(result, editor);
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.lemmatiseAtf', () => {
+            workWithServer("lemmatise", lemmatise)
         })
     );
 
@@ -73,6 +51,32 @@ export function activate(context: vscode.ExtensionContext) {
             PreviewPanel.createOrShow(context.extensionUri);
         })
     );
+}
+
+/**
+ * Base function for performing server-related tasks with the editor contents.
+ *  
+ * Will first get some basic information from the editor (filename, project
+ * code, text contents), then call another function to communicate with
+ * the server, and finally display the results of that communication.
+ *
+ * @param verb a textual description of the action, for reporting purposes
+ * @param callback the function to call after getting the editor information
+ */
+async function workWithServer(verb: string, callback: ServerFunction): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    const fileName = basename(editor.document.uri.fsPath);
+    const fileContent = editor.document.getText();
+    let fileProject: string;
+    try {
+        fileProject = getProjectCode(fileContent);
+    } catch (err) {
+        vscode.window.showErrorMessage(`Could not ${verb}: ${err}`);
+        return;
+    }
+    // The validate function is currently not mapped to the appropriate logging functions
+    const result = await callback(fileName,fileProject,fileContent);
+    handleResult(result, editor);
 }
 
 // this method is called when your extension is deactivated

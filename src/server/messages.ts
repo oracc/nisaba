@@ -15,3 +15,18 @@ export async function validate(filename: string, project: string, text: string):
         vscode.window.showErrorMessage(errMsg);
     }
 }
+
+
+export async function lemmatise(filename: string, project: string, text: string): Promise<ServerResult> {
+    const client = new SOAPClient(filename, project, text);
+    try {
+        const result = await client.executeCommand("lem");
+        return result;
+    } catch (err) {
+        const errMsg = `An error has occurred:
+            ${err}
+            The log may contain more details.
+            `;
+        vscode.window.showErrorMessage(errMsg);
+    }
+}

@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import { validate } from './server/messages';
+import { lemmatise, validate } from './server/messages';
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -51,6 +51,22 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
     context.subscriptions.push(disposable2);
+
+    context.subscriptions.push(vscode.commands.registerCommand('ucl-rsdg.lemmatiseAtf', async () => {
+            const editor = vscode.window.activeTextEditor;
+            const fileName = basename(editor.document.uri.fsPath);
+            const fileContent = editor.document.getText();
+            let fileProject: string;
+            try {
+                fileProject = getProjectCode(fileContent);
+            } catch (err) {
+                vscode.window.showErrorMessage(`Could not lemmatise: ${err}`);
+                return;
+            }
+            const result = await lemmatise(fileName,fileProject,fileContent);
+            handleResult(result, editor);
+        })
+    );
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {

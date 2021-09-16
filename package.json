@@ -48,6 +48,11 @@
                     "light": "media/validation_light.svg",
                     "dark": "media/validation_dark.svg"
                 }
+            },
+            {
+                "command": "ucl-rsdg.lemmatiseAtf",
+                "title": "Lemmatise ATF",
+                "category": "Oracc"
             }
         ],
         "menus": {
@@ -60,6 +65,11 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == atf",
+                    "command": "ucl-rsdg.lemmatiseAtf",
                     "group": "navigation"
                 }
             ]

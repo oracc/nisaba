@@ -17,7 +17,8 @@
     "activationEvents": [
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.helloWorld",
-        "onCommand:ucl-rsdg.validateAtf"
+        "onCommand:ucl-rsdg.validateAtf",
+        "onCommand:ucl-rsdg.lemmatiseAtf"
     ],
     "main": "./dist/extension",
     "contributes": {

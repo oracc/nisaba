@@ -22,18 +22,18 @@ export class MultipartMessage {
      * @param project The Oracc project the file belongs to
      * @param text The text of the ATF file
      */
-    constructor(command: string, filename: string,
+    constructor(command: ServerAction, filename: string,
                 project: string, text: string) {
         // The exact header may be overwritten later anyway, so we don't need
         // to include all the details.
         const message = createBaseMessage(
             'multipart/related; charset="utf-8"'
         );
-        const keys = createEnvelopeKeys(command, filename, project, null);
-        const data = createEnvelopeData(null);
-        this.envelope = createEnvelopePart(keys, data);
+        const envelope = createEnvelopeMessage({command, filename, project});
+        envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
         message.body = [];
-        message.body.push(this.envelope);
+        message.body.push(envelope);
+        this.envelope = envelope;
         // Now for the attachment...
         // First create the body of the message, since we'll need some information
         // from it to create the headers
@@ -89,6 +89,31 @@ export class MultipartMessage {
     }
 }
 
+/**
+ * The actions recognised by the server.
+ * Options are validation ("atf") and lemmatisation ("lem").
+ */
+export type ServerAction = "atf" | "lem"
+
+/** The parameters required for forming a message.
+ *  Has different fields depending on the stage of the communication.
+ */
+type RequestParams = InitialParams | SubsequentParams;
+type InitialParams = {
+    // Initial message needs the type of action, the filename and project name
+    command: ServerAction;
+    filename: string;
+    project: string;
+};
+type SubsequentParams = {
+    // Later messages require only the response ID issued by the server
+    responseID: string;
+};
+
+function isInitialRequest(params: RequestParams): params is InitialParams  {
+    return !("responseID" in params);
+}
+
 function createBaseMessage(contentType: string, isBinary = false) {
     const message = mimemessage.factory({
         contentType
@@ -100,27 +125,26 @@ function createBaseMessage(contentType: string, isBinary = false) {
     return message;
 }
 
-function createEnvelopeKeys(command: string, filename: string,
-                            project: string, responseID: string){
+function createEnvelopeKeys(params: RequestParams){
     let keys: string;
-    if (responseID == null){
+    if (isInitialRequest(params)){
         keys = `<osc-data:keys>
-                        <osc-data:key>${command}</osc-data:key>
-                        <osc-data:key>${project}</osc-data:key>
-                        <osc-data:key>00atf/${filename}</osc-data:key>
+                        <osc-data:key>${params.command}</osc-data:key>
+                        <osc-data:key>${params.project}</osc-data:key>
+                        <osc-data:key>00atf/${params.filename}</osc-data:key>
                     </osc-data:keys>`;
     }
     else {
         keys = `<osc-data:keys>
-                                <osc-data:key>${responseID}</osc-data:key>
+                                <osc-data:key>${params.responseID}</osc-data:key>
                             </osc-data:keys>`;
     }
     return keys;
 }
 
-function createEnvelopeData(responseID: string){
+function createEnvelopeData(params: RequestParams){
     let data = ""; // the final request does not have any data
-    if (responseID == null){
+    if (isInitialRequest(params)){
         data =  `<osc-data:data>
                         <osc-data:item xmime5:contentType="*/*">
                             <xop:Include href="cid:request_zip"/>
@@ -130,24 +154,24 @@ function createEnvelopeData(responseID: string){
     return data;
 }
 
-function createEnvelopePart(keys: string, data: string) {
-    const envelope = createBaseMessage(
-        'application/xop+xml; charset="utf-8"; type="application/soap+xml"',
-        true);
-    envelope.header('Content-ID', '<SOAP-ENV:Envelope>');
-    envelope.body = createEnvelope(keys, data, false);
-    return envelope;
+export function createEnvelopeMessage(params: RequestParams) {
+    const contentType = isInitialRequest(params)
+                        ? 'application/xop+xml; charset="utf-8"; type="application/soap+xml"'
+                        : 'application/soap+xml';
+    const isBinary = isInitialRequest(params);
+    const envelope = createBaseMessage(contentType, isBinary);
+    envelope.body = createEnvelope(params)
+    return envelope
 }
 
 /**
  * Get a SOAP envelope that can be used as its own message or in a multipart message.
- * @param keys The <osc-data:keys> element
- * @param data  The <osc-data:data> element
- * @param isResponse true if we are getting the result, false if initial request
+ *
+ * @param params The request parameters, depending on the type of message
  * @returns The body of the envelope
  */
-function createEnvelope(keys: string, data: string, isResponse: boolean): string {
-    const osc_meth_type = isResponse ? "Response" : "Request";
+function createEnvelope(params: RequestParams): string {
+    const osc_meth_type = isInitialRequest(params) ? "Request" : "Response";
     return `<?xml version="1.0" encoding="UTF-8"?>
         <SOAP-ENV:Envelope
             xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
@@ -160,8 +184,8 @@ function createEnvelope(keys: string, data: string, isResponse: boolean): string
             xmlns:osc-meth="http://oracc.org/wsdl/ows.wsdl">
             <SOAP-ENV:Body>
                 <osc-meth:${osc_meth_type}>
-                    ${keys}
-                    ${data}
+                    ${createEnvelopeKeys(params)}
+                    ${createEnvelopeData(params)}
                 </osc-meth:${osc_meth_type}>
             </SOAP-ENV:Body>
         </SOAP-ENV:Envelope>`;
@@ -174,15 +198,6 @@ function createAttachment(content: string) {
     return attachment;
 }
 
-export function createResponseMessage(responseID: string) {
-    const envelope = createBaseMessage('application/soap+xml');
-    envelope.body = createEnvelope(
-        createEnvelopeKeys(null, null, null, responseID),
-        createEnvelopeData(responseID),
-        true
-    )
-    return envelope;
-}
 
 /**
  * Parse a response to get the code for a validation or lemmatisation request.

@@ -46,5 +46,16 @@ export function handleResult(result: ServerResult, editor: vscode.TextEditor): v
     }
     // Show the log in the console and the log file
     nisabaLogger.info(result.get_user_log(editor.document.fileName));
-    // TODO: If lemmatising, update the editor with the result
+
+    // If lemmatising, update the contents of the entire editor with the result
+    if (result.contains_lemmata()) {
+        // Create a range that covers the whole document. There doesn't seem to be
+        // an API method. This looks more robust instead of using the text length.
+        const wholeRange = new vscode.Range(
+            editor.document.positionAt(0),
+            editor.document.lineAt(editor.document.lineCount - 1).range.end)
+        editor.edit( editBuilder => {
+            editBuilder.replace(wholeRange, result.atf_content);
+        })
+    }
 }

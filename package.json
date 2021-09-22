@@ -17,7 +17,8 @@
     "activationEvents": [
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.helloWorld",
-        "onCommand:ucl-rsdg.validateAtf"
+        "onCommand:ucl-rsdg.validateAtf",
+        "onCommand:ucl-rsdg.lemmatiseAtf"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -48,6 +49,11 @@
                     "light": "media/validation_light.svg",
                     "dark": "media/validation_dark.svg"
                 }
+            },
+            {
+                "command": "ucl-rsdg.lemmatiseAtf",
+                "title": "Lemmatise ATF",
+                "category": "Oracc"
             }
         ],
         "menus": {
@@ -60,6 +66,11 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == atf",
+                    "command": "ucl-rsdg.lemmatiseAtf",
                     "group": "navigation"
                 }
             ]

@@ -22,10 +22,11 @@ export function initView(): void {
  * @param editor -- the TextEditor in which to display the errors
  */
 export function handleResult(result: ServerResult, editor: vscode.TextEditor): void {
+    const process = result.contains_lemmata() ? "Lemmatisation" : "Validation"
     if (result.contains_errors()) {
         // Show a popup with the status of the result
         vscode.window.showErrorMessage(
-            'Validation identified errors. See log for details.');
+            `${process} identified errors. See log for details.`);
         // Highlight the lines with errors
         // We create an array of DecorationOptions, each of them specifying
         // a single line (as a Range) and a message to be displayed on hover
@@ -40,9 +41,21 @@ export function handleResult(result: ServerResult, editor: vscode.TextEditor): v
         editor.setDecorations(lineErrorStyle, highlightOptions);
     } else {
         // Show a success popup and clear all highlights
-        vscode.window.showInformationMessage('Validation successful.');
+        vscode.window.showInformationMessage(`${process} successful.`);
         editor.setDecorations(lineErrorStyle, []);
     }
     // Show the log in the console and the log file
     nisabaLogger.info(result.get_user_log(editor.document.fileName));
+
+    // If lemmatising, update the contents of the entire editor with the result
+    if (result.contains_lemmata()) {
+        // Create a range that covers the whole document. There doesn't seem to be
+        // an API method. This looks more robust instead of using the text length.
+        const wholeRange = new vscode.Range(
+            editor.document.positionAt(0),
+            editor.document.lineAt(editor.document.lineCount - 1).range.end)
+        editor.edit( editBuilder => {
+            editBuilder.replace(wholeRange, result.atf_content);
+        })
+    }
 }

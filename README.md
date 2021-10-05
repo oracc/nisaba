@@ -3,7 +3,7 @@
 Nisaba is the new text editor that enables Oracc content creators to view, edit and validate documents recording the content of cunneiform tablets from
 various ancient Mesopotamian cultures, translated and formatted for the modern reader.
 
-You can find more information about it and how to install and use it in [the user guide](./docs/user-guide).
+You can find more information about it and how to install and use it in [the user guide](./docs/user_guide).
 
 <img src="./media/nisaba_ar_en_belsunu.png" align="center">
 

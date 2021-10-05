@@ -36,4 +36,4 @@ of Oracc, enabling more projects to adopt it.
 Nisaba is currently being developed by the
 [UCL Research Software Development Group](https://www.ucl.ac.uk/research-it-services/about/research-software-development).
 
-<img src="./media/nisaba_ar_en_belsunu.png" align="center">
+<img src="./../media/nisaba_ar_en_belsunu.png" align="center">

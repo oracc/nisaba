@@ -53,6 +53,12 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(disposable3);
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {
+            PreviewPanel.createOrShow(context.extensionUri);
+        })
+    );
 }
 
 // this method is called when your extension is deactivated

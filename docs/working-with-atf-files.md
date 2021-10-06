@@ -2,12 +2,12 @@
 
 In order to enable the Nisaba extension, you will need to open an ATF file in Visual Studio Code. In order to do this, find the "File" option on the menu bar on the top left of the window, then choose "Open File". This will prompt a new window where you can navigate to an existent ATF file in your system, then click on "Open". 
 
-Alternatively, you can create a new file and save it with an ".atf" extenstion, e.g. "my_file.atf". 
+Alternatively, you can create a new file and save it with an ".atf" extension, e.g. "my_file.atf". 
 
 Please note you can find numerous ATF files freely available on the 
 [Oracc site archive](http://oracc.museum.upenn.edu/doc/search/index.html).
 
-Once Visual Studio has detected you have opened a file with the "atf" extension, it will show the Nisaba extension buttons on the top right of the window, which allow you to lemmatise and validate your ATF file, as well as preview an right-to-left translation with its correct orientation or ask for help:
+Once Visual Studio has detected you have opened a file with the "atf" extension, it will show the Nisaba extension buttons on the top right of the window, which allow you to lemmatise and validate your ATF file, as well as preview a right-to-left translation with its correct orientation or ask for help:
 
 <img src="../media/buttons.png" align="center">
 
@@ -34,6 +34,6 @@ If the file is not valid, the console will display the error messages found by t
 
 One key feature Nisaba has is the ability to display an ATF translation in right-to-left languages, like Arabic. In order to use this feature, you will need to have open an ATF with a translation in Arabic (or other right-to-left language). When you click on the "Show Arabic Preview" button on the top right, you will see a secondary panel to the right of the edition panel that shows the same ATF with the translation section correctly orientated for right-to-left languages.
 
-Please note this feature is not yet available in an "as you type" fashion, so you will have to first type the translation in the main panel first, then use the "Show Arabic Preview" button to check it displays correctly.
+Please note this feature is not yet available in an "as you type" fashion, so you will have to first type the translation in the main panel, then use the "Show Arabic Preview" button to check it displays correctly.
 
 <img src="../media/arabicpreview.png" align="center">

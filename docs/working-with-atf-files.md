@@ -34,6 +34,6 @@ If the file is not valid, the console will display the error messages found by t
 
 One key feature Nisaba has is the ability to display an ATF translation in right-to-left languages, like Arabic. In order to use this feature, you will need to have open an ATF with a translation in Arabic (or other right-to-left language). When you click on the "Show Arabic Preview" button on the top right, you will see a secondary panel to the right of the edition panel that shows the same ATF with the translation section correctly orientated for right-to-left languages.
 
-Please note this feature is not yet available in an "as you type" fashion, so you will have to first type the translation in the main panel, then use the "Show Arabic Preview" button to check it displays correctly.
+Please note that this feature is not yet available in the main window, where the text is always aligned left-to-right. However, you can use the "Show Arabic Preview" button to open the preview pane, and check that the text displays correctly as you type.
 
 <img src="../media/arabicpreview.png" align="center">

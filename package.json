@@ -48,6 +48,15 @@
                     "light": "media/validation_light.svg",
                     "dark": "media/validation_dark.svg"
                 }
+            },
+            {
+                "command": "ucl-rsdg.aboutNisaba",
+                "title": "About Nisaba",
+                "category": "Oracc",
+                "icon": {
+                    "light": "media/preview_light.svg",
+                    "dark": "media/preview_dark.svg"
+                }
             }
         ],
         "menus": {
@@ -60,6 +69,11 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == atf",
+                    "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation"
                 }
             ]

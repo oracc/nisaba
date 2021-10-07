@@ -1,47 +1,11 @@
-# Nisaba
+# Nisaba: The new text editor for Oracc
 
-This is the README of the Visual Studio Code extension "Nisaba", for the [ATF
-format](http://oracc.museum.upenn.edu/doc/help/editinginatf/index.html).
+Nisaba is the new text editor that enables Oracc content creators to view, edit and validate documents recording the content of cunneiform tablets from
+various ancient Mesopotamian cultures, translated and formatted for the modern reader.
 
-## Development workflow
+You can find more information about it and how to install and use it in [the user guide](./docs/user_guide.md).
 
-After cloning the repository, enter this directory and install the dependencies
-with the command
+If you wish to contribute to the development of the Nisaba extension, we have prepared a section with [some development notes](./docs/development.md). You can get in touch with Nisaba's developers at UCL's Advance Research Computing Centre by [filing a GitHub issue on this repository](https://github.com/oracc/nisaba/issues/new).
 
-```
-npm install
-```
+<img src="./media/nisaba_ar_en_belsunu.png" align="center">
 
-Then you can compile, package, and install the extension with
-
-```
-npm run compile
-npm run package
-code --install-extension nisaba-0.0.1.vsix
-```
-
-If you open this directory in Visual Studio Code, you should be able to run the
-compile and package commands from the list of "npm scripts" in the sidebar on
-the left.  (Re)start Visual Studio Code to make the changes take effect:
-
-```
-code
-```
-
-### Running tests
-
-After having installed all dependencies with `npm install` and compiled the
-package with `npm run compile`, you can run the tests for the package with
-
-```
-npm run test
-```
-
-### Debugging tips
-
-To debug the syntax highlighting (currently implemented as a [Textmate
-grammar](https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide))
-trigger the [scope
-inspector](https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide#scope-inspector)
-from the Command Palette (`Ctrl+Shift+P`) with the `Developer: Inspect Editor
-Tokens and Scopes` command.

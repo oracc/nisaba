@@ -86,8 +86,16 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
         return;
     }
     // The validate function is currently not mapped to the appropriate logging functions
-    const result = await callback(fileName,fileProject,fileContent);
-    handleResult(result, editor);
+    try {
+        const result = await callback(fileName,fileProject,fileContent);
+        handleResult(result, editor);
+    } catch (err) {
+        const errMsg = `An error has occurred:
+        ${err}
+        The log may contain more details.
+        `;
+        vscode.window.showErrorMessage(errMsg);
+    }
 }
 
 // this method is called when your extension is deactivated

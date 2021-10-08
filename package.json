@@ -18,7 +18,8 @@
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.helloWorld",
         "onCommand:ucl-rsdg.validateAtf",
-        "onCommand:ucl-rsdg.lemmatiseAtf"
+        "onCommand:ucl-rsdg.lemmatiseAtf",
+        "onCommand:ucl-rsdg.aboutNisaba"
     ],
     "main": "./dist/extension",
     "contributes": {

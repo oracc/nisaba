@@ -54,7 +54,11 @@
             {
                 "command": "ucl-rsdg.lemmatiseAtf",
                 "title": "Lemmatise ATF",
-                "category": "Oracc"
+                "category": "Oracc",
+                "icon": {
+                    "light": "media/lemmatisation_light.svg",
+                    "dark": "media/lemmatisation_dark.svg"
+                }
             },
             {
                 "command": "ucl-rsdg.aboutNisaba",

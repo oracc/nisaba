@@ -54,6 +54,15 @@
                 "command": "ucl-rsdg.lemmatiseAtf",
                 "title": "Lemmatise ATF",
                 "category": "Oracc"
+            },
+            {
+                "command": "ucl-rsdg.aboutNisaba",
+                "title": "About Nisaba",
+                "category": "Oracc",
+                "icon": {
+                    "light": "media/preview_light.svg",
+                    "dark": "media/preview_dark.svg"
+                }
             }
         ],
         "menus": {
@@ -71,6 +80,11 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.lemmatiseAtf",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == atf",
+                    "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation"
                 }
             ]

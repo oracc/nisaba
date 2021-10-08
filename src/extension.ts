@@ -40,6 +40,17 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable2);
 
+    const disposable3 = vscode.commands.registerCommand('ucl-rsdg.aboutNisaba', () => {
+        // The code you place here will be executed every time your command is executed
+
+        // Display a message box to the user
+        const test1 = 'This is a test message!';
+        vscode.window.showWarningMessage(test1);
+        nisabaLogger.warn(test1);
+    });
+
+    context.subscriptions.push(disposable3);
+
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.lemmatiseAtf', () => {
             workWithServer("lemmatise", lemmatise)

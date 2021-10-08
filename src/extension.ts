@@ -85,7 +85,6 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
         vscode.window.showErrorMessage(`Could not ${verb}: ${err}`);
         return;
     }
-    // The validate function is currently not mapped to the appropriate logging functions
     try {
         const result = await callback(fileName,fileProject,fileContent);
         handleResult(result, editor);

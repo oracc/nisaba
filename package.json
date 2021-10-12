@@ -3,7 +3,7 @@
     "displayName": "Nisaba",
     "description": "Support for ATF files",
     "version": "0.0.1",
-    "publisher": "ucl-rsdg",
+    "publisher": "UCLResearchSoftwareDevelopmentGroup",
     "repository": {
         "type": "git",
         "url": "https://github.com/oracc/nisaba.git"
@@ -15,17 +15,17 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onCommand:ucl-rsdg.arabicPreview",
-        "onCommand:ucl-rsdg.helloWorld",
-        "onCommand:ucl-rsdg.validateAtf",
-        "onCommand:ucl-rsdg.lemmatiseAtf",
-        "onCommand:ucl-rsdg.aboutNisaba"
+        "onCommand:UCLResearchSoftwareDevelopmentGroup.arabicPreview",
+        "onCommand:UCLResearchSoftwareDevelopmentGroup.helloWorld",
+        "onCommand:UCLResearchSoftwareDevelopmentGroup.validateAtf",
+        "onCommand:UCLResearchSoftwareDevelopmentGroup.lemmatiseAtf",
+        "onCommand:UCLResearchSoftwareDevelopmentGroup.aboutNisaba"
     ],
     "main": "./dist/extension",
     "contributes": {
         "commands": [
             {
-                "command": "ucl-rsdg.arabicPreview",
+                "command": "UCLResearchSoftwareDevelopmentGroup.arabicPreview",
                 "title": "Show Arabic preview",
                 "category": "Oracc",
                 "icon": {
@@ -34,7 +34,7 @@
                 }
             },
             {
-                "command": "ucl-rsdg.helloWorld",
+                "command": "UCLResearchSoftwareDevelopmentGroup.helloWorld",
                 "title": "This is the title: Hello World",
                 "category": "Oracc",
                 "icon": {
@@ -43,7 +43,7 @@
                 }
             },
             {
-                "command": "ucl-rsdg.validateAtf",
+                "command": "UCLResearchSoftwareDevelopmentGroup.validateAtf",
                 "title": "Validate ATF",
                 "category": "Oracc",
                 "icon": {
@@ -52,7 +52,7 @@
                 }
             },
             {
-                "command": "ucl-rsdg.lemmatiseAtf",
+                "command": "UCLResearchSoftwareDevelopmentGroup.lemmatiseAtf",
                 "title": "Lemmatise ATF",
                 "category": "Oracc",
                 "icon": {
@@ -61,7 +61,7 @@
                 }
             },
             {
-                "command": "ucl-rsdg.aboutNisaba",
+                "command": "UCLResearchSoftwareDevelopmentGroup.aboutNisaba",
                 "title": "About Nisaba",
                 "category": "Oracc",
                 "icon": {
@@ -74,35 +74,35 @@
             "editor/title": [
                 {
                     "when": "resourceLangId == atf",
-                    "command": "ucl-rsdg.arabicPreview",
+                    "command": "UCLResearchSoftwareDevelopmentGroup.arabicPreview",
                     "group": "navigation"
                 },
                 {
                     "when": "resourceLangId == atf",
-                    "command": "ucl-rsdg.validateAtf",
+                    "command": "UCLResearchSoftwareDevelopmentGroup.validateAtf",
                     "group": "navigation"
                 },
                 {
                     "when": "resourceLangId == atf",
-                    "command": "ucl-rsdg.lemmatiseAtf",
+                    "command": "UCLResearchSoftwareDevelopmentGroup.lemmatiseAtf",
                     "group": "navigation"
                 },
                 {
                     "when": "resourceLangId == atf",
-                    "command": "ucl-rsdg.aboutNisaba",
+                    "command": "UCLResearchSoftwareDevelopmentGroup.aboutNisaba",
                     "group": "navigation"
                 }
             ]
         },
         "keybindings": [
             {
-                "command": "ucl-rsdg.helloWorld",
+                "command": "UCLResearchSoftwareDevelopmentGroup.helloWorld",
                 "key": "ctrl+I",
                 "mac": "cmd+I",
                 "when": "editorTextFocus && editorLangId == atf"
             },
             {
-                "command": "ucl-rsdg.validateAtf",
+                "command": "UCLResearchSoftwareDevelopmentGroup.validateAtf",
                 "key": "ctrl+D",
                 "mac": "cmd+D",
                 "when": "editorTextFocus && editorLangId == atf"

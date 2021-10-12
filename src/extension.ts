@@ -23,24 +23,24 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with registerCommand
     // The commandId parameter must match the command field in package.json
-    const disposable1 = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
+    const disposable1 = vscode.commands.registerCommand('UCLResearchSoftwareDevelopmentGroup.helloWorld', () => {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
-        const str = 'Hello VS Code from ucl-rsdg!';
+        const str = 'Hello VS Code from UCLResearchSoftwareDevelopmentGroup!';
         vscode.window.showWarningMessage(str);
         nisabaLogger.warn(str);
     });
 
     context.subscriptions.push(disposable1);
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
+    const disposable2 = vscode.commands.registerCommand('UCLResearchSoftwareDevelopmentGroup.validateAtf', () => {
         workWithServer("validate", validate);
         });
 
     context.subscriptions.push(disposable2);
 
-    const disposable3 = vscode.commands.registerCommand('ucl-rsdg.aboutNisaba', () => {
+    const disposable3 = vscode.commands.registerCommand('UCLResearchSoftwareDevelopmentGroup.aboutNisaba', () => {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
@@ -52,13 +52,13 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable3);
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.lemmatiseAtf', () => {
+        vscode.commands.registerCommand('UCLResearchSoftwareDevelopmentGroup.lemmatiseAtf', () => {
             workWithServer("lemmatise", lemmatise)
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {
+        vscode.commands.registerCommand('UCLResearchSoftwareDevelopmentGroup.arabicPreview', () => {
             PreviewPanel.createOrShow(context.extensionUri);
         })
     );
@@ -66,7 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 /**
  * Base function for performing server-related tasks with the editor contents.
- *  
+ *
  * Will first get some basic information from the editor (filename, project
  * code, text contents), then call another function to communicate with
  * the server, and finally display the results of that communication.

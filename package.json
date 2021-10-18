@@ -65,22 +65,22 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.arabicPreview",
-                    "group": "navigation"
+                    "group": "navigation@4"
                 },
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
-                    "group": "navigation"
+                    "group": "navigation@2"
                 },
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.lemmatiseAtf",
-                    "group": "navigation"
+                    "group": "navigation@3"
                 },
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.aboutNisaba",
-                    "group": "navigation"
+                    "group": "navigation@1"
                 }
             ]
         },

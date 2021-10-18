@@ -16,7 +16,6 @@
     ],
     "activationEvents": [
         "onCommand:ucl-rsdg.arabicPreview",
-        "onCommand:ucl-rsdg.helloWorld",
         "onCommand:ucl-rsdg.validateAtf",
         "onCommand:ucl-rsdg.lemmatiseAtf",
         "onCommand:ucl-rsdg.aboutNisaba"
@@ -27,15 +26,6 @@
             {
                 "command": "ucl-rsdg.arabicPreview",
                 "title": "Show Arabic preview",
-                "category": "Oracc",
-                "icon": {
-                    "light": "media/button_preview_light.svg",
-                    "dark": "media/button_preview_dark.svg"
-                }
-            },
-            {
-                "command": "ucl-rsdg.helloWorld",
-                "title": "This is the title: Hello World",
                 "category": "Oracc",
                 "icon": {
                     "light": "media/button_preview_light.svg",
@@ -95,12 +85,6 @@
             ]
         },
         "keybindings": [
-            {
-                "command": "ucl-rsdg.helloWorld",
-                "key": "ctrl+I",
-                "mac": "cmd+I",
-                "when": "editorTextFocus && editorLangId == atf"
-            },
             {
                 "command": "ucl-rsdg.validateAtf",
                 "key": "ctrl+D",

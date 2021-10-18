@@ -20,20 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
     nisabaLogger.initLogging(nisabaOutputChannel);
     initView();
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable1 = vscode.commands.registerCommand('ucl-rsdg.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        const str = 'Hello VS Code from ucl-rsdg!';
-        vscode.window.showWarningMessage(str);
-        nisabaLogger.warn(str);
-    });
-
-    context.subscriptions.push(disposable1);
-
     const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
         workWithServer("validate", validate);
         });

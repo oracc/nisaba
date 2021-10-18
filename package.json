@@ -54,10 +54,7 @@
                 "command": "ucl-rsdg.aboutNisaba",
                 "title": "About Nisaba",
                 "category": "Oracc",
-                "icon": {
-                    "light": "media/button_preview_light.svg",
-                    "dark": "media/button_preview_dark.svg"
-                }
+                "icon": "$(question)"
             }
         ],
         "menus": {

@@ -16,7 +16,9 @@
     ],
     "activationEvents": [
         "onCommand:ucl-rsdg.arabicPreview",
-        "onCommand:ucl-rsdg.validateAtf"
+        "onCommand:ucl-rsdg.validateAtf",
+        "onCommand:ucl-rsdg.lemmatiseAtf",
+        "onCommand:ucl-rsdg.aboutNisaba"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -26,8 +28,8 @@
                 "title": "Show Arabic preview",
                 "category": "Oracc",
                 "icon": {
-                    "light": "media/preview_light.svg",
-                    "dark": "media/preview_dark.svg"
+                    "light": "media/button_preview_light.svg",
+                    "dark": "media/button_preview_dark.svg"
                 }
             },
             {
@@ -35,8 +37,17 @@
                 "title": "Validate ATF",
                 "category": "Oracc",
                 "icon": {
-                    "light": "media/validation_light.svg",
-                    "dark": "media/validation_dark.svg"
+                    "light": "media/button_validation_light.svg",
+                    "dark": "media/button_validation_dark.svg"
+                }
+            },
+            {
+                "command": "ucl-rsdg.lemmatiseAtf",
+                "title": "Lemmatise ATF",
+                "category": "Oracc",
+                "icon": {
+                    "light": "media/button_lemmatisation_light.svg",
+                    "dark": "media/button_lemmatisation_dark.svg"
                 }
             },
             {
@@ -44,8 +55,8 @@
                 "title": "About Nisaba",
                 "category": "Oracc",
                 "icon": {
-                    "light": "media/preview_light.svg",
-                    "dark": "media/preview_dark.svg"
+                    "light": "media/button_preview_light.svg",
+                    "dark": "media/button_preview_dark.svg"
                 }
             }
         ],
@@ -59,6 +70,11 @@
                 {
                     "when": "resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == atf",
+                    "command": "ucl-rsdg.lemmatiseAtf",
                     "group": "navigation"
                 },
                 {

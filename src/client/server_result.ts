@@ -6,18 +6,13 @@ export class ServerResult {
     summary_line: string; // This is the last line that shows in the log
                           // by the Oracc server
     request_log: string; // Not being used except for system logging purposes
-    // TODO: this will be needed for the lemmatisation command
-    atf_content: string;
+    atf_content: string; // The lemmatisation results (undefined if validating)
 
-    // TODO this will also need a lemmatised atf when we tackle lemmatisation
-    // TODO request_log is probably useless for the user, but we should record
-    // everything that happens in a logger for reference
-    constructor(oracc_log: string, request_log: string = ""){
+    constructor(oracc_log: string, request_log?: string, atf?: string){
         this.summary_line = "";
         this.validation_errors = this.get_validation_errors(oracc_log);
         this.request_log = request_log;
-        this.atf_content = ""; //placeholder for lemmatisation
-
+        this.atf_content = atf;
     }
 
     get_validation_errors(oracc_log: string){
@@ -83,5 +78,9 @@ export class ServerResult {
 
     contains_errors(): boolean {
         return Object.keys(this.validation_errors).length != 0
+    }
+
+    contains_lemmata(): boolean {
+        return this.atf_content !== undefined;
     }
 }

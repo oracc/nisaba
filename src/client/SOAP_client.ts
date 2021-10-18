@@ -35,8 +35,12 @@ export class SOAPClient {
             await this.serverComplete();
             log('info', `Request ${this.responseID} is done.`);
             const finalResult = await this.retrieveReponse();
+            // If it exists, the name of the lemmatised file will have the form
+            // <filename without .atf extension>-autolem.atf
+            const lemmatisedName = `${this.atf_filename.slice(0, -4)}-autolem.atf`
             return new ServerResult(finalResult.get('oracc.log'),
-                                    finalResult.get('request.log'));
+                                    finalResult.get('request.log'),
+                                    finalResult.get(lemmatisedName));
         } catch (err) {
             throw `Error during communication with server: ${err}`;
         }
@@ -81,7 +85,7 @@ export class SOAPClient {
                     return;
                 case 'err_stat':
                     log('error', `Received err_stat for request ${this.responseID}.`);
-                    throw `The server encountered an error while validating.
+                    throw `The server encountered an error while working on the request.
                         Please contact the Oracc server admin to look into this problem.`;
                 case 'run':
                     if (attempts < max_attempts) {

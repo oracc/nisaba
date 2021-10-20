@@ -86,11 +86,29 @@
         },
         "keybindings": [
             {
+                "command": "ucl-rsdg.aboutNisaba",
+                "key": "ctrl+H",
+                "mac": "cmd+H",
+                "when": "editorTextFocus && editorLangId == atf"
+            },
+	    {
                 "command": "ucl-rsdg.validateAtf",
                 "key": "ctrl+D",
                 "mac": "cmd+D",
                 "when": "editorTextFocus && editorLangId == atf"
-            }
+	    },
+            {
+                "command": "ucl-rsdg.lemmatiseAtf",
+                "key": "ctrl+L",
+                "mac": "cmd+L",
+                "when": "editorTextFocus && editorLangId == atf"
+            },
+	    {
+                "command": "ucl-rsdg.arabicPreview",
+                "key": "ctrl+;",
+                "mac": "cmd+;",
+                "when": "editorTextFocus && editorLangId == atf"
+	    }
         ],
         "languages": [
             {

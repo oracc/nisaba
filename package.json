@@ -78,7 +78,7 @@
                     "group": "navigation"
                 },
                 {
-                    "when": "resourceLangId == atf",
+                    "when": "editorTextFocus && resourceLangId == atf",
                     "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation"
                 }

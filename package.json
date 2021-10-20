@@ -27,7 +27,7 @@
                 "command": "ucl-rsdg.arabicPreview",
                 "title": "Show Arabic preview",
                 "category": "Oracc",
-                "icon": "$(preview)"
+                "icon": "$(open-preview)"
             },
             {
                 "command": "ucl-rsdg.validateAtf",

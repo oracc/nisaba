@@ -63,22 +63,22 @@
         "menus": {
             "editor/title": [
                 {
-                    "when": "resourceLangId == atf",
+                    "when": "editorTextFocus && resourceLangId == atf",
                     "command": "ucl-rsdg.arabicPreview",
                     "group": "navigation"
                 },
                 {
-                    "when": "resourceLangId == atf",
+                    "when": "editorTextFocus && resourceLangId == atf",
                     "command": "ucl-rsdg.validateAtf",
                     "group": "navigation"
                 },
                 {
-                    "when": "resourceLangId == atf",
+                    "when": "editorTextFocus && resourceLangId == atf",
                     "command": "ucl-rsdg.lemmatiseAtf",
                     "group": "navigation"
                 },
                 {
-                    "when": "resourceLangId == atf",
+                    "when": "editorTextFocus && resourceLangId == atf",
                     "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation"
                 }

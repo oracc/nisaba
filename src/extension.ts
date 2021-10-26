@@ -27,12 +27,18 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable2);
 
     const disposable3 = vscode.commands.registerCommand('ucl-rsdg.aboutNisaba', () => {
-        // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        const test1 = 'This is a test message!';
-        vscode.window.showWarningMessage(test1);
-        nisabaLogger.warn(test1);
+        vscode.window.showInformationMessage(
+            'Nisaba is an editor for ATF files. Click below for more information and guidance.',
+            // Also show a button with "More information..."
+            "More information...")
+            .then( (chosenAction) => {
+                // if the user has clicked on the button, open a browser at our page
+                if (chosenAction != undefined) {
+                    vscode.env.openExternal(
+                        vscode.Uri.parse("https://github.com/oracc/nisaba/blob/master/docs/user_guide.md")
+                    )
+                }
+            })
     });
 
     context.subscriptions.push(disposable3);

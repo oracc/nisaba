@@ -27,28 +27,19 @@
                 "command": "ucl-rsdg.arabicPreview",
                 "title": "Show Arabic preview",
                 "category": "Oracc",
-                "icon": {
-                    "light": "media/button_preview_light.svg",
-                    "dark": "media/button_preview_dark.svg"
-                }
+                "icon": "$(open-preview)"
             },
             {
                 "command": "ucl-rsdg.validateAtf",
                 "title": "Validate ATF",
                 "category": "Oracc",
-                "icon": {
-                    "light": "media/button_validation_light.svg",
-                    "dark": "media/button_validation_dark.svg"
-                }
+                "icon": "$(check-all)"
             },
             {
                 "command": "ucl-rsdg.lemmatiseAtf",
                 "title": "Lemmatise ATF",
                 "category": "Oracc",
-                "icon": {
-                    "light": "media/button_lemmatisation_light.svg",
-                    "dark": "media/button_lemmatisation_dark.svg"
-                }
+                "icon": "$(symbol-number)"
             },
             {
                 "command": "ucl-rsdg.aboutNisaba",

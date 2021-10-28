@@ -3,7 +3,7 @@
     "displayName": "Nisaba",
     "description": "Support for ATF files",
     "version": "0.0.1",
-    "publisher": "ucl-rsdg",
+    "publisher": "UCLResearchSoftwareDevelopmentGroup",
     "repository": {
         "type": "git",
         "url": "https://github.com/oracc/nisaba.git"

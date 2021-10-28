@@ -2,7 +2,7 @@
     "name": "nisaba",
     "displayName": "Nisaba",
     "description": "Support for ATF files",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "UCLResearchSoftwareDevelopmentGroup",
     "repository": {
         "type": "git",

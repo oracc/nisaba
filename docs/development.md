@@ -58,3 +58,11 @@ npm run publish
 which will package and publish the extension in the Marketplace.
 
 Please note you'll be prompted to enter a Personal Account Token (PAT) when publishing the extension. The one we are using is currently saved in LastPass. It will expire in one year (27th October 2022). Instructions to create a new one are also in the LastPass entry.
+
+If you make a mistake and want to update your release maintaining the same version number, you'll have to first unpublish the release you just made:
+
+```
+npm run unpublish
+```
+
+After that you can publish again as normal.

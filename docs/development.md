@@ -42,3 +42,19 @@ trigger the [scope
 inspector](https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide#scope-inspector)
 from the Command Palette (`Ctrl+Shift+P`) with the `Developer: Inspect Editor
 Tokens and Scopes` command.
+
+## Publishing the extension in VS Code Marketplace
+
+The publisher ID we are using is "UCLResearchSoftwareDevelopmentGroup", and it's linked to RSDG's notifications email account. You can see login details for it in RSDG's shared passwords list in LastPass.
+
+Then, update Nisaba's version number in `package.json` for the new release.
+
+Once that's done, you can locally run:
+
+```
+npm run publish
+```
+
+which will package and publish the extension in the Marketplace.
+
+Please note you'll be prompted to enter a Personal Account Token (PAT) when publishing the extension. The one we are using is currently saved in LastPass. It will expire in one year (27th October 2022). Instructions to create a new one are also in the LastPass entry.

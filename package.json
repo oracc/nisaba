@@ -122,8 +122,8 @@
     "scripts": {
         "clean": "rm -rf ./out",
         "vscode:prepublish": "webpack --mode production",
-        "publish": "vsce package && vsce publish",
-        "unpublish": "vsce unpublish UCLResearchSoftwareDevelopmentGroup.nisaba",
+        "publish": "npx vsce package && npx vsce publish",
+        "unpublish": "npx vsce unpublish UCLResearchSoftwareDevelopmentGroup.nisaba",
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
         "compile": "npm run clean && npx tsc -p ./",

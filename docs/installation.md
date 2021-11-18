@@ -13,5 +13,5 @@ on your computer, you will need to follow these steps:
 You should now have the Nisaba extension installed in VS Code.
 
 Please note the Nisaba extension is only visible while you are editing a file
-with ".atf" extension. Otherwise, the Nisaba button panel on the top right
+with ".atf" extension. Otherwise, the Nisaba button panel <img src="./../media/buttons.png" height="20"> on the top right
 won't show.

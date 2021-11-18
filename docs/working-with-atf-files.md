@@ -1,10 +1,10 @@
 # Working with ATF files
 
-In order to enable the Nisaba extension, you will need to open an ATF file in Visual Studio Code. In order to do this, find the "File" option on the menu bar on the top left of the window, then choose "Open File". This will prompt a new window where you can navigate to an existent ATF file in your system, then click on "Open". 
+In order to enable the Nisaba extension, you will need to open an ATF file in Visual Studio Code. In order to do this, find the "File" option on the menu bar on the top left of the window, then choose "Open File". This will prompt a new window where you can navigate to an existent ATF file in your system, then click on "Open".
 
-Alternatively, you can create a new file and save it with an ".atf" extension, e.g. "my_file.atf". 
+Alternatively, you can create a new file and save it with an ".atf" extension, e.g. "my_file.atf".
 
-Please note you can find numerous ATF files freely available on the 
+Please note you can find numerous ATF files freely available on the
 [Oracc site archive](http://oracc.museum.upenn.edu/doc/search/index.html).
 
 Once Visual Studio has detected you have opened a file with the "atf" extension, it will show the Nisaba extension buttons on the top right of the window, which allow you to lemmatise and validate your ATF file, as well as preview a right-to-left translation with its correct orientation or ask for help:
@@ -19,16 +19,17 @@ Once you are done viewing or editing an ATF file, simply save and close it and t
 
 ## Validate an ATF
 
-You can validate an ATF file by clicking on the validate button on the top right. It will send the contents of the ATF file to the Oracc server for validation. If the file is valid, the console will display a message saying so. Otherwise, a list of errors appears in the console and the errored lines appear highlighted in the edition panel, as shown in the images below:
+You can validate an ATF file by clicking on the validate button on the top right. It will send the contents of the ATF file to the Oracc server for validation. If the file is valid, the console will display a message saying so. Otherwise, a list of errors appears in the console and the errored lines appear highlighted in the edition panel, as shown in the image below:
 
-<img src="../media/highlighterrors.png" align="center">
-<img src="../media/outputerrors.png" align="center">
+<img src="../media/validation_errors.png" align="center">
 
 ## Lemmatise an ATF
 
 You can lemmatise an ATF file by clicking on the lemmatise button on the top right. It will send the contents of the ATF file to the Oracc server, which will return a lemmatised file if valid, and reload the edition panel with the lemmatised version of the original ATF.
 
 If the file is not valid, the console will display the error messages found by the server. Once those are fixed, you can attempt to lemmatise the ATF again.
+
+<img src="../media/lemmatisation_successful.png" align="center">
 
 ## Right-to-left languages (e.g. Arabic, Farsi, Kurdish, Syriac...)
 

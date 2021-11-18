@@ -1,4 +1,4 @@
-## Installation for developers
+# Installation for developers
 
 ## Development workflow
 

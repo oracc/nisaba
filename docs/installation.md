@@ -1,3 +1,5 @@
+# Installing the Nisaba extension
+
 Nisaba is an extension to Visual Studio Code (VS Code). In order to install it
 on your computer, you will need to follow these steps:
 

@@ -68,7 +68,7 @@ If you make a mistake and want to update your release maintaining the same versi
 If you want to *completely delete everything about the Nisaba extension from the Marketplace*, including all published versions and usage statistics, you can do so as:
 
 ```
-npm run unpublish
+vsce unpublish UCLResearchSoftwareDevelopmentGroup.nisaba
 ```
 
 After that you can publish again as indicated above if you wish.

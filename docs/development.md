@@ -45,7 +45,7 @@ Tokens and Scopes` command.
 
 ## Publishing the extension in VS Code Marketplace
 
-The publisher ID we are using is "UCLResearchSoftwareDevelopmentGroup", and it's linked to RSDG's notifications email account. You can see login details for it in RSDG's shared passwords list in LastPass.
+The publisher ID we are using is "UCLResearchSoftwareDevelopmentGroup", and it's linked to RSDG's notifications email account (`rsd-notifications`). You can see login details for it in RSDG's shared passwords list in LastPass.
 
 Then, update Nisaba's version number in `package.json` for the new release.
 
@@ -57,12 +57,18 @@ npm run publish
 
 which will package and publish the extension in the Marketplace.
 
-Please note you'll be prompted to enter a Personal Account Token (PAT) when publishing the extension. The one we are using is currently saved in LastPass. It will expire in one year (27th October 2022). Instructions to create a new one are also in the LastPass entry.
+Please note you'll be prompted to enter a Personal Account Token (PAT) when publishing the extension. The one we are using is currently saved in RSDG's LastPass. It will expire in one year (27th October 2022). Instructions to create a new one are also in the LastPass entry.
 
-If you make a mistake and want to update your release maintaining the same version number, you'll have to first unpublish the release you just made:
+### Updating a newly released version
+
+If you make a mistake and want to update your release maintaining the same version number, you can't do it using `vsce` on the command line, you'll have to [log in as `rsd-notifications` and update the release online](https://marketplace.visualstudio.com/manage/publishers/uclresearchsoftwaredevelopmentgroup) (see LastPass for login details).
+
+### Unpublishing the extension
+
+If you want to *completely delete everything about the Nisaba extension from the Marketplace*, including all published versions and usage statistics, you can do so as:
 
 ```
 npm run unpublish
 ```
 
-After that you can publish again as normal.
+After that you can publish again as indicated above if you wish.

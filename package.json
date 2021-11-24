@@ -1,9 +1,9 @@
 {
     "name": "nisaba",
     "displayName": "Nisaba",
-    "description": "Support for ATF files",
-    "version": "0.0.1",
-    "publisher": "ucl-rsdg",
+    "description": "Support for ATF files, like those used by Oracc and the Nahrein Network.",
+    "version": "1.0.0",
+    "publisher": "UCLResearchSoftwareDevelopmentGroup",
     "repository": {
         "type": "git",
         "url": "https://github.com/oracc/nisaba.git"
@@ -122,6 +122,7 @@
     "scripts": {
         "clean": "rm -rf ./out",
         "vscode:prepublish": "webpack --mode production",
+        "publish": "npx vsce package && npx vsce publish",
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
         "compile": "npm run clean && npx tsc -p ./",

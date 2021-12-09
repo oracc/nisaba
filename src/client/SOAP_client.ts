@@ -33,7 +33,7 @@ export class SOAPClient {
             this.responseID = await this.sendInitialRequest(command);
             log('debug', `Got response code ${this.responseID}`);
             await this.serverComplete();
-            log('info', `Request ${this.responseID} is done.`);
+            log('debug', `Request ${this.responseID} is done.`);
             const finalResult = await this.retrieveReponse();
             // If it exists, the name of the lemmatised file will have the form
             // <filename without .atf extension>-autolem.atf
@@ -90,7 +90,7 @@ export class SOAPClient {
                 case 'run':
                     if (attempts < max_attempts) {
                         if (attempts == 1) { // Only print once to avoid cluttering log
-                            log('info', 'Server working on request.');
+                            log('debug', 'Server working on request.');
                         }
                         break;
                     } else {
@@ -115,8 +115,8 @@ export class SOAPClient {
         const responseContents = await response.buffer();
         const allLogs = extractLogs(responseContents);
         allLogs.forEach( (contents, name) => {
-                log('info', `${name}`)
-                log('info', `${contents}`)
+                log('debug', `${name}`)
+                log('debug', `${contents}`)
             });
         return allLogs;
     }

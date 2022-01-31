@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import * as nisaba from '../../extension';
+import * as nisaba from '../../extension.js';
 
 suite('Extension Test Suite', () => {
     vscode.window.showInformationMessage('Start all tests.');

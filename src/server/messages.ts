@@ -1,5 +1,5 @@
-import { ServerResult } from '../client/server_result';
-import { SOAPClient } from '../client/SOAP_client';
+import { ServerResult } from '../client/server_result.js';
+import { SOAPClient } from '../client/SOAP_client.js';
 
 // The interface of functions which have to send information to the server
 // (for convenience in typing in other files)

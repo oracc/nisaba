@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { getProjectCode } from '../../atf_model';
+import { getProjectCode } from '../../atf_model.js';
 
 suite('ATF Model Test Suite', () => {
     vscode.window.showInformationMessage('Start ATF tests.');

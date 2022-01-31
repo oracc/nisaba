@@ -1,10 +1,8 @@
 import * as path from 'path';
-import { fileURLToPath } from 'url';
 
 import { runTests } from 'vscode-test';
 
 async function main() {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
     try {
         // The folder containing the Extension Manifest package.json
         // Passed to `--extensionDevelopmentPath`

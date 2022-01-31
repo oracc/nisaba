@@ -130,7 +130,7 @@
         "package": "npx vsce package",
         "lint": "eslint src --ext ts",
         "pretest": "npm run compile && npm run lint",
-        "test": "node ./out/test/runTest.js"
+        "test": "node ./out/test/runTest.cjs"
     },
     "dependencies": {
         "adm-zip": "^0.5.5",

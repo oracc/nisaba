@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as AdmZip from 'adm-zip';
+import AdmZip from 'adm-zip';
 import { MultipartMessage, extractLogs } from '../../client/mime.js';
 
 suite('Messages test suite', () => {

@@ -1,5 +1,5 @@
 import * as mimemessage from 'mimemessage';
-import * as AdmZip from 'adm-zip';
+import AdmZip from 'adm-zip';
 import { parseString } from 'xml2js';
 
 /**

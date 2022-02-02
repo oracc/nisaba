@@ -1,14 +1,14 @@
 import { basename } from 'path';
 
-import { lemmatise, ServerFunction, validate } from './server/messages';
+import { lemmatise, ServerFunction, validate } from './server/messages.js';
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as nisabaLogger from './logger';
-import { handleResult, initView } from './view';
-import { PreviewPanel } from './preview';
-import { getProjectCode } from './atf_model';
+import * as nisabaLogger from './logger.js';
+import { handleResult, initView } from './view.js';
+import { PreviewPanel } from './preview.js';
+import { getProjectCode } from './atf_model.js';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");

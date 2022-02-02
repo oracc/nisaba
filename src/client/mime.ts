@@ -1,5 +1,5 @@
-import mimemessage = require('mimemessage');
-import * as AdmZip from 'adm-zip';
+import * as mimemessage from 'mimemessage';
+import AdmZip from 'adm-zip';
 import { parseString } from 'xml2js';
 
 /**

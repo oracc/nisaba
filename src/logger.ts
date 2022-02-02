@@ -2,7 +2,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as winston from 'winston';
-import * as TransportStream from 'winston-transport';
+import TransportStream from 'winston-transport';
 
 class OutputChannelTransport extends TransportStream {
     outputChannel: vscode.OutputChannel;

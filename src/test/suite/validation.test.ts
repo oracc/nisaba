@@ -1,10 +1,10 @@
-import * as assert from 'assert';
+import assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { ServerResult } from '../../client/server_result';
-import { SOAPClient } from '../../client/SOAP_client';
-import { validate } from '../../server/messages';
+import { ServerResult } from '../../client/server_result.js';
+import { SOAPClient } from '../../client/SOAP_client.js';
+import { validate } from '../../server/messages.js';
 
 
 suite('Validation Test Suite', () => {

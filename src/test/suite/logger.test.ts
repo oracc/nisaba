@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as tmp from 'tmp';
 import * as assert from 'assert';
-import * as nisabaLogger from '../../logger';
+import * as nisabaLogger from '../../logger.js';
 
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
 

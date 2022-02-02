@@ -8,6 +8,7 @@
         "type": "git",
         "url": "https://github.com/oracc/nisaba.git"
     },
+    "type": "module",
     "engines": {
         "vscode": "^1.44.0"
     },
@@ -20,7 +21,7 @@
         "onCommand:ucl-rsdg.lemmatiseAtf",
         "onCommand:ucl-rsdg.aboutNisaba"
     ],
-    "main": "./dist/extension",
+    "main": "./dist/extension.js",
     "contributes": {
         "commands": [
             {
@@ -134,12 +135,12 @@
         "package": "npx vsce package",
         "lint": "eslint src --ext ts",
         "pretest": "npm run compile && npm run lint",
-        "test": "node ./out/test/runTest.js"
+        "test": "node ./out/test/runTest.cjs"
     },
     "dependencies": {
         "adm-zip": "^0.5.5",
         "mimemessage": "^1.0.5",
-        "node-fetch": "^2.6.7",
+        "node-fetch": "^3.1.1",
         "winston": "^3.3.3",
         "winston-transport": "^4.4.0",
         "xml2js": "^0.4.23"
@@ -148,7 +149,6 @@
         "@types/adm-zip": "^0.4.33",
         "@types/mocha": "^7.0.2",
         "@types/node": "^13.13.52",
-        "@types/node-fetch": "^2.5.12",
         "@types/vscode": "^1.44.0",
         "@types/xml2js": "^0.4.8",
         "@typescript-eslint/eslint-plugin": "^5.1.0",

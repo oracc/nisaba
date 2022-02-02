@@ -1,7 +1,7 @@
-import { default as fetch }from 'node-fetch';
-import { createEnvelopeMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from './mime';
-import { ServerResult } from './server_result';
-import { log } from '../logger';
+import fetch from 'node-fetch';
+import { createEnvelopeMessage, extractLogs, getResponseCode, MultipartMessage, ServerAction } from './mime.js';
+import { ServerResult } from './server_result.js';
+import { log } from '../logger.js';
 
 /*
 1. Gather all the information for the message from the text (start with hardcoded)

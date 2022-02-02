@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as nisabaLogger from './logger'
-import { ServerResult } from './client/server_result';
+import * as nisabaLogger from './logger.js'
+import { ServerResult } from './client/server_result.js';
 
 
 // How we want to style the lines containing validation errors

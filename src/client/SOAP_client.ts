@@ -23,9 +23,7 @@ export class SOAPClient {
 
     constructor(atf_name: string, atf_project: string, atf_text: string) {
         this.atf_text = atf_text;
-        // Replace all whitespaces in filename with an underscore to work around
-        // server-side issue.
-        this.atf_filename = atf_name.replace(/\s/g, '_');
+        this.atf_filename = atf_name;
         this.atf_project = atf_project;
         this.atf_text = atf_text;
     }

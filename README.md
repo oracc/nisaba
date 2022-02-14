@@ -1,6 +1,6 @@
 # Nisaba: The new text editor for Oracc
 
-[![](https://vsmarketplacebadge.apphb.com/version/UCLResearchSoftwareDevelopmentGroup.nisaba.svg)](https://marketplace.visualstudio.com/items?itemName=UCLResearchSoftwareDevelopmentGroup.nisaba)
+[![Nisaba on Visual Studio Marketplace](https://vsmarketplacebadge.apphb.com/version/UCLResearchSoftwareDevelopmentGroup.nisaba.svg)](https://marketplace.visualstudio.com/items?itemName=UCLResearchSoftwareDevelopmentGroup.nisaba)
 [![Build Status](https://dev.azure.com/Oracc/Nisaba/_apis/build/status/oracc.nisaba?branchName=main)](https://dev.azure.com/Oracc/Nisaba/_build/latest?definitionId=2&branchName=main)
 
 Nisaba is the new text editor that enables Oracc content creators to view, edit and validate documents recording the content of cunneiform tablets from

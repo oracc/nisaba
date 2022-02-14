@@ -71,6 +71,16 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
     const fileName = basename(editor.document.uri.fsPath);
     const fileContent = editor.document.getText();
     let fileProject: string;
+    // The server would not show errors when validating/lemmatising the file if
+    // it doesn't have the `.atf` extension.  We could work around this
+    // limitation, but not setting the extension correctly is likely an error
+    // anyway, so we enforce it to when submitting tasks to the server.
+    if (!fileName.endsWith(".atf")) {
+        vscode.window.showErrorMessage(`The file should have .atf extension,
+                                        but it is called "${fileName}".
+                                        Please rename it.`);
+        return;
+    }
     try {
         fileProject = getProjectCode(fileContent);
     } catch (err) {

@@ -92,6 +92,17 @@ suite('Validation Test Suite', () => {
         assert(client.atf_text == belsunu);
     });
 
+    test('Validation results for file with spaces in name', async () => {
+        const text = fs.readFileSync(
+            path.join(__dirname,
+                      '../../../src/test/suite/input/error_belsunu.atf')).toString();
+        // Use a filename with spaces in it.  It doesn't have to match the name
+        // of an existing file.
+        const server_result = await validate('filename with\n spaces \tin it.atf', 'cams/gkab', text);
+        // Make sure errors are reported correctly, see issue #90.
+        assert(server_result.contains_errors());
+    });
+
     test('HTTP Request headers', async () => {
 
         // const reference_headers = {"connection":"close",

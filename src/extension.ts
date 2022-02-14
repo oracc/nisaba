@@ -78,7 +78,7 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
     if (!fileName.endsWith(".atf")) {
         vscode.window.showErrorMessage(`The file should have .atf extension,
                                         but it is called "${fileName}".
-                                        Please rename it to add the extension.`);
+                                        Please rename it.`);
         return;
     }
     try {

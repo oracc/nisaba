@@ -75,7 +75,7 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
     // it doesn't have the `.atf` extension.  We could work around this
     // limitation, but not setting the extension correctly is likely an error
     // anyway, so we enforce it to when submitting tasks to the server.
-    if (!fileName.match(/\.atf$/)) {
+    if (!fileName.endsWith(".atf")) {
         vscode.window.showErrorMessage(`The file should have .atf extension,
                                         but it is called "${fileName}".
                                         Please rename it to add the extension.`);

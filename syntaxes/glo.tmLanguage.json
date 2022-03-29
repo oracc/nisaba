@@ -1,0 +1,41 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Oracc Glossary",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#support"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "begin": "^@entry\\b",
+                    "end": "end entry$",
+                    "patterns": [
+                        {
+                            "name": "keyword.other.entry.glo",
+                            "match": "^@(end |)entry\\b"
+                        },
+                        {
+                            "name": "keyword.control.at.glo",
+                            "match": "^@(form|sense|note|inote|parts|isslp)\\b"
+                        }
+                    ]
+                }
+            ]
+        },
+        "support": {
+            "patterns": [
+                {
+                    "name": "support.class.at.glo",
+                    "match": "^@(project|lang|name|letter|bases|equiv|bib|bff|collo|prop|proplist)\\b"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.glo"
+}

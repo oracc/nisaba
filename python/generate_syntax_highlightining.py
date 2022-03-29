@@ -13,10 +13,13 @@ def match_all_variants(token_names):
         + [token.title() for token in token_names]
     )
 
+schema = "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+
+## ATF files
 # Initialise the dictionary
 data = {}
 
-data["$schema"] = "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+data["$schema"] = schema
 data["name"] = "ATF"
 data["patterns"] = [
     {"include": "#keywords"},
@@ -103,6 +106,59 @@ data["repository"] = repository
 data["scopeName"] = "source.atf"
 
 filename = os.path.join(os.path.dirname(__file__), "..", "syntaxes", "atf.tmLanguage.json")
+
+with open(filename, "w") as outfile:
+    json.dump(data, outfile, indent=4)
+
+## Glossary files.  Reference:
+## http://oracc.museum.upenn.edu/doc/help/glossaries/index.html
+# Initialise the dictionary
+data = {}
+
+data["$schema"] = schema
+data["name"] = "Oracc Glossary"
+data["patterns"] = [
+    {"include": "#keywords"},
+    {"include": "#support"},
+]
+
+keywords = {}
+entry_keywords = ("form|sense|note|inote|parts|isslp")
+keywords["patterns"] = [
+    {
+        "begin": "^@entry\\b",
+        "end": "end entry$",
+        "patterns": [
+            {
+                "name": "keyword.other.entry.glo",
+                "match": "^@(end |)entry\\b",
+            },
+            {
+                "name": "keyword.control.at.glo",
+                "match": f"^@({entry_keywords})\\b",
+            },
+        ],
+    },
+]
+
+support = {}
+at_keywords = ("project|lang|name|letter|bases|" +
+               "equiv|bib|bff|collo|prop|proplist")
+support["patterns"] = [
+    {
+        "name": "support.class.at.glo",
+        "match": f"^@({at_keywords})\\b",
+    },
+]
+
+repository = {}
+repository["keywords"] = keywords
+repository["support"] = support
+
+data["repository"] = repository
+data["scopeName"] = "source.glo"
+
+filename = os.path.join(os.path.dirname(__file__), "..", "syntaxes", "glo.tmLanguage.json")
 
 with open(filename, "w") as outfile:
     json.dump(data, outfile, indent=4)

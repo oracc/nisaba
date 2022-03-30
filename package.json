@@ -118,7 +118,7 @@
                 "extensions": [
                     ".glo"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./glo-language-configuration.json"
             }
         ],
         "grammars": [

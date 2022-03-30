@@ -123,27 +123,21 @@ data["patterns"] = [
 ]
 
 keywords = {}
-entry_keywords = ("form|sense|note|inote|parts|isslp")
+entry_keywords = ("bases|form|sense|note|inote|equiv|isslp|bib|parts|bff|" +
+                  "collo|prop")
 keywords["patterns"] = [
     {
-        "begin": "^@entry\\b",
-        "end": "end entry$",
-        "patterns": [
-            {
-                "name": "keyword.other.entry.glo",
-                "match": "^@(end |)entry\\b",
-            },
-            {
-                "name": "keyword.control.at.glo",
-                "match": f"^@({entry_keywords})\\b",
-            },
-        ],
+        "name": "keyword.other.entry.glo",
+        "match": "^@(end |)entry\\b",
+    },
+    {
+        "name": "keyword.control.at.glo",
+        "match": f"^@({entry_keywords})\\b",
     },
 ]
 
 support = {}
-at_keywords = ("project|lang|name|letter|bases|" +
-               "equiv|bib|bff|collo|prop|proplist")
+at_keywords = "project|lang|name|letter|proplist"
 support["patterns"] = [
     {
         "name": "support.class.at.glo",

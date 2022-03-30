@@ -13,18 +13,12 @@
         "keywords": {
             "patterns": [
                 {
-                    "begin": "^@entry\\b",
-                    "end": "end entry$",
-                    "patterns": [
-                        {
-                            "name": "keyword.other.entry.glo",
-                            "match": "^@(end |)entry\\b"
-                        },
-                        {
-                            "name": "keyword.control.at.glo",
-                            "match": "^@(form|sense|note|inote|parts|isslp)\\b"
-                        }
-                    ]
+                    "name": "keyword.other.entry.glo",
+                    "match": "^@(end |)entry\\b"
+                },
+                {
+                    "name": "keyword.control.at.glo",
+                    "match": "^@(bases|form|sense|note|inote|equiv|isslp|bib|parts|bff|collo|prop)\\b"
                 }
             ]
         },
@@ -32,7 +26,7 @@
             "patterns": [
                 {
                     "name": "support.class.at.glo",
-                    "match": "^@(project|lang|name|letter|bases|equiv|bib|bff|collo|prop|proplist)\\b"
+                    "match": "^@(project|lang|name|letter|proplist)\\b"
                 }
             ]
         }

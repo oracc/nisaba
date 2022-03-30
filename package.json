@@ -108,7 +108,7 @@
                 "extensions": [
                     ".atf"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./atf-language-configuration.json"
             },
             {
                 "id": "glo",

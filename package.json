@@ -135,10 +135,12 @@
         ],
         "configurationDefaults": {
             "[atf]": {
-                "editor.wordWrap": "on"
+                "editor.wordWrap": "on",
+                "editor.unicodeHighlight.ambiguousCharacters": false
             },
             "[glo]": {
-                "editor.wordWrap": "on"
+                "editor.wordWrap": "on",
+                "editor.unicodeHighlight.ambiguousCharacters": false
             }
         }
     },

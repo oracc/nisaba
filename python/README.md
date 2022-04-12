@@ -17,8 +17,9 @@ Install the dependencies with the command
 $ pip install -r requirements.txt
 ```
 
-To regenerate the file [`atf.tmLanguage.json`](../syntaxes/atf.tmLanguage.json),
-simply run
+To regenerate the syntax files
+([`atf.tmLanguage.json`](../syntaxes/atf.tmLanguage.json) and
+[`glo.tmLanguage.json`](../syntaxes/glo.tmLanguage.json)), simply run
 
 ```
 $ python generate_syntax_highlightining.py

@@ -108,7 +108,17 @@
                 "extensions": [
                     ".atf"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./atf-language-configuration.json"
+            },
+            {
+                "id": "glo",
+                "aliases": [
+                    "Oracc Glossary"
+                ],
+                "extensions": [
+                    ".glo"
+                ],
+                "configuration": "./glo-language-configuration.json"
             }
         ],
         "grammars": [
@@ -116,11 +126,21 @@
                 "language": "atf",
                 "scopeName": "source.atf",
                 "path": "./syntaxes/atf.tmLanguage.json"
+            },
+            {
+                "language": "glo",
+                "scopeName": "source.glo",
+                "path": "./syntaxes/glo.tmLanguage.json"
             }
         ],
         "configurationDefaults": {
             "[atf]": {
-                "editor.wordWrap": "on"
+                "editor.wordWrap": "on",
+                "editor.unicodeHighlight.ambiguousCharacters": false
+            },
+            "[glo]": {
+                "editor.wordWrap": "on",
+                "editor.unicodeHighlight.ambiguousCharacters": false
             }
         }
     },

@@ -1,0 +1,30 @@
+@project dcclt
+@lang    akk
+@name    dcclt, akk
+
+@proplist props
+
+@letter A
+
+@entry maš [goat] N
+@bases maš₂
+@form! maš₂ /maš₂ #~
+@sense N goat
+@prop type name noun
+@end entry
+
+@entry maš [interest] N
+@bases maš₂
+@form maš₂ /maš₂ #~
+@sense N interest
+@collo - kug[silver]
+@end entry
+
+@entry abahšinnu [stalk] N
+@form a-ba-ah-ši-in-ni $abahšinni
+@form a-ba-ah-ši-in-nu $abahšinni
+@form a-ba-ah-šin-nu $abahšinnu
+@sense N early harvested grain
+@sense N stalk
+@isslp 1984 M. Powell, BSA 1 64
+@end entry

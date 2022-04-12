@@ -14,6 +14,21 @@ function readFile(path) {
     })
 }
 
+function test_grammar(grammar, input_file, expected_scopes) {
+    const text = fs.readFileSync(input_file).toString().split(os.EOL)
+
+    let ruleStack = vsctm.INITIAL;
+    for (let i = 0; i < text.length; i++) {
+        const line = text[i];
+        const lineTokens = grammar.tokenizeLine(line, ruleStack);
+        for (let j = 0; j < lineTokens.tokens.length; j++) {
+            const token = lineTokens.tokens[j];
+            assert.strictEqual(token.scopes[token.scopes.length-1], expected_scopes[i][j]);
+        }
+        ruleStack = lineTokens.ruleStack;
+    }
+}
+
 const wasmBin = fs.readFileSync(path.join(__dirname, '../../../node_modules/vscode-oniguruma/release/onig.wasm')).buffer;
 const vscodeOnigurumaLib = oniguruma.loadWASM(wasmBin).then(() => {
     return {
@@ -29,6 +44,9 @@ const registry = new vsctm.Registry({
         if (scopeName === 'source.atf') {
             const grammar_path = path.join(__dirname, '../../../syntaxes/atf.tmLanguage.json')
             return readFile(grammar_path).then(data => vsctm.parseRawGrammar(data.toString(), grammar_path))
+        } else if (scopeName === 'source.glo') {
+            const grammar_path = path.join(__dirname, '../../../syntaxes/glo.tmLanguage.json')
+            return readFile(grammar_path).then(data => vsctm.parseRawGrammar(data.toString(), grammar_path))
         }
         console.log(`Unknown scope name: ${scopeName}`);
         return null;
@@ -36,12 +54,13 @@ const registry = new vsctm.Registry({
 });
 
 suite('Grammar Test Suite', () => {
-    test('Tokenization test', async () => {
+    test('ATF tokenization test', async () => {
 
         // Load the ATF grammar and any other grammars included by it async.
         const grammar = await registry.loadGrammar('source.atf');
 
-        const text = fs.readFileSync(path.join(__dirname, '../../../src/test/suite/input/grammar_example.atf')).toString().split(os.EOL)
+        const input_file = path.join(__dirname, '../../../src/test/suite/input/grammar_example.atf')
+        // List of expected scopes in the input file, line by line
         const expected_scopes = [
             ['keyword.other.ampersand.atf'],
             ['support.class.hash.atf', 'source.atf'],
@@ -56,19 +75,55 @@ suite('Grammar Test Suite', () => {
             ['keyword.control.at.atf'],
             ['source.atf'],
             ['variable.language.text.atf', 'source.atf'],
+            // Trailing newline character
             ['source.atf']
         ]
 
-        let ruleStack = vsctm.INITIAL;
-        for (let i = 0; i < text.length; i++) {
-            const line = text[i];
-            const lineTokens = grammar.tokenizeLine(line, ruleStack);
-            for (let j = 0; j < lineTokens.tokens.length; j++) {
-                const token = lineTokens.tokens[j];
-                assert.strictEqual(token.scopes[token.scopes.length-1], expected_scopes[i][j]);
-            }
-            ruleStack = lineTokens.ruleStack;
-        }
+        test_grammar(grammar, input_file, expected_scopes);
+    });
+    test('Glossaries tokenization test', async () => {
+
+        // Load the ATF grammar and any other grammars included by it async.
+        const grammar = await registry.loadGrammar('source.glo');
+
+        const input_file = path.join(__dirname, '../../../src/test/suite/input/grammar_example.glo')
+        // List of expected scopes in the input file, line by line
+        const expected_scopes = [
+            ['support.class.at.glo', 'source.glo'],
+            ['support.class.at.glo', 'source.glo'],
+            ['support.class.at.glo', 'source.glo'],
+            ['source.glo'],
+            ['support.class.at.glo', 'source.glo'],
+            ['source.glo'],
+            ['support.class.at.glo', 'source.glo'],
+            ['source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            // Trailing newline character
+            ['source.glo'],
+        ]
+
+        test_grammar(grammar, input_file, expected_scopes);
 
     });
 });

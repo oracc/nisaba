@@ -13,19 +13,40 @@ def match_all_variants(token_names):
         + [token.title() for token in token_names]
     )
 
-# Initialise the dictionary
-data = {}
+def write_language_json(name, scope_name, filename,
+                        keywords=None, support=None, strings=None,
+                        comment=None, variable=None):
+    # Initialise the dictionaries
+    data = {}
+    repository = {}
 
-data["$schema"] = "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
-data["name"] = "ATF"
-data["patterns"] = [
-    {"include": "#keywords"},
-    {"include": "#support"},
-    {"include": "#strings"},
-    {"include": "#comment"},
-    {"include": "#variable"},
-]
+    data["$schema"] = "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+    data["name"] = name
+    data["patterns"] = []
+    data["repository"] = repository
+    data["scopeName"] = scope_name
 
+    if keywords:
+        data["patterns"].append({"include": "#keywords"})
+        repository["keywords"] = keywords
+    if support:
+        data["patterns"].append({"include": "#support"})
+        repository["support"] = support
+    if strings:
+        data["patterns"].append({"include": "#strings"})
+        repository["strings"] = strings
+    if comment:
+        data["patterns"].append({"include": "#comment"})
+        repository["comment"] = comment
+    if variable:
+        data["patterns"].append({"include": "#variable"})
+        repository["variable"] = variable
+
+    with open(filename, "w") as outfile:
+        json.dump(data, outfile, indent=4)
+
+
+## ATF files
 keywords = {}
 structures = match_all_variants(AtfLexer.structures)
 keywords["patterns"] = [
@@ -92,17 +113,39 @@ variable["patterns"] = [
      "match": "^\\S+\\."},
 ]
 
-repository = {}
-repository["keywords"] = keywords
-repository["support"] = support
-repository["strings"] = strings
-repository["comment"] = comment
-repository["variable"] = variable
-
-data["repository"] = repository
-data["scopeName"] = "source.atf"
-
 filename = os.path.join(os.path.dirname(__file__), "..", "syntaxes", "atf.tmLanguage.json")
 
-with open(filename, "w") as outfile:
-    json.dump(data, outfile, indent=4)
+write_language_json(name="ATF", scope_name="source.atf",
+                    filename=filename, keywords=keywords,
+                    support=support, strings=strings,
+                    comment=comment, variable=variable)
+
+## Glossary files.  Reference:
+## http://oracc.museum.upenn.edu/doc/help/glossaries/index.html
+keywords = {}
+entry_keywords = ("bases|form|sense|note|inote|equiv|isslp|bib|parts|bff|" +
+                  "collo|prop")
+keywords["patterns"] = [
+    {
+        "name": "keyword.other.entry.glo",
+        "match": "^@(end |)entry\\b",
+    },
+    {
+        "name": "keyword.control.at.glo",
+        "match": f"^@({entry_keywords})\\b",
+    },
+]
+
+support = {}
+at_keywords = "project|lang|name|letter|proplist"
+support["patterns"] = [
+    {
+        "name": "support.class.at.glo",
+        "match": f"^@({at_keywords})\\b",
+    },
+]
+
+filename = os.path.join(os.path.dirname(__file__), "..", "syntaxes", "glo.tmLanguage.json")
+
+write_language_json(name="Oracc Glossary", scope_name="source.glo",
+                    filename=filename, keywords=keywords, support=support)

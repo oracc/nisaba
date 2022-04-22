@@ -20,28 +20,28 @@ export function activate(context: vscode.ExtensionContext) {
     nisabaLogger.initLogging(nisabaOutputChannel);
     initView();
 
-    const disposable2 = vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
-        workWithServer("validate", validate);
-        });
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
+            workWithServer("validate", validate);
+        })
+    );
 
-    context.subscriptions.push(disposable2);
-
-    const disposable3 = vscode.commands.registerCommand('ucl-rsdg.aboutNisaba', () => {
-        vscode.window.showInformationMessage(
-            'Nisaba is an editor for ATF files. Click below for more information and guidance.',
-            // Also show a button with "More information..."
-            "More information...")
-            .then( (chosenAction) => {
-                // if the user has clicked on the button, open a browser at our page
-                if (chosenAction != undefined) {
-                    vscode.env.openExternal(
-                        vscode.Uri.parse("https://github.com/oracc/nisaba/blob/master/docs/user_guide.md")
-                    )
-                }
-            })
-    });
-
-    context.subscriptions.push(disposable3);
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.aboutNisaba', () => {
+            vscode.window.showInformationMessage(
+                'Nisaba is an editor for ATF files. Click below for more information and guidance.',
+                // Also show a button with "More information..."
+                "More information...")
+                .then( (chosenAction) => {
+                    // if the user has clicked on the button, open a browser at our page
+                    if (chosenAction != undefined) {
+                        vscode.env.openExternal(
+                            vscode.Uri.parse("https://github.com/oracc/nisaba/blob/master/docs/user_guide.md")
+                        )
+                    }
+                })
+        })
+    );
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.lemmatiseAtf', () => {

@@ -9,6 +9,7 @@ import * as nisabaLogger from './logger';
 import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 import { getProjectCode } from './atf_model';
+import { run_oracc } from './oracc_cmd';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
@@ -23,6 +24,30 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
             workWithServer("validate", validate);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oracc_check', () => {
+            run_oracc('check');
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oracc_merge', () => {
+            run_oracc('merge');
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oracc_rebuild', () => {
+            run_oracc('rebuild');
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oracc_harvest', () => {
+            run_oracc('harvest');
         })
     );
 

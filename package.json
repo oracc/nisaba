@@ -18,6 +18,10 @@
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.validateAtf",
         "onCommand:ucl-rsdg.lemmatiseAtf",
+        "onCommand:ucl-rsdg.oracc_check",
+        "onCommand:ucl-rsdg.oracc_harvest",
+        "onCommand:ucl-rsdg.oracc_merge",
+        "onCommand:ucl-rsdg.oracc_rebuild",
         "onCommand:ucl-rsdg.aboutNisaba"
     ],
     "main": "./dist/extension",
@@ -40,6 +44,26 @@
                 "title": "Lemmatise ATF",
                 "category": "Oracc",
                 "icon": "$(symbol-number)"
+            },
+            {
+                "command": "ucl-rsdg.oracc_check",
+                "title": "Check Project",
+                "category": "Oracc"
+            },
+            {
+                "command": "ucl-rsdg.oracc_harvest",
+                "title": "Harvest Glossary",
+                "category": "Oracc"
+            },
+            {
+                "command": "ucl-rsdg.oracc_merge",
+                "title": "Merge Glossaries",
+                "category": "Oracc"
+            },
+            {
+                "command": "ucl-rsdg.oracc_rebuild",
+                "title": "Rebuild Project",
+                "category": "Oracc"
             },
             {
                 "command": "ucl-rsdg.aboutNisaba",

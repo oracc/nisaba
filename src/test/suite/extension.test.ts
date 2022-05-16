@@ -17,7 +17,12 @@ suite('Extension Test Suite', () => {
         nisaba.activate(context);
         // Make sure all commands registerd in `package.json` are found
         await vscode.commands.getCommands(true).then(
-            all_commands => assert(ourCommandNames.every(cmdName => all_commands.includes(cmdName)))
+            async all_commands => {
+                // Filter only the commands we provide
+                const registered_cmds = all_commands.filter(cmd => cmd.startsWith('ucl-rsdg'));
+                return assert(registered_cmds.length == ourCommandNames.length &&
+                    registered_cmds.every(cmd => ourCommandNames.includes(cmd)));
+            }
         );
         // Deactivate extension to stop logger
         nisaba.deactivate();

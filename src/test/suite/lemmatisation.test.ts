@@ -19,7 +19,7 @@ suite('Lemmatisation Test Suite', () => {
                           `../../../src/test/suite/reference/${file}_with_lem.atf`)).toString();
 
             assert(!server_result.contains_errors());
-            assert(server_result.atf_content === lemmatised_text);
+            assert.strictEqual(server_result.atf_content, lemmatised_text);
         });
     }
 
@@ -31,7 +31,7 @@ suite('Lemmatisation Test Suite', () => {
             const server_result = await lemmatise(`${file}_with_lem.atf`, project, text);
 
             assert(!server_result.contains_errors());
-            assert(text === server_result.atf_content);
+            assert.strictEqual(text, server_result.atf_content);
         });
     }
 

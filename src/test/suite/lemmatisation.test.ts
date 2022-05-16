@@ -16,7 +16,7 @@ suite('Lemmatisation Test Suite', () => {
             const server_result = await lemmatise(`${file}_no_lem.atf`, project, text);
             const lemmatised_text = fs.readFileSync(
                 path.join(__dirname,
-                          `../../../src/test/suite/reference/${file}_with_lem.atf`)).toString();
+                          `../../../src/test/suite/reference/${file}_with_lem.atf`)).toString().replace(/\r\n/g, '\n');
 
             assert(!server_result.contains_errors());
             assert.strictEqual(server_result.atf_content, lemmatised_text);
@@ -27,7 +27,7 @@ suite('Lemmatisation Test Suite', () => {
         test(`Lemmatisation results for ${file}_with_lem.atf`, async () => {
             const text = fs.readFileSync(
                 path.join(__dirname,
-                          `../../../src/test/suite/reference/${file}_with_lem.atf`)).toString();
+                          `../../../src/test/suite/reference/${file}_with_lem.atf`)).toString().replace(/\r\n/g, '\n');
             const server_result = await lemmatise(`${file}_with_lem.atf`, project, text);
 
             assert(!server_result.contains_errors());

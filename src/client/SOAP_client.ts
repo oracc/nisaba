@@ -74,7 +74,7 @@ export class SOAPClient {
 
     async serverComplete(): Promise<void> {
         let attempts = 0;
-        const max_attempts = 10;
+        const max_attempts = 20;
         while (attempts < max_attempts) {
             attempts += 1;
             const response = await fetch(`${this.url}/p/${this.responseID}`);
@@ -91,6 +91,7 @@ export class SOAPClient {
                     if (attempts < max_attempts) {
                         log('debug', `Server working on request ${this.responseID}
                                       (attempt ${attempts}).`);
+                        await this.sleep(200); // try not to overload the server
                         break;
                     } else {
                         log('error', `No response ready for ${this.responseID}
@@ -104,6 +105,10 @@ export class SOAPClient {
                     throw `Unexpected message from server: ${text.trim()}`;
             }
         }
+    }
+
+    sleep(delay_in_ms: number): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, delay_in_ms));
     }
 
     async retrieveReponse(): Promise<Map<string, string>> {

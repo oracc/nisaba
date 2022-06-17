@@ -89,11 +89,12 @@ export class SOAPClient {
                         Please contact the Oracc server admin to look into this problem.`;
                 case 'run':
                     if (attempts < max_attempts) {
-                        if (attempts == 1) { // Only print once to avoid cluttering log
-                            log('debug', 'Server working on request.');
-                        }
+                        log('debug', `Server working on request ${this.responseID}
+                                      (attempt ${attempts}).`);
                         break;
                     } else {
+                        log('error', `No response ready for ${this.responseID}
+                                      after ${max_attempts} attempts. Stopping.`);
                         throw `The Oracc server was unable to elaborate response
                         for request with id ${this.responseID}. Please contact the
                         Oracc server admin to look into this problem.`;

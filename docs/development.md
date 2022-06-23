@@ -47,17 +47,9 @@ Tokens and Scopes` command.
 
 The publisher ID we are using is "UCLResearchSoftwareDevelopmentGroup", and it's linked to RSDG's notifications email account (`rsd-notifications`). You can see login details for it in RSDG's shared passwords list in LastPass.
 
-Then, update Nisaba's version number in `package.json` for the new release.
+Then, update Nisaba's version number in `package.json` for the new release.  After pushing a commit to the `main` branch, you can automatically create a tag with the version number set in `package.json` by heading to https://github.com/oracc/nisaba/actions/workflows/tag.yml and clicking on the "Run workflow" button.  You can check a box if the tag to create is a prerelease, in which case the version will ***not*** be published to the VS Code Marketplace.  This is useful in case we want to let some users test it, without updating the published extension for everybody.  In any case this workflow will create a git tag and a GitHub release for the given version number and then automatically trigger a CI job which runs again the tests and, if successful, will publish the extension to the VS Code Marketplace (only if current GitHub release is not a prerelease) and upload the built `*.vsix` package as an artifact to the GitHub release page.
 
-Once that's done, you can locally run:
-
-```
-npm run publish
-```
-
-which will package and publish the extension in the Marketplace.
-
-Please note you'll be prompted to enter a Personal Account Token (PAT) when publishing the extension. The one we are using is currently saved in RSDG's LastPass. It will expire in one year (27th October 2022). Instructions to create a new one are also in the LastPass entry.
+Publishing the extension to the VS Code Marketplace requires a Personal Account Token (PAT). The one we are using is currently saved in RSDG's LastPass. It will expire in one year (27th October 2022). Instructions to create a new one are also in the LastPass entry.
 
 ### Updating a newly released version
 

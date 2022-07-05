@@ -48,7 +48,8 @@
             {
                 "command": "ucl-rsdg.oracc_check",
                 "title": "Check Project",
-                "category": "Oracc"
+                "category": "Oracc",
+                "icon": "$(check-all)"
             },
             {
                 "command": "ucl-rsdg.oracc_harvest",
@@ -58,12 +59,14 @@
             {
                 "command": "ucl-rsdg.oracc_merge",
                 "title": "Merge Glossaries",
-                "category": "Oracc"
+                "category": "Oracc",
+		"icon": "$(merge)"
             },
             {
                 "command": "ucl-rsdg.oracc_rebuild",
                 "title": "Rebuild Project",
-                "category": "Oracc"
+                "category": "Oracc",
+		"icon": "$(project)"
             },
             {
                 "command": "ucl-rsdg.aboutNisaba",
@@ -90,7 +93,22 @@
                     "group": "navigation@3"
                 },
                 {
-                    "when": "editorTextFocus && resourceLangId == atf",
+                    "when": "editorTextFocus && resourceLangId == glo",
+                    "command": "ucl-rsdg.oracc_rebuild",
+                    "group": "navigation@4"
+                },
+                {
+                    "when": "editorTextFocus && resourceLangId == glo",
+                    "command": "ucl-rsdg.oracc_merge",
+                    "group": "navigation@3"
+                },
+                {
+                    "when": "editorTextFocus && resourceLangId == glo",
+                    "command": "ucl-rsdg.oracc_check",
+                    "group": "navigation@2"
+                },
+                {
+                    "when": "editorTextFocus && resourceLangId == atf || resourceLangId == glo",
                     "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation@1"
                 }
@@ -126,7 +144,7 @@
             {
                 "id": "atf",
                 "aliases": [
-                    "ATF",
+                    "Oracc ATF",
                     "atf"
                 ],
                 "extensions": [

@@ -1,0 +1,29 @@
+name: Tag Release
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Check the box if this a prerelease'
+        default: false
+        required: true
+        type: boolean
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Find tag
+      id: find_tag
+      run: |
+        TAG="v$(jq -M .version package.json | tr -d '"'| tr -d \')"
+        echo "Tag: ${TAG}"
+        echo "Prerelease: ${{ inputs.prerelease }}"
+        echo "::set-output name=TAG::${TAG}"
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.find_tag.outputs.TAG }}
+        token: ${{ secrets.TAG_PAT }}
+        prerelease: ${{ inputs.prerelease }}

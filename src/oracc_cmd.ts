@@ -1,5 +1,6 @@
 import * as child_process from 'child_process';
 import { homedir } from 'os';
+import * as path from 'path';
 import * as process from 'process';
 import { promisify } from 'util';
 import * as vscode from 'vscode';
@@ -23,6 +24,13 @@ function run_cmd(file: string,
 // Run the `oracc` command with the given action.  This assumes the command is being run on
 // the server.
 export async function run_oracc(cmd: string[]) {
+    const editor = vscode.window.activeTextEditor;
+    const ext = path.parse(editor.document.uri.fsPath).ext;
+    if (ext !== ".glo") {
+        vscode.window.showWarningMessage('Oracc command can only be run from glossary files');
+        return;
+    }
+
     try {
         const { stdout } = await run_cmd('oracc', cmd);
         vscode.window.showWarningMessage(`${stdout}`);

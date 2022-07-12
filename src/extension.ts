@@ -13,6 +13,8 @@ import { getProjectCode } from './atf_model';
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
 
+const glossaryDocumentSelector: vscode.DocumentSelector = { language: 'glo' };
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -54,11 +56,17 @@ export function activate(context: vscode.ExtensionContext) {
             PreviewPanel.createOrShow(context.extensionUri);
         })
     );
+
+    context.subscriptions.push(
+        vscode.languages.registerDocumentSymbolProvider(
+            glossaryDocumentSelector, new GlossaryDocumentSymbolProvider()
+        )
+    );
 }
 
 /**
  * Base function for performing server-related tasks with the editor contents.
- *  
+ *
  * Will first get some basic information from the editor (filename, project
  * code, text contents), then call another function to communicate with
  * the server, and finally display the results of that communication.
@@ -102,4 +110,71 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
 // this method is called when your extension is deactivated
 export function deactivate() {
     nisabaLogger.stopLogging();
+}
+
+async function getSymbols(document: vscode.TextDocument): Promise<vscode.SymbolInformation[]> {
+    const symbols: vscode.SymbolInformation[] = [];
+    symbols.push(
+        new vscode.SymbolInformation(
+            "A", vscode.SymbolKind.Function, "",
+            new vscode.Location(document.uri, new vscode.Range(4, 8, 4, 9))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "a [the sign A₂] N", vscode.SymbolKind.Variable, "A",
+            new vscode.Location(document.uri, new vscode.Range(6, 7, 6, 24))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "abahšinnu [stalk] N", vscode.SymbolKind.Variable, "A",
+            new vscode.Location(document.uri, new vscode.Range(11, 7, 11, 26))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "B", vscode.SymbolKind.Function, "",
+            new vscode.Location(document.uri, new vscode.Range(1984, 8, 1984, 9))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "bāʾeru [hunter] N", vscode.SymbolKind.Variable, "B",
+            new vscode.Location(document.uri, new vscode.Range(1986, 7, 1986, 24))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "bâʾu [go along] V", vscode.SymbolKind.Variable, "B",
+            new vscode.Location(document.uri, new vscode.Range(1992, 7, 1992, 24))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "D", vscode.SymbolKind.Function, "",
+            new vscode.Location(document.uri, new vscode.Range(2946, 8, 2946, 9))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "daʾāmu [wander about] V", vscode.SymbolKind.Variable, "D",
+            new vscode.Location(document.uri, new vscode.Range(2948, 7, 2948, 30))
+        )
+    );
+    symbols.push(
+        new vscode.SymbolInformation(
+            "daʾīmu [lance] N", vscode.SymbolKind.Variable, "D",
+            new vscode.Location(document.uri, new vscode.Range(2956, 7, 2956, 23))
+        )
+    );
+    return symbols;
+}
+
+class GlossaryDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
+    public async provideDocumentSymbols(
+        document: vscode.TextDocument, token: vscode.CancellationToken):
+    Promise<vscode.SymbolInformation[]> {
+        return await getSymbols(document);
+    }
 }

@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import * as path from 'path';
 
 import { lemmatise, ServerFunction, validate } from './server/messages';
 
@@ -28,26 +28,42 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_check', () => {
-            run_oracc('check');
+        vscode.commands.registerCommand('ucl-rsdg.oracc_check_gloss', () => {
+            run_oracc(['check', 'gloss']);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oracc_check_texts', () => {
+            run_oracc(['check', 'texts']);
         })
     );
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.oracc_merge', () => {
-            run_oracc('merge');
+            const editor = vscode.window.activeTextEditor;
+            // Get the "language" argument for `oracc merge` from the base name
+            // of the current glossary file.
+            const language = path.parse(editor.document.uri.fsPath).name;
+            run_oracc(['merge', language]);
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_rebuild', () => {
-            run_oracc('rebuild');
+        vscode.commands.registerCommand('ucl-rsdg.oracc_build_corpus', () => {
+            run_oracc(['build', 'corpus']);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oracc_build_clean', () => {
+            run_oracc(['build', 'clean']);
         })
     );
 
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.oracc_harvest', () => {
-            run_oracc('harvest');
+            run_oracc(['harvest']);
         })
     );
 
@@ -83,7 +99,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 /**
  * Base function for performing server-related tasks with the editor contents.
- *  
+ *
  * Will first get some basic information from the editor (filename, project
  * code, text contents), then call another function to communicate with
  * the server, and finally display the results of that communication.
@@ -93,7 +109,7 @@ export function activate(context: vscode.ExtensionContext) {
  */
 async function workWithServer(verb: string, callback: ServerFunction): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-    const fileName = basename(editor.document.uri.fsPath);
+    const fileName = path.basename(editor.document.uri.fsPath);
     const fileContent = editor.document.getText();
     let fileProject: string;
     // The server would not show errors when validating/lemmatising the file if

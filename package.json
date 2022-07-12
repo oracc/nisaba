@@ -18,10 +18,12 @@
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.validateAtf",
         "onCommand:ucl-rsdg.lemmatiseAtf",
-        "onCommand:ucl-rsdg.oracc_check",
+        "onCommand:ucl-rsdg.oracc_check_gloss",
+        "onCommand:ucl-rsdg.oracc_check_texts",
         "onCommand:ucl-rsdg.oracc_harvest",
         "onCommand:ucl-rsdg.oracc_merge",
-        "onCommand:ucl-rsdg.oracc_rebuild",
+        "onCommand:ucl-rsdg.oracc_build_corpus",
+        "onCommand:ucl-rsdg.oracc_build_clean",
         "onCommand:ucl-rsdg.aboutNisaba"
     ],
     "main": "./dist/extension",
@@ -46,27 +48,39 @@
                 "icon": "$(symbol-number)"
             },
             {
-                "command": "ucl-rsdg.oracc_check",
-                "title": "Check Project",
+                "command": "ucl-rsdg.oracc_check_gloss",
+                "title": "Check the glossary files are loadable",
+                "category": "Oracc",
+                "icon": "$(check-all)"
+            },
+            {
+                "command": "ucl-rsdg.oracc_check_texts",
+                "title": "Check the corpus ATF files are correct",
                 "category": "Oracc",
                 "icon": "$(check-all)"
             },
             {
                 "command": "ucl-rsdg.oracc_harvest",
-                "title": "Harvest Glossary",
+                "title": "Harvest new lemmatisation data",
                 "category": "Oracc"
             },
             {
                 "command": "ucl-rsdg.oracc_merge",
                 "title": "Merge Glossaries",
                 "category": "Oracc",
-		"icon": "$(merge)"
+                "icon": "$(merge)"
             },
             {
-                "command": "ucl-rsdg.oracc_rebuild",
-                "title": "Rebuild Project",
+                "command": "ucl-rsdg.oracc_build_corpus",
+                "title": "Rebuild only the corpus",
                 "category": "Oracc",
-		"icon": "$(project)"
+                "icon": "$(project)"
+            },
+            {
+                "command": "ucl-rsdg.oracc_build_clean",
+                "title": "Cleanly rebuild corpus and portal",
+                "category": "Oracc",
+                "icon": "$(project)"
             },
             {
                 "command": "ucl-rsdg.aboutNisaba",
@@ -91,21 +105,6 @@
                     "when": "editorTextFocus && resourceLangId == atf",
                     "command": "ucl-rsdg.lemmatiseAtf",
                     "group": "navigation@3"
-                },
-                {
-                    "when": "editorTextFocus && resourceLangId == glo",
-                    "command": "ucl-rsdg.oracc_rebuild",
-                    "group": "navigation@4"
-                },
-                {
-                    "when": "editorTextFocus && resourceLangId == glo",
-                    "command": "ucl-rsdg.oracc_merge",
-                    "group": "navigation@3"
-                },
-                {
-                    "when": "editorTextFocus && resourceLangId == glo",
-                    "command": "ucl-rsdg.oracc_check",
-                    "group": "navigation@2"
                 },
                 {
                     "when": "editorTextFocus && resourceLangId == atf || resourceLangId == glo",

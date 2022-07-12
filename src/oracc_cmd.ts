@@ -22,9 +22,9 @@ function run_cmd(file: string,
 
 // Run the `oracc` command with the given action.  This assumes the command is being run on
 // the server.
-export async function run_oracc(action: string) {
+export async function run_oracc(cmd: string[]) {
     try {
-        const { stdout } = await run_cmd('oraccc', [action]);
+        const { stdout } = await run_cmd('oracc', cmd);
         vscode.window.showWarningMessage(`${stdout}`);
     } catch (err) {
         // If the `oracc` command cannot be spawned because it doesn't exist (and also if it
@@ -36,7 +36,7 @@ export async function run_oracc(action: string) {
             vscode.window.showErrorMessage(`\`oracc\` command not found. Make sure to be running the command on the Oracc server. ${err}`);
             return;
         }
-        vscode.window.showErrorMessage(`Could not run \`oracc ${action}\`: ${err}`);
+        vscode.window.showErrorMessage(`Could not run \`oracc ${cmd.join(' ')}\`: ${err}`);
         return;
     }
 }

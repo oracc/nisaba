@@ -112,60 +112,66 @@ export function deactivate() {
     nisabaLogger.stopLogging();
 }
 
-async function getSymbols(document: vscode.TextDocument): Promise<vscode.SymbolInformation[]> {
-    const symbols: vscode.SymbolInformation[] = [];
-    symbols.push(
-        new vscode.SymbolInformation(
-            "A", vscode.SymbolKind.Function, "",
-            new vscode.Location(document.uri, new vscode.Range(4, 8, 4, 9))
+async function getSymbols(document: vscode.TextDocument): Promise<vscode.DocumentSymbol[]> {
+    const symbols: vscode.DocumentSymbol[] = [];
+    const A = new vscode.DocumentSymbol(
+        "A", "", vscode.SymbolKind.Function,
+        new vscode.Range(4, 0, 1983, 0),
+        new vscode.Range(4, 8,    4, 9),
+    )
+    symbols.push(A);
+    A.children.push(
+        new vscode.DocumentSymbol(
+            "a [the sign A₂] N", "A", vscode.SymbolKind.Variable,
+            new vscode.Range(6, 0, 9, 10),
+            new vscode.Range(6, 7, 6, 24),
         )
     );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "a [the sign A₂] N", vscode.SymbolKind.Variable, "A",
-            new vscode.Location(document.uri, new vscode.Range(6, 7, 6, 24))
+    A.children.push(
+        new vscode.DocumentSymbol(
+            "abahšinnu [stalk] N", "A", vscode.SymbolKind.Variable,
+            new vscode.Range(11, 0, 18, 10),
+            new vscode.Range(11, 7, 11, 26),
         )
     );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "abahšinnu [stalk] N", vscode.SymbolKind.Variable, "A",
-            new vscode.Location(document.uri, new vscode.Range(11, 7, 11, 26))
+    const B = new vscode.DocumentSymbol(
+        "B", "", vscode.SymbolKind.Function,
+        new vscode.Range(1984, 0, 2945, 0),
+        new vscode.Range(1984, 8, 1984, 9),
+    )
+    symbols.push(B);
+    B.children.push(
+        new vscode.DocumentSymbol(
+            "bāʾeru [hunter] N", "B", vscode.SymbolKind.Variable,
+            new vscode.Range(1986, 0, 1990, 10),
+            new vscode.Range(1986, 7, 1986, 24),
         )
     );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "B", vscode.SymbolKind.Function, "",
-            new vscode.Location(document.uri, new vscode.Range(1984, 8, 1984, 9))
+    B.children.push(
+        new vscode.DocumentSymbol(
+            "bâʾu [go along] V", "B", vscode.SymbolKind.Variable,
+            new vscode.Range(1992, 0, 1996, 10),
+            new vscode.Range(1992, 7, 1992, 24),
         )
     );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "bāʾeru [hunter] N", vscode.SymbolKind.Variable, "B",
-            new vscode.Location(document.uri, new vscode.Range(1986, 7, 1986, 24))
+    const D = new vscode.DocumentSymbol(
+        "D", "", vscode.SymbolKind.Function,
+        new vscode.Range(2946, 0, 3540, 0),
+        new vscode.Range(2946, 8, 2946, 9),
+    )
+    symbols.push(D);
+    D.children.push(
+        new vscode.DocumentSymbol(
+            "daʾāmu [wander about] V", "D", vscode.SymbolKind.Variable,
+            new vscode.Range(2948, 0, 2954, 10),
+            new vscode.Range(2948, 7, 2948, 30),
         )
     );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "bâʾu [go along] V", vscode.SymbolKind.Variable, "B",
-            new vscode.Location(document.uri, new vscode.Range(1992, 7, 1992, 24))
-        )
-    );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "D", vscode.SymbolKind.Function, "",
-            new vscode.Location(document.uri, new vscode.Range(2946, 8, 2946, 9))
-        )
-    );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "daʾāmu [wander about] V", vscode.SymbolKind.Variable, "D",
-            new vscode.Location(document.uri, new vscode.Range(2948, 7, 2948, 30))
-        )
-    );
-    symbols.push(
-        new vscode.SymbolInformation(
-            "daʾīmu [lance] N", vscode.SymbolKind.Variable, "D",
-            new vscode.Location(document.uri, new vscode.Range(2956, 7, 2956, 23))
+    D.children.push(
+        new vscode.DocumentSymbol(
+            "daʾīmu [lance] N", "D", vscode.SymbolKind.Variable,
+            new vscode.Range(2956, 0, 2963, 10),
+            new vscode.Range(2956, 7, 2956, 23),
         )
     );
     return symbols;
@@ -174,7 +180,7 @@ async function getSymbols(document: vscode.TextDocument): Promise<vscode.SymbolI
 class GlossaryDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
     public async provideDocumentSymbols(
         document: vscode.TextDocument, token: vscode.CancellationToken):
-    Promise<vscode.SymbolInformation[]> {
+    Promise<vscode.DocumentSymbol[]> {
         return await getSymbols(document);
     }
 }

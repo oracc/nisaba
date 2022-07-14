@@ -1,0 +1,76 @@
+&P363670 = CTN 4, 256
+#project: cams/gkab
+#atf: lang akk-x-neoass
+#atf: use unicode
+
+# text published as SAA 12, 84, duplicating 83. 
+
+@tablet
+@obverse
+1'.	[...] x x [...]
+#lem: u; u; u; u
+
+2'.	[...] lu#-sa-hi-[...]
+#lem: u; u
+
+@reverse
+$ reverse missing
+
+@translation parallel en project
+@obverse
+1'.	[...] ... [...]
+2'.	[...] ... [...]
+
+@reverse
+$ reverse missing
+
+&P338366 = STT 1, 048 
+#project: cams/gkab
+#atf: lang akk-x-neoass
+#atf: use unicode
+
+@tablet 
+
+# tablet in NA
+
+# tablet of accounts: issues of wine and payments of silver
+
+@obverse
+$ start of obverse broken
+1'.	24# ANŠE# ina lib₃#-[bi ...]
+#lem: n; imārī[unit]N; ina[from]PRP; libbi[interior]N; u
+
+$ rest of obverse broken
+
+@translation parallel en project
+
+@obverse
+1'.	24 @imāru from (it) [...] 
+
+$ rest of obverse broken
+
+
+&P338719 = STT 2, 405 
+#project: cams/gkab
+#atf: lang akk-x-neoass
+#atf: use unicode
+
+@tablet 
+
+# tablet in NA
+
+@obverse
+1.	1 ANŠE ša₂ {iti#}ŠU
+#lem: n; +imēru[unit]N$imāru; ša[of]DET; +Duʾuzu[]MN$Taʾuzu +.
+
+@reverse
+1.	30 ANŠE
+#lem: n; +imēru[unit]N$imārī +.
+
+@translation parallel en project
+
+@obverse
+1.	1 @imāru of Taʾuzu (month IV);
+
+@reverse
+1.	30 @imāru.

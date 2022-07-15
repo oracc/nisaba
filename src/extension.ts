@@ -2,17 +2,16 @@ import { basename } from 'path';
 
 import { lemmatise, ServerFunction, validate } from './server/messages';
 
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as nisabaLogger from './logger';
 import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 import { getProjectCode } from './atf_model';
+import { GlossaryDocumentSymbolProvider } from './glo_outline';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
-
+// Document selector for glossary (`*.glo`) files
 const glossaryDocumentSelector: vscode.DocumentSelector = { language: 'glo' };
 
 // this method is called when your extension is activated
@@ -110,77 +109,4 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
 // this method is called when your extension is deactivated
 export function deactivate() {
     nisabaLogger.stopLogging();
-}
-
-async function getSymbols(document: vscode.TextDocument): Promise<vscode.DocumentSymbol[]> {
-    const symbols: vscode.DocumentSymbol[] = [];
-    const A = new vscode.DocumentSymbol(
-        "A", "", vscode.SymbolKind.Function,
-        new vscode.Range(4, 0, 1983, 0),
-        new vscode.Range(4, 8,    4, 9),
-    )
-    symbols.push(A);
-    A.children.push(
-        new vscode.DocumentSymbol(
-            "a [the sign A₂] N", "A", vscode.SymbolKind.Variable,
-            new vscode.Range(6, 0, 9, 10),
-            new vscode.Range(6, 7, 6, 24),
-        )
-    );
-    A.children.push(
-        new vscode.DocumentSymbol(
-            "abahšinnu [stalk] N", "A", vscode.SymbolKind.Variable,
-            new vscode.Range(11, 0, 18, 10),
-            new vscode.Range(11, 7, 11, 26),
-        )
-    );
-    const B = new vscode.DocumentSymbol(
-        "B", "", vscode.SymbolKind.Function,
-        new vscode.Range(1984, 0, 2945, 0),
-        new vscode.Range(1984, 8, 1984, 9),
-    )
-    symbols.push(B);
-    B.children.push(
-        new vscode.DocumentSymbol(
-            "bāʾeru [hunter] N", "B", vscode.SymbolKind.Variable,
-            new vscode.Range(1986, 0, 1990, 10),
-            new vscode.Range(1986, 7, 1986, 24),
-        )
-    );
-    B.children.push(
-        new vscode.DocumentSymbol(
-            "bâʾu [go along] V", "B", vscode.SymbolKind.Variable,
-            new vscode.Range(1992, 0, 1996, 10),
-            new vscode.Range(1992, 7, 1992, 24),
-        )
-    );
-    const D = new vscode.DocumentSymbol(
-        "D", "", vscode.SymbolKind.Function,
-        new vscode.Range(2946, 0, 3540, 0),
-        new vscode.Range(2946, 8, 2946, 9),
-    )
-    symbols.push(D);
-    D.children.push(
-        new vscode.DocumentSymbol(
-            "daʾāmu [wander about] V", "D", vscode.SymbolKind.Variable,
-            new vscode.Range(2948, 0, 2954, 10),
-            new vscode.Range(2948, 7, 2948, 30),
-        )
-    );
-    D.children.push(
-        new vscode.DocumentSymbol(
-            "daʾīmu [lance] N", "D", vscode.SymbolKind.Variable,
-            new vscode.Range(2956, 0, 2963, 10),
-            new vscode.Range(2956, 7, 2956, 23),
-        )
-    );
-    return symbols;
-}
-
-class GlossaryDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
-    public async provideDocumentSymbols(
-        document: vscode.TextDocument, token: vscode.CancellationToken):
-    Promise<vscode.DocumentSymbol[]> {
-        return await getSymbols(document);
-    }
 }

@@ -22,6 +22,8 @@ export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentS
         const letter = new vscode.DocumentSymbol(
             letters[idx].letter, '', vscode.SymbolKind.Function,
             new vscode.Range(letters[idx].line, 0, letter_endline, lines[letter_endline].length),
+            // Magic numbers explanation: the line `@letter X` will have the `X` letter
+            // starting at column 8, and "ending" and column 9.
             new vscode.Range(letters[idx].line, 8, letters[idx].line, 9),
         );
         symbols.push(letter);
@@ -42,6 +44,9 @@ export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentS
                 letter.children.push(
                     new vscode.DocumentSymbol(
                         match_entry.groups.entry, letter.name, vscode.SymbolKind.Variable,
+                        // Magic numbers explanation: the line `@end entry` is 10-character
+                        // wide.  In the line `@entry ...`, the entry name starts at column
+                        // 7.
                         new vscode.Range(jdx, 0, entry_endline, 10),
                         new vscode.Range(jdx, 7, jdx, lines[jdx].length),
                     )

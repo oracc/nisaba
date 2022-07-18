@@ -54,8 +54,11 @@ export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentS
 
 export class GlossaryDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
     public async provideDocumentSymbols(
-        document: vscode.TextDocument):
+        document: vscode.TextDocument, token: vscode.CancellationToken):
     Promise<vscode.DocumentSymbol[]> {
+        if (token.isCancellationRequested) {
+            return;
+        }
         return await glossaryGetSymbols(document.getText());
     }
 }

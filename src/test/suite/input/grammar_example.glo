@@ -6,6 +6,17 @@
 
 @letter A
 
+@entry abahšinnu [stalk] N
+@form a-ba-ah-ši-in-ni $abahšinni
+@form a-ba-ah-ši-in-nu $abahšinni
+@form a-ba-ah-šin-nu $abahšinnu
+@sense N early harvested grain
+@sense N stalk
+@isslp 1984 M. Powell, BSA 1 64
+@end entry
+
+@letter M
+
 @entry maš [goat] N
 @bases maš₂
 @form! maš₂ /maš₂ #~
@@ -18,13 +29,4 @@
 @form maš₂ /maš₂ #~
 @sense N interest
 @collo - kug[silver]
-@end entry
-
-@entry abahšinnu [stalk] N
-@form a-ba-ah-ši-in-ni $abahšinni
-@form a-ba-ah-ši-in-nu $abahšinni
-@form a-ba-ah-šin-nu $abahšinnu
-@sense N early harvested grain
-@sense N stalk
-@isslp 1984 M. Powell, BSA 1 64
 @end entry

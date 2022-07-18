@@ -16,31 +16,37 @@ suite('Outline Test Suite', () => {
         const expected_symbols: vscode.DocumentSymbol[] = [];
         const letter_A = new vscode.DocumentSymbol(
             'A', '', vscode.SymbolKind.Function,
-            new vscode.Range(6, 0, 30, 0),
+            new vscode.Range(6, 0, 16, 0),
             new vscode.Range(6, 8,  6, 9),
         );
         letter_A.children.push(
             new vscode.DocumentSymbol(
-                'maš [goat] N', 'A', vscode.SymbolKind.Variable,
-                new vscode.Range(8, 0, 13, 10),
-                new vscode.Range(8, 7, 8,  19),
-            )
-        );
-        letter_A.children.push(
-            new vscode.DocumentSymbol(
-                'maš [interest] N', 'A', vscode.SymbolKind.Variable,
-                new vscode.Range(15, 0, 20, 10),
-                new vscode.Range(15, 7, 15, 23),
-            )
-        );
-        letter_A.children.push(
-            new vscode.DocumentSymbol(
                 'abahšinnu [stalk] N', 'A', vscode.SymbolKind.Variable,
-                new vscode.Range(22, 0, 29, 10),
-                new vscode.Range(22, 7, 22, 26),
+                new vscode.Range(8, 0, 15, 10),
+                new vscode.Range(8, 7,  8, 26),
             )
         );
         expected_symbols.push(letter_A);
+        const letter_M = new vscode.DocumentSymbol(
+            'M', '', vscode.SymbolKind.Function,
+            new vscode.Range(17, 0, 32, 0),
+            new vscode.Range(17, 8, 17, 9),
+        );
+        letter_M.children.push(
+            new vscode.DocumentSymbol(
+                'maš [goat] N', 'M', vscode.SymbolKind.Variable,
+                new vscode.Range(19, 0, 24, 10),
+                new vscode.Range(19, 7, 19, 19),
+            )
+        );
+        letter_M.children.push(
+            new vscode.DocumentSymbol(
+                'maš [interest] N', 'M', vscode.SymbolKind.Variable,
+                new vscode.Range(26, 0, 31, 10),
+                new vscode.Range(26, 7, 26, 23),
+            )
+        );
+        expected_symbols.push(letter_M);
 
         // Check the list of symbols matches the expectation
         for (let idx = 0; idx < symbols.length; idx++) {

@@ -1,12 +1,15 @@
 import * as os from 'os';
 import * as vscode from 'vscode';
 
-export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentSymbol[]> {
+export const LetterKind = vscode.SymbolKind.Function;
+export const EntryKind = vscode.SymbolKind.Variable;
+
+export function glossaryGetSymbols(text: string): vscode.DocumentSymbol[] {
     const lines = text.split(os.EOL);
     const letters = [];
     const symbols: vscode.DocumentSymbol[] = [];
     for (let idx = 0; idx < lines.length; idx++) {
-        const match = lines[idx].match(/^@letter (?<letter>[a-zA-Z])$/);
+        const match = lines[idx].match(/^@letter (?<letter>[a-zA-Z]+)$/);
         if (match) {
             letters.push({letter: match.groups.letter, line: idx});
         }
@@ -20,11 +23,11 @@ export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentS
         }
         // Create the letter and add it to the list of symbols
         const letter = new vscode.DocumentSymbol(
-            letters[idx].letter, '', vscode.SymbolKind.Function,
+            letters[idx].letter, '', LetterKind,
             new vscode.Range(letters[idx].line, 0, letter_endline, lines[letter_endline].length),
-            // Magic numbers explanation: the line `@letter X` will have the `X` letter
-            // starting at column 8, and "ending" and column 9.
-            new vscode.Range(letters[idx].line, 8, letters[idx].line, 9),
+            // Magic number explanation: the line `@letter X` will have the `X` letter
+            // starting at column 8.
+            new vscode.Range(letters[idx].line, 8, letters[idx].line, 8+letters[idx].letter.length),
         );
         symbols.push(letter);
         // Find entries within the letter
@@ -43,10 +46,10 @@ export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentS
                 // Push entry to the parent letter.
                 letter.children.push(
                     new vscode.DocumentSymbol(
-                        match_entry.groups.entry, letter.name, vscode.SymbolKind.Variable,
-                        // Magic numbers explanation: the line `@end entry` is 10-character
-                        // wide.  In the line `@entry ...`, the entry name starts at column
-                        // 7.
+                        match_entry.groups.entry, letter.name, EntryKind,
+                        // Magic numbers explanation:
+                        // The line `@end entry` is 10-character wide.
+                        // In the line `@entry ...`, the entry name starts at column 7.
                         new vscode.Range(jdx, 0, entry_endline, 10),
                         new vscode.Range(jdx, 7, jdx, lines[jdx].length),
                     )
@@ -58,12 +61,12 @@ export async function glossaryGetSymbols(text: string): Promise<vscode.DocumentS
 }
 
 export class GlossaryDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
-    public async provideDocumentSymbols(
+    public provideDocumentSymbols(
         document: vscode.TextDocument, token: vscode.CancellationToken):
-    Promise<vscode.DocumentSymbol[]> {
+    vscode.DocumentSymbol[] {
         if (token.isCancellationRequested) {
             return;
         }
-        return await glossaryGetSymbols(document.getText());
+        return glossaryGetSymbols(document.getText());
     }
 }

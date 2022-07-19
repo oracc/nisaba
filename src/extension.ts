@@ -2,16 +2,17 @@ import { basename } from 'path';
 
 import { lemmatise, ServerFunction, validate } from './server/messages';
 
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as nisabaLogger from './logger';
 import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 import { getProjectCode } from './atf_model';
+import { GlossaryDocumentSymbolProvider } from './glo_outline';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
+// Document selector for glossary (`*.glo`) files
+const glossaryDocumentSelector: vscode.DocumentSelector = { language: 'glo' };
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -54,11 +55,17 @@ export function activate(context: vscode.ExtensionContext) {
             PreviewPanel.createOrShow(context.extensionUri);
         })
     );
+
+    context.subscriptions.push(
+        vscode.languages.registerDocumentSymbolProvider(
+            glossaryDocumentSelector, new GlossaryDocumentSymbolProvider()
+        )
+    );
 }
 
 /**
  * Base function for performing server-related tasks with the editor contents.
- *  
+ *
  * Will first get some basic information from the editor (filename, project
  * code, text contents), then call another function to communicate with
  * the server, and finally display the results of that communication.

@@ -89,29 +89,15 @@ suite('Grammar Test Suite', () => {
         const input_file = path.join(__dirname, '../../../src/test/suite/input/grammar_example.glo')
         // List of expected scopes in the input file, line by line
         const expected_scopes = [
-            ['support.class.at.glo', 'source.glo'],
-            ['support.class.at.glo', 'source.glo'],
-            ['support.class.at.glo', 'source.glo'],
+            ['support.class.at.glo', 'source.glo'], // Project
+            ['support.class.at.glo', 'source.glo'], // Lang
+            ['support.class.at.glo', 'source.glo'], // Name
             ['source.glo'],
-            ['support.class.at.glo', 'source.glo'],
+            ['support.class.at.glo', 'source.glo'], // Proplist
             ['source.glo'],
-            ['support.class.at.glo', 'source.glo'],
+            ['support.class.at.glo', 'source.glo'], // Letter A
             ['source.glo'],
-            ['keyword.other.entry.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.other.entry.glo', 'source.glo'],
-            ['source.glo'],
-            ['keyword.other.entry.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.control.at.glo', 'source.glo'],
-            ['keyword.other.entry.glo', 'source.glo'],
-            ['source.glo'],
-            ['keyword.other.entry.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'], // Entry abahšinnu [stalk] N
             ['keyword.control.at.glo', 'source.glo'],
             ['keyword.control.at.glo', 'source.glo'],
             ['keyword.control.at.glo', 'source.glo'],
@@ -119,8 +105,24 @@ suite('Grammar Test Suite', () => {
             ['keyword.control.at.glo', 'source.glo'],
             ['keyword.control.at.glo', 'source.glo'],
             ['keyword.other.entry.glo', 'source.glo'],
-            // Trailing newline character
             ['source.glo'],
+            ['support.class.at.glo', 'source.glo'], // Letter M
+            ['source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'], // Entry maš [goat] N
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'], // Entry maš [interest] N
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['source.glo'],
+            ['source.glo'], // Trailing newline character
         ]
 
         test_grammar(grammar, input_file, expected_scopes);

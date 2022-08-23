@@ -7,6 +7,9 @@
         },
         {
             "include": "#support"
+        },
+        {
+            "include": "#comment"
         }
     ],
     "repository": {
@@ -18,7 +21,7 @@
                 },
                 {
                     "name": "keyword.control.at.glo",
-                    "match": "^@(bases|form|sense|note|inote|equiv|isslp|bib|parts|bff|collo|prop)\\b"
+                    "match": "^@(alias|parts|bff|bases|form|allow|phon|root|stems|sense|(end |)senses|bib|collo|equiv|inote|isslp|note|oid|pleiades|pl_coord|pl_id|pl_alias|prop|rel)\\b"
                 }
             ]
         },
@@ -26,7 +29,15 @@
             "patterns": [
                 {
                     "name": "support.class.at.glo",
-                    "match": "^@(project|lang|name|letter|proplist)\\b"
+                    "match": "^@(project|lang|name|translang|cbd|props|reldel|i18n|proplist|letter|include)\\b"
+                }
+            ]
+        },
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign.glo",
+                    "match": "^#.*$"
                 }
             ]
         }

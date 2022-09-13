@@ -14,12 +14,12 @@ To open the explorer you can either click on the first icon in the [Activity Bar
 
 The explorer panel in the sidebar on the left will have an "Outline" section.
 You may have to click on the name of the section to expand it, if not expanded already.
-The Outline shows the list of letters and entries within a letter, as a tree.
+The Outline shows the list of letters and entries within a letter as a tree.
 Letters are collapsable, so that you can show and hide the entries within them.
 Clicking on a letter or an entry moves the cursor of the document to the corresponding line.
 
 Letters and entries are also shown in the [Breadcrumbs](https://code.visualstudio.com/docs/getstarted/userinterface#_breadcrumbs) under the title area, which provide another way to browse through the glossary file.
-Breadcrumbs can he activated/deactivated from the menu "View" > "Show Breadcrumbs".
+Breadcrumbs can be activated/deactivated from the menu "View" > "Show Breadcrumbs".
 
 In addition to using the [standard searching functionality](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace) in Visual Studio Code, you can specifically search for letters and entries in the currently open glossary with the [Go to Symbol feature](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-symbol), which you can activate with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> (or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> on macOS).
 You can search anything which appears in the entry definition line, including the guide words within square brackets, if any.

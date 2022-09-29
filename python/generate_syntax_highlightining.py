@@ -124,7 +124,7 @@ write_language_json(name="ATF", scope_name="source.atf",
 ## http://oracc.museum.upenn.edu/doc/help/glossaries/index.html
 ## https://build-oracc.museum.upenn.edu/doc/help/glossaries/cbd2/index.html
 keywords = {}
-entry_keywords = "alias|parts|bff" # NOTE: bff not documented
+entry_keywords = "alias|parts|bff" # NOTE: bff not officially supported in newer version
 more_keywords = "gwl|sensel|discl|notel"
 language_keywords = "bases|form|allow|phon|root|stems"
 senses_keywords = "sense|(end |)senses"

@@ -2,9 +2,11 @@
 
 Nisaba supports glossary files using the [CBD2](https://build-oracc.museum.upenn.edu/doc/help/glossaries/cbd2/index.html) format.
 Glossary files can either be located locally on your machine or on the Oracc server.
+
 In order to open a local glossary file, find the "File" option on the menu bar on the top left of the window, then choose "Open File".
 This will prompt a new window where you can navigate to an existent Glossary file in your system, then click on "Open".
 Alternatively, you can create a new file and save it with an ".glo" extension, e.g. "my_file.glo".
+
 For editing glossaries and projects on the Oracc server, read the page about [working with remote files](remote-files.md).
 
 ## Navigating through a glossary file

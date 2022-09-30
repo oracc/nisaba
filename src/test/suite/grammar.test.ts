@@ -95,6 +95,11 @@ suite('Grammar Test Suite', () => {
             ['source.glo'],
             ['support.class.at.glo', 'source.glo'], // Proplist
             ['source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'], // a [the sign A₂] N
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.control.at.glo', 'source.glo'],
+            ['keyword.other.entry.glo', 'source.glo'],
+            ['source.glo'],
             ['support.class.at.glo', 'source.glo'], // Letter A
             ['source.glo'],
             ['keyword.other.entry.glo', 'source.glo'], // Entry abahšinnu [stalk] N

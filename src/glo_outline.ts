@@ -3,10 +3,12 @@ import * as vscode from 'vscode';
 
 export const LetterKind = vscode.SymbolKind.Function;
 export const EntryKind = vscode.SymbolKind.Variable;
+// Placeholder letter which is used to collect entries which aren't under a `@letter` tag.
+export const LetterNoLetter = {letter: '(no letter)', line: 0};
 
 export function glossaryGetSymbols(text: string): vscode.DocumentSymbol[] {
     const lines = text.split(os.EOL);
-    const letters = [];
+    const letters = [LetterNoLetter];
     const symbols: vscode.DocumentSymbol[] = [];
     for (let idx = 0; idx < lines.length; idx++) {
         const match = lines[idx].match(/^@letter (?<letter>[a-zA-Z]+)$/);
@@ -29,7 +31,7 @@ export function glossaryGetSymbols(text: string): vscode.DocumentSymbol[] {
             // starting at column 8.
             new vscode.Range(letters[idx].line, 8, letters[idx].line, 8+letters[idx].letter.length),
         );
-        symbols.push(letter);
+        const children: vscode.DocumentSymbol[] = [];
         // Find entries within the letter
         for (let jdx = letters[idx].line; jdx <= letter_endline; jdx++) {
             const match_entry = lines[jdx].match(/^@entry (?<entry>.*)$/);
@@ -44,7 +46,7 @@ export function glossaryGetSymbols(text: string): vscode.DocumentSymbol[] {
                     }
                 }
                 // Push entry to the parent letter.
-                letter.children.push(
+                children.push(
                     new vscode.DocumentSymbol(
                         match_entry.groups.entry, letter.name, EntryKind,
                         // Magic numbers explanation:
@@ -55,6 +57,11 @@ export function glossaryGetSymbols(text: string): vscode.DocumentSymbol[] {
                     )
                 );
             }
+        }
+        // Don't add the letter if it is a "no letter" and it doesn't actually have children.
+        if (letters[idx].letter != LetterNoLetter.letter || children.length != 0) {
+            letter.children = children;
+            symbols.push(letter);
         }
     }
     return symbols;

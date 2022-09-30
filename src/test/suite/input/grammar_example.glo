@@ -4,6 +4,11 @@
 
 @proplist props
 
+@entry a [the sign A₂] N
+@form a $a
+@sense N the sign A₂
+@end entry
+
 @letter A
 
 @entry abahšinnu [stalk] N

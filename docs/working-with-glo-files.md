@@ -26,3 +26,7 @@ Breadcrumbs can be activated/deactivated from the menu "View" > "Show Breadcrumb
 In addition to using the [standard searching functionality](https://code.visualstudio.com/docs/editor/codebasics#_find-and-replace) in Visual Studio Code, you can specifically search for letters and entries in the currently open glossary with the [Go to Symbol feature](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-symbol), which you can activate with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> (or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> on macOS).
 You can search anything which appears in the entry definition line, including the guide words within square brackets, if any.
 Note, however, that characters with diacritics have to be input as they are, so in order to search for "hurāṣu" you have to type this word exactly as it is.
+
+The screencast below showcases how to browse letters and entries inside a glossary files:
+
+https://user-images.githubusercontent.com/765740/193861177-fd5cc6e7-d779-47b5-b3f6-624ddd17fcc7.mp4

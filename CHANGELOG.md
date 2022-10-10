@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Added
 
 - Glossary files (`*.glo`) have now a searchable and clickable outline of letters and entries.
+- Validation and lemmatisation support files with multiple texts, as long as they share the same project code.
 
 ## [1.2.0] - 2022-06-28
 

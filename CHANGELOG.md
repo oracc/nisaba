@@ -4,6 +4,12 @@ All notable changes to the "atf" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.0] - 2022-??-??
+
+### Added
+
+- Glossary files (`*.glo`) have now a searchable and clickable outline of letters and entries.
+
 ## [1.2.0] - 2022-06-28
 
 ### Added

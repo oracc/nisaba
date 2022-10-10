@@ -120,11 +120,18 @@ write_language_json(name="ATF", scope_name="source.atf",
                     support=support, strings=strings,
                     comment=comment, variable=variable)
 
-## Glossary files.  Reference:
+## Glossary files.  References:
 ## http://oracc.museum.upenn.edu/doc/help/glossaries/index.html
+## https://build-oracc.museum.upenn.edu/doc/help/glossaries/cbd2/index.html
 keywords = {}
-entry_keywords = ("bases|form|sense|note|inote|equiv|isslp|bib|parts|bff|" +
-                  "collo|prop")
+entry_keywords = "alias|parts|bff" # NOTE: bff not officially supported in newer version
+more_keywords = "gwl|sensel|discl|notel"
+language_keywords = "bases|form|allow|phon|root|stems"
+senses_keywords = "sense|(end |)senses"
+meta_keywords = ("bib|collo|equiv|inote|isslp|note|oid|pleiades|" +
+                 "pl_coord|pl_id|pl_alias|prop|rel")
+all_keywords = "|".join([entry_keywords, language_keywords,
+                         senses_keywords, meta_keywords])
 keywords["patterns"] = [
     {
         "name": "keyword.other.entry.glo",
@@ -132,20 +139,27 @@ keywords["patterns"] = [
     },
     {
         "name": "keyword.control.at.glo",
-        "match": f"^@({entry_keywords})\\b",
+        "match": f"^@({all_keywords})\\b",
     },
 ]
 
 support = {}
-at_keywords = "project|lang|name|letter|proplist"
+header_keywords = ("project|lang|name|translang|cbd|props|reldel|i18n|" +
+                   "proplist|letter|include") # Note: letter not documented
 support["patterns"] = [
     {
         "name": "support.class.at.glo",
-        "match": f"^@({at_keywords})\\b",
+        "match": f"^@({header_keywords})\\b",
     },
+]
+
+comment = {}
+comment["patterns"] = [
+    {"name": "comment.line.number-sign.glo",
+     "match": "^#.*$"},
 ]
 
 filename = os.path.join(os.path.dirname(__file__), "..", "syntaxes", "glo.tmLanguage.json")
 
 write_language_json(name="Oracc Glossary", scope_name="source.glo",
-                    filename=filename, keywords=keywords, support=support)
+                    filename=filename, keywords=keywords, support=support, comment=comment)

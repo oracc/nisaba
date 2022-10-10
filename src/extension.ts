@@ -2,17 +2,18 @@ import * as path from 'path';
 
 import { lemmatise, ServerFunction, validate } from './server/messages';
 
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as nisabaLogger from './logger';
 import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 import { getProjectCode } from './atf_model';
+import { GlossaryDocumentSymbolProvider } from './glo_outline';
 import { run_oracc } from './oracc_cmd';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
+// Document selector for glossary (`*.glo`) files
+const glossaryDocumentSelector: vscode.DocumentSelector = { language: 'glo' };
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -94,6 +95,12 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('ucl-rsdg.arabicPreview', () => {
             PreviewPanel.createOrShow(context.extensionUri);
         })
+    );
+
+    context.subscriptions.push(
+        vscode.languages.registerDocumentSymbolProvider(
+            glossaryDocumentSelector, new GlossaryDocumentSymbolProvider()
+        )
     );
 }
 

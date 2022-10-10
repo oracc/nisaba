@@ -2,8 +2,14 @@
 
 ## Development workflow
 
-After cloning the repository, enter this directory and install the dependencies
-with the command
+In a terminal, clone the repository and enter the newly created directory:
+
+```
+git clone https://github.com/oracc/nisaba
+cd nisaba
+```
+
+Install the dependencies with the command
 
 ```
 npm install
@@ -14,15 +20,16 @@ Then you can compile, package, and install the extension with
 ```
 npm run compile
 npm run package
-code --install-extension nisaba-0.0.1.vsix
+code --install-extension nisaba-<VERSION>.vsix
 ```
 
-If you open this directory in Visual Studio Code, you should be able to run the
-compile and package commands from the list of "npm scripts" in the sidebar on
-the left.  (Re)start Visual Studio Code to make the changes take effect:
+Replace `<VERSION>` with the version of Nisaba you are compiling (e.g., `1.2.0`).
+
+If you open the top-level directory in Visual Studio Code, you should be able to run the compile and package commands from the list of "npm scripts" in the sidebar on the left.
+(Re)start Visual Studio Code to make the changes take effect:
 
 ```
-code
+code .
 ```
 
 ## Running tests

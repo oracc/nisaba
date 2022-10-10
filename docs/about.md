@@ -34,6 +34,6 @@ of the [Oracc Emacs plugin](http://oracc.museum.upenn.edu/doc/help/nammuandemacs
 of Oracc, enabling more projects to adopt it.
 
 Nisaba is currently being developed by the
-[UCL Research Software Development Group](https://www.ucl.ac.uk/research-it-services/about/research-software-development).
+[UCL Research Software Development Group](https://www.ucl.ac.uk/advanced-research-computing/expertise/research-software-development).
 
 <img src="./../media/nisaba_ar_en_belsunu.png" align="center">

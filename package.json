@@ -91,7 +91,67 @@
                 "icon": "$(question)"
             }
         ],
+        "submenus": [
+            {
+                "id": "ucl-rsdg.oracc_build",
+                "label": "Build glossaries"
+            },
+            {
+                "id": "ucl-rsdg.oracc_check",
+                "label": "Check glossaries"
+            }
+        ],
         "menus": {
+            "editor/context": [
+                {
+                    "submenu": "ucl-rsdg.oracc_build",
+                    "group": "1_glossaries@1"
+                },
+                {
+                    "submenu": "ucl-rsdg.oracc_check",
+                    "group": "1_glossaries@2"
+                },
+                {
+                    "command": "ucl-rsdg.oracc_harvest",
+                    "title": "Harvest new lemmatisation data",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glossaries@3"
+                },
+                {
+                    "command": "ucl-rsdg.oracc_merge",
+                    "title": "Merge glossaries",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glossaries@4"
+                }
+            ],
+            "ucl-rsdg.oracc_build": [
+                {
+                    "command": "ucl-rsdg.oracc_build_corpus",
+                    "title": "Rebuild only the corpus",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_build@1"
+                },
+                {
+                    "command": "ucl-rsdg.oracc_build_clean",
+                    "title": "Cleanly rebuild corpus and portal",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_build@2"
+                }
+            ],
+            "ucl-rsdg.oracc_check": [
+                {
+                    "command": "ucl-rsdg.oracc_check_gloss",
+                    "title": "Check the glossary files are loadable",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_check@1"
+                },
+                {
+                    "command": "ucl-rsdg.oracc_check_texts",
+                    "title": "Check the corpus ATF files are correct",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_check@2"
+                }
+            ],
             "editor/title": [
                 {
                     "when": "editorTextFocus && resourceLangId == atf",

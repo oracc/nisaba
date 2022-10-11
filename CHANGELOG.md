@@ -4,12 +4,12 @@ All notable changes to the "atf" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.3.0] - 2022-??-??
+## [1.3.0] - 2022-10-11
 
 ### Added
 
 - Glossary files (`*.glo`) have now a searchable and clickable outline of letters and entries.
-- Validation and lemmatisation support files with multiple texts, as long as they share the same project code.
+- Validation and lemmatisation of ATF files support files with multiple texts, as long as they share the same project code.
 
 ## [1.2.0] - 2022-06-28
 

@@ -20,7 +20,7 @@ jobs:
         TAG="v$(jq -M .version package.json | tr -d '"'| tr -d \')"
         echo "Tag: ${TAG}"
         echo "Prerelease: ${{ inputs.prerelease }}"
-        echo "::set-output name=TAG::${TAG}"
+        echo "TAG=${TAG}" >> $GITHUB_OUTPUT
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:

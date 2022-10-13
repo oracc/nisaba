@@ -8,5 +8,8 @@
     * [Lemmatise an ATF](./working-with-atf-files.md#lemmatise-an-atf)
     * [Validate an ATF](./working-with-atf-files.md#validate-an-atf)
     * [Right-to-left languages (e.g. Arabic, Farsi, Kurdish, Syriac...)](./working-with-atf-files.md#right-to-left-languages-eg-arabic-farsi-kurdish-syriac)
+1. [Working with Glossary files](./working-with-glo-files.md)
+    * [Navigating through a glossary file](./working-with-glo-files.md#navigating-through-a-glossary-file)
+1. [Working with remote files](./remote-files.md)
 1. [Troubleshooting](./troubleshooting.md)
     * [Asking for help](./troubleshooting.md#asking-for-help)

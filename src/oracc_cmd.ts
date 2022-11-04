@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as process from 'process';
 import { promisify } from 'util';
 import * as vscode from 'vscode';
+import { log } from './logger';
 
 const execFile = promisify(child_process.execFile);
 
@@ -31,9 +32,16 @@ export async function run_oracc(cmd: string[]) {
         return;
     }
 
+    const cmd_string = `oracc ${cmd.join(' ')}`
     try {
-        const { stdout } = await run_cmd('oracc', cmd);
-        vscode.window.showWarningMessage(`${stdout}`);
+        const { stdout, stderr } = await run_cmd('oracc', cmd);
+        if (stdout) {
+            log('debug', `Standard output of command \`${cmd_string}\`: ${stdout}`);
+        }
+        if (stderr) {
+            log('debug', `Standard error of command \`${cmd_string}\`: ${stderr}`);
+        }
+        vscode.window.showInformationMessage(`Command \`${cmd_string}\` successful.`);
     } catch (err) {
         // If the `oracc` command cannot be spawned because it doesn't exist (and also if it
         // isn't readable/executable from the user?), the error code is 'ENOENT'.  Instead,
@@ -44,7 +52,7 @@ export async function run_oracc(cmd: string[]) {
             vscode.window.showErrorMessage(`\`oracc\` command not found. Make sure to be running the command on the Oracc server. ${err}`);
             return;
         }
-        vscode.window.showErrorMessage(`Could not run \`oracc ${cmd.join(' ')}\`: ${err}`);
+        vscode.window.showErrorMessage(`Could not run \`${cmd_string}\`: ${err}`);
         return;
     }
 }

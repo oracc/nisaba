@@ -46,6 +46,8 @@ export function activate(context: vscode.ExtensionContext) {
             // Get the "language" argument for `oracc merge` from the base name
             // of the current glossary file.
             const language = path.parse(editor.document.uri.fsPath).name;
+            // TODO: if there is a programmatic way to access the list of valid
+            // languages in glossaries we could validate the language here.
             run_oracc(['merge', language]);
         })
     );

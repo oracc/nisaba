@@ -29,19 +29,19 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_check_gloss', () => {
+        vscode.commands.registerCommand('ucl-rsdg.oraccCheckGloss', () => {
             run_oracc(['check', 'gloss']);
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_check_texts', () => {
+        vscode.commands.registerCommand('ucl-rsdg.oraccCheckTexts', () => {
             run_oracc(['check', 'texts']);
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_merge', () => {
+        vscode.commands.registerCommand('ucl-rsdg.oraccMerge', () => {
             const editor = vscode.window.activeTextEditor;
             // Get the "language" argument for `oracc merge` from the base name
             // of the current glossary file.
@@ -51,19 +51,19 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_build_corpus', () => {
+        vscode.commands.registerCommand('ucl-rsdg.oraccBuildCorpus', () => {
             run_oracc(['build', 'corpus']);
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_build_clean', () => {
+        vscode.commands.registerCommand('ucl-rsdg.oraccBuildClean', () => {
             run_oracc(['build', 'clean']);
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('ucl-rsdg.oracc_harvest', () => {
+        vscode.commands.registerCommand('ucl-rsdg.oraccHarvest', () => {
             run_oracc(['harvest']);
         })
     );

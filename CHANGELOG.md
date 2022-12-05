@@ -4,6 +4,12 @@ All notable changes to the "atf" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0] - 2022-12-??
+
+### Added
+
+- Glossary files (`*.glo`) have now a context menu for executing commands on the current project, when the file is open on the Oracc server.
+
 ## [1.3.0] - 2022-10-11
 
 ### Added

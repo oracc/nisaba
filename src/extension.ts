@@ -75,7 +75,7 @@ export function activate(context: vscode.ExtensionContext) {
  */
 async function workWithServer(verb: string, callback: ServerFunction): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-    const fileName = basename(editor.document.uri.fsPath);
+    const fileName = basename(editor.document.fileName);
     const fileContent = editor.document.getText();
     let fileProject: string;
     // The server would not show errors when validating/lemmatising the file if
@@ -89,6 +89,7 @@ async function workWithServer(verb: string, callback: ServerFunction): Promise<v
         return;
     }
     try {
+        nisabaLogger.debug(`Extracting project code for ${fileName}`);
         fileProject = getProjectCode(fileContent);
     } catch (err) {
         vscode.window.showErrorMessage(`Could not ${verb}: ${err}`);

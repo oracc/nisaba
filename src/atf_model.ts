@@ -1,3 +1,5 @@
+import * as nisabaLogger from './logger'
+
 /**
  * Extract the project code from an ATF file.
  *
@@ -14,6 +16,7 @@ export function getProjectCode(atfText: string): string {
                     .filter(line => line.startsWith(tag))
                     .map(line => line.slice(tag.length).trim());
     if ((new Set(codes)).size == 1) {
+        nisabaLogger.debug(`Project code found: "${codes[0]}"`);
         return codes[0];
     }
     if (codes.length == 0) {

@@ -49,7 +49,11 @@ export class SOAPClient {
     async sendInitialRequest(command): Promise<string> {
         const fullMessage = new MultipartMessage(command, this.atf_filename,
                                                  this.atf_project, this.atf_text);
-        log('debug', fullMessage.toString());
+        // `fullMessage.attachment` is only binary data, not useful to log, and
+        // `fullMessage._message` contains all previous fields (including attachment),
+        // avoid logging duplicates.
+        log('debug', `Full message boundary: ${fullMessage.boundary}`);
+        log('debug', `Full message envelope: ${fullMessage.envelope}`);
         const body = fullMessage.getBody();
 
         const headers = fullMessage.getHeaders();
@@ -121,8 +125,8 @@ export class SOAPClient {
         const responseContents = await response.buffer();
         const allLogs = extractLogs(responseContents);
         allLogs.forEach( (contents, name) => {
-                log('debug', `${name}`)
-                log('debug', `${contents}`)
+                log('debug', `Log file name: ${name}`)
+                log('debug', `Log contents: ${contents}`)
             });
         return allLogs;
     }

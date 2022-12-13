@@ -4,6 +4,12 @@ All notable changes to the "atf" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0] - 2022-12-??
+
+### Fixed
+
+- Lemmatisation and validation of files with Line Feed (LF) line ending, for example those typically created on Unix systems, now works on Windows without throwing errors.
+
 ## [1.3.0] - 2022-10-11
 
 ### Added

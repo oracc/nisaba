@@ -1,5 +1,3 @@
-import { EOL } from 'os';
-
 /**
  * Extract the project code from an ATF file.
  *
@@ -9,7 +7,10 @@ import { EOL } from 'os';
  */
 export function getProjectCode(atfText: string): string {
     const tag = "#project:";
-    const codes = atfText.split(EOL)
+    // We can't use `os.EOL` to split the lines because that'd be OS-specific,
+    // that's the point of that variable, but we need to handle also CRLF files
+    // on Unix systems and LF files on Windows.
+    const codes = atfText.split(/\r?\n/)
                     .filter(line => line.startsWith(tag))
                     .map(line => line.slice(tag.length).trim());
     if ((new Set(codes)).size == 1) {

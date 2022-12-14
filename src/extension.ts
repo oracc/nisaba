@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import * as path from 'path';
 
 import { lemmatise, ServerFunction, validate } from './server/messages';
 
@@ -8,6 +8,7 @@ import { handleResult, initView } from './view';
 import { PreviewPanel } from './preview';
 import { getProjectCode } from './atf_model';
 import { GlossaryDocumentSymbolProvider } from './glo_outline';
+import { run_oracc } from './oracc_cmd';
 
 // Logging output channel
 const nisabaOutputChannel = vscode.window.createOutputChannel("Nisaba");
@@ -24,6 +25,48 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('ucl-rsdg.validateAtf', () => {
             workWithServer("validate", validate);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oraccCheckGloss', () => {
+            run_oracc(['check', 'gloss']);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oraccCheckTexts', () => {
+            run_oracc(['check', 'texts']);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oraccMerge', () => {
+            const editor = vscode.window.activeTextEditor;
+            // Get the "language" argument for `oracc merge` from the base name
+            // of the current glossary file.
+            const language = path.parse(editor.document.fileName).name;
+            // TODO: if there is a programmatic way to access the list of valid
+            // languages in glossaries we could validate the language here.
+            run_oracc(['merge', language]);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oraccBuildCorpus', () => {
+            run_oracc(['build', 'corpus']);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oraccBuildClean', () => {
+            run_oracc(['build', 'clean']);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ucl-rsdg.oraccHarvest', () => {
+            run_oracc(['harvest']);
         })
     );
 
@@ -75,7 +118,7 @@ export function activate(context: vscode.ExtensionContext) {
  */
 async function workWithServer(verb: string, callback: ServerFunction): Promise<void> {
     const editor = vscode.window.activeTextEditor;
-    const fileName = basename(editor.document.fileName);
+    const fileName = path.basename(editor.document.fileName);
     const fileContent = editor.document.getText();
     let fileProject: string;
     // The server would not show errors when validating/lemmatising the file if

@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.4.0] - 2022-12-??
 
+### Added
+
+- Glossary files (`*.glo`) have now a context menu for executing commands on the current project, when the file is open on the Oracc server.
+
 ### Fixed
 
 - Lemmatisation and validation of files with Line Feed (LF) line ending, for example those typically created on Unix systems, now works on Windows without throwing errors.

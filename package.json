@@ -20,6 +20,12 @@
         "onCommand:ucl-rsdg.arabicPreview",
         "onCommand:ucl-rsdg.validateAtf",
         "onCommand:ucl-rsdg.lemmatiseAtf",
+        "onCommand:ucl-rsdg.oraccCheckGloss",
+        "onCommand:ucl-rsdg.oraccCheckTexts",
+        "onCommand:ucl-rsdg.oraccHarvest",
+        "onCommand:ucl-rsdg.oraccMerge",
+        "onCommand:ucl-rsdg.oraccBuildCorpus",
+        "onCommand:ucl-rsdg.oraccBuildClean",
         "onCommand:ucl-rsdg.aboutNisaba"
     ],
     "main": "./dist/extension",
@@ -44,13 +50,108 @@
                 "icon": "$(symbol-number)"
             },
             {
+                "command": "ucl-rsdg.oraccCheckGloss",
+                "title": "Check the glossary files are loadable",
+                "category": "Oracc",
+                "icon": "$(check-all)"
+            },
+            {
+                "command": "ucl-rsdg.oraccCheckTexts",
+                "title": "Check the corpus ATF files are correct",
+                "category": "Oracc",
+                "icon": "$(check-all)"
+            },
+            {
+                "command": "ucl-rsdg.oraccHarvest",
+                "title": "Harvest new lemmatisation data",
+                "category": "Oracc"
+            },
+            {
+                "command": "ucl-rsdg.oraccMerge",
+                "title": "Merge Glossaries",
+                "category": "Oracc",
+                "icon": "$(merge)"
+            },
+            {
+                "command": "ucl-rsdg.oraccBuildCorpus",
+                "title": "Rebuild only the corpus",
+                "category": "Oracc",
+                "icon": "$(project)"
+            },
+            {
+                "command": "ucl-rsdg.oraccBuildClean",
+                "title": "Cleanly rebuild corpus and portal",
+                "category": "Oracc",
+                "icon": "$(project)"
+            },
+            {
                 "command": "ucl-rsdg.aboutNisaba",
                 "title": "About Nisaba",
                 "category": "Oracc",
                 "icon": "$(question)"
             }
         ],
+        "submenus": [
+            {
+                "id": "ucl-rsdg.oracc_build",
+                "label": "Build glossaries"
+            },
+            {
+                "id": "ucl-rsdg.oracc_check",
+                "label": "Check glossaries"
+            }
+        ],
         "menus": {
+            "editor/context": [
+                {
+                    "submenu": "ucl-rsdg.oracc_build",
+                    "group": "1_glossaries@1"
+                },
+                {
+                    "submenu": "ucl-rsdg.oracc_check",
+                    "group": "1_glossaries@2"
+                },
+                {
+                    "command": "ucl-rsdg.oraccHarvest",
+                    "title": "Harvest new lemmatisation data",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glossaries@3"
+                },
+                {
+                    "command": "ucl-rsdg.oraccMerge",
+                    "title": "Merge glossaries",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glossaries@4"
+                }
+            ],
+            "ucl-rsdg.oracc_build": [
+                {
+                    "command": "ucl-rsdg.oraccBuildCorpus",
+                    "title": "Rebuild only the corpus",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_build@1"
+                },
+                {
+                    "command": "ucl-rsdg.oraccBuildClean",
+                    "title": "Cleanly rebuild corpus and portal",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_build@2"
+                }
+            ],
+            "ucl-rsdg.oracc_check": [
+                {
+                    "command": "ucl-rsdg.oraccCheckGloss",
+                    "title": "Check the glossary files are loadable",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_check@1"
+                },
+                {
+                    "command": "ucl-rsdg.oraccCheckTexts",
+                    "title": "Check the corpus ATF files are correct",
+                    "when": "resourceLangId == glo",
+                    "group": "1_glo_check@2"
+                }
+            ],
             "editor/title": [
                 {
                     "when": "editorTextFocus && resourceLangId == atf",
@@ -68,7 +169,7 @@
                     "group": "navigation@3"
                 },
                 {
-                    "when": "editorTextFocus && resourceLangId == atf",
+                    "when": "editorTextFocus && (resourceLangId == atf || resourceLangId == glo)",
                     "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation@1"
                 }
@@ -104,7 +205,7 @@
             {
                 "id": "atf",
                 "aliases": [
-                    "ATF",
+                    "Oracc ATF",
                     "atf"
                 ],
                 "extensions": [

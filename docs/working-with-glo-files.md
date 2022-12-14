@@ -30,3 +30,17 @@ Note, however, that characters with diacritics have to be input as they are, so 
 The screencast below showcases how to browse letters and entries inside a glossary file:
 
 https://user-images.githubusercontent.com/765740/193861177-fd5cc6e7-d779-47b5-b3f6-624ddd17fcc7.mp4
+
+## Running commands on glossary files
+
+When you edit a glosasry file on the Oracc server, you can run [some commands](http://oracc.museum.upenn.edu/doc/help/managingprojects/theoracccommand/index.html) on the project it belongs to.
+You can access these commands by right-clicking anywhere in the body of a glossary file, to open its context menu.
+
+<img src="../media/glossary-menu.png" align="center">
+
+Available commands include:
+
+* building glossaries
+* checking glossaries
+* harvesting lemmatisation data
+* merging glossaries

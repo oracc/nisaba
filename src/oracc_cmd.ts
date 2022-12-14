@@ -19,6 +19,8 @@ function run_cmd(file: string,
                          ...{PATH: '/usr/local/oracc/bin:' + process.env.PATH},
                      },
                  }) {
+    const cmd_string = `${file} ${args.join(' ')}`;
+    log('debug', `Current working directory for \`${cmd_string}\`: '${options['cwd']}'`);
     return execFile(file, args, options);
 }
 
@@ -26,13 +28,15 @@ function run_cmd(file: string,
 // the server.
 export async function run_oracc(cmd: string[]) {
     const editor = vscode.window.activeTextEditor;
-    const ext = path.parse(editor.document.uri.fsPath).ext;
+    const fileName = editor.document.fileName;
+    const ext = path.parse(fileName).ext;
     if (ext !== ".glo") {
         vscode.window.showWarningMessage('Oracc command can only be run from glossary files');
         return;
     }
 
-    const cmd_string = `oracc ${cmd.join(' ')}`
+    const cmd_string = `oracc ${cmd.join(' ')}`;
+    log('debug', `Running \`${cmd_string}\` from file '${fileName}'...`);
     try {
         const { stdout, stderr } = await run_cmd('oracc', cmd);
         if (stdout) {

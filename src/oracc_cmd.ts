@@ -36,14 +36,14 @@ export async function run_oracc(cmd: string[]) {
     }
 
     const cmd_string = `oracc ${cmd.join(' ')}`;
-    log('debug', `Running \`${cmd_string}\` from file '${fileName}'...`);
+    log('info', `Running \`${cmd_string}\` from file '${fileName}', this can take a few seconds...`);
     try {
         const { stdout, stderr } = await run_cmd('oracc', cmd);
         if (stdout) {
-            log('debug', `Standard output of command \`${cmd_string}\`: ${stdout}`);
+            log('info', `Standard output of command \`${cmd_string}\`: ${stdout}`);
         }
         if (stderr) {
-            log('debug', `Standard error of command \`${cmd_string}\`: ${stderr}`);
+            log('info', `Standard error of command \`${cmd_string}\`: ${stderr}`);
         }
         vscode.window.showInformationMessage(`Command \`${cmd_string}\` successful.`);
     } catch (err) {

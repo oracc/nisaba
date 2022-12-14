@@ -64,7 +64,8 @@ export class ServerResult {
      */
     get_user_log(filepath: string){
         if (!this.contains_errors()){
-            return "ATF validation returned no errors.";
+            const process = this.contains_lemmata() ? "lemmatisation" : "validation";
+            return `ATF ${process} returned no errors.`;
         }
         else {
             let user_log = Object.entries(this.validation_errors)

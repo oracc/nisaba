@@ -4,7 +4,7 @@ All notable changes to the "atf" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.4.0] - 2022-12-??
+## [1.4.0] - 2022-12-16
 
 ### Added
 

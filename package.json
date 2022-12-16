@@ -169,7 +169,7 @@
                     "group": "navigation@3"
                 },
                 {
-                    "when": "editorTextFocus && (resourceLangId == atf || resourceLangId == glo)",
+                    "when": "editorTextFocus && resourceLangId == atf || resourceLangId == glo",
                     "command": "ucl-rsdg.aboutNisaba",
                     "group": "navigation@1"
                 }

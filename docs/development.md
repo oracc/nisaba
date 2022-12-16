@@ -67,6 +67,10 @@ In case you want to manually publish the extension, the command to run is `npm r
 You will be prompted for the PAT.
 You may want to run `npm audit` before publishing a new release, to make sure there are no known security vulnerabilities in the code you are going to release, this is done automatically by the GitHub Actions workflow.
 
+After submitting it to the VS Code Marketplace to be published, the package will undergo an automated verification process which can take a few minutes.
+You can follow the status of the review in the [Visual Studio Marketplace publisher management page](https://marketplace.visualstudio.com/manage/publishers/) after you log in with the shared developer account.
+Make sure the submitted version is actually accepted, as it may be rejected if some of the requirements are not met.
+
 ### Updating a newly released version
 
 If you make a mistake and want to update your release maintaining the same version number, you can't do it using `vsce` on the command line, you'll have to [log in as `rsd-notifications` and update the release online](https://marketplace.visualstudio.com/manage/publishers/uclresearchsoftwaredevelopmentgroup) (see LastPass for login details).

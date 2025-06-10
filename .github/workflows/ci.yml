@@ -20,7 +20,7 @@ jobs:
           - macos-latest
           - windows-latest
         node:
-          - 16.x
+          - 18.x
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout

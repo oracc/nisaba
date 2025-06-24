@@ -122,7 +122,8 @@ export class SOAPClient {
             `${this.url}:${this.port}`,
             {method: 'POST', body: message}
         );
-        const responseContents = await response.arrayBuffer();
+        const responseContentsArray = await response.arrayBuffer();
+        const responseContents = Buffer.from(responseContentsArray);
         const allLogs = extractLogs(responseContents);
         allLogs.forEach( (contents, name) => {
                 log('debug', `Log file name: ${name}`)

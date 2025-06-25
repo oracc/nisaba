@@ -9,6 +9,7 @@ suite('Lemmatisation Test Suite', () => {
     vscode.window.showInformationMessage('Start lemmatisation tests.');
 
     suiteSetup(function (done) {
+        // Wait for the server to become responsive before continuing
         this.timeout(8000);
         check().then(done);
     });

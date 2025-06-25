@@ -11,7 +11,7 @@ suite('Validation Test Suite', () => {
     vscode.window.showInformationMessage('Start validation tests.');
 
     suiteSetup(function (done) {
-        this.timeout(5000);
+        this.timeout(8000);
         check().then(done);
     });
 

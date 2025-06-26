@@ -55,13 +55,15 @@ Tokens and Scopes` command.
 The publisher ID we are using is "UCLResearchSoftwareDevelopmentGroup", and it's linked to RSDG's notifications email account (`rsd-notifications`). You can see login details for it in RSDG's shared passwords list in LastPass.
 
 Then, update Nisaba's version number in `package.json` for the new release.  After pushing a commit to the `main` branch, you can automatically create a tag with the version number set in `package.json` by heading to https://github.com/oracc/nisaba/actions/workflows/tag.yml and clicking on the "Run workflow" button.  You can check a box if the tag to create is a prerelease, in which case the version will ***not*** be published to the VS Code Marketplace.  This is useful in case we want to let some users test it, without updating the published extension for everybody.  In either case, this workflow will create a git tag and a GitHub release for the given version number, and then automatically trigger a CI job. This runs the tests again and, if successful, will publish the extension to the VS Code Marketplace (only if current GitHub release is not a prerelease) and upload the built `*.vsix` package as an artifact to the GitHub release page.
+For this workflow to run you may need to refresh the GitHub Personal Access Token `TAG_PAT`, which is needed by the tagging workflow to trigger the publishing workflow (the [default GitHub token is not able to trigger other workflows](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#using-the-github_token-in-a-workflow)).
+If that is the case, create a [new fine-grained personal access token](https://github.com/settings/personal-access-tokens/new), selecting "oracc" as resource owner, "Only select repositories" -> "oracc/nisaba", and set the Repository permission "contents" to "read and write".
+Once the token is created, copy it and set it as value for the `TAG_PAT` token in [the GitHub Actions secret of this repository](https://github.com/oracc/nisaba/settings/secrets/actions).
 
 [Publishing the extension](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) to the VS Code Marketplace requires a [Personal Access Token](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token) (PAT).
 The one we are using is currently saved in RSDG's LastPass, in the Oracc folder.
-It will expire in one year (14th December 2023).
 Instructions to create a new one are also in the RSDG's LastPass entry.
 This PAT is also stored, encrypted, in the Nisaba repository as a [GitHub Actions secret](https://github.com/oracc/nisaba/settings/secrets/actions) called `VSCE_PAT`, to be used in the workflow described above.
-When you recreate a new PAT you will also have to update the secret in the repository settings.
+The token expires after one year, when you need to recreate a new PAT you will also have to update the secret in the repository settings.
 
 In case you want to manually publish the extension, the command to run is `npm run publish`.
 You will be prompted for the PAT.

@@ -2,7 +2,7 @@
     "name": "nisaba",
     "displayName": "Nisaba",
     "description": "Support for ATF files, like those used by Oracc and the Nahrein Network.",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "publisher": "UCLResearchSoftwareDevelopmentGroup",
     "repository": {
         "type": "git",

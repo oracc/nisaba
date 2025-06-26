@@ -17,3 +17,8 @@ export async function lemmatise(filename: string, project: string, text: string)
     const result = await client.executeCommand("lem");
     return result;
 }
+
+export async function check() {
+    const client = new SOAPClient("x.atf", "test", "&X600166 = test\n#project: test")
+    await client.executeCommand("atf");
+}

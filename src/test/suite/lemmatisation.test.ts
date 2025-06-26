@@ -2,11 +2,17 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { lemmatise } from '../../server/messages';
+import { check, lemmatise } from '../../server/messages';
 
 
 suite('Lemmatisation Test Suite', () => {
     vscode.window.showInformationMessage('Start lemmatisation tests.');
+
+    suiteSetup(function (done) {
+        // Wait for the server to become responsive before continuing
+        this.timeout(8000);
+        check().then(done);
+    });
 
     for (const [file, project] of [['english', 'ztcc'], ['arabic', 'cams/gkab']]) {
         test(`Lemmatisation results for ${file}_no_lem.atf`, async () => {

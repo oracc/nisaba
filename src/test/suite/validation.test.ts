@@ -4,11 +4,17 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { ServerResult } from '../../client/server_result';
 import { SOAPClient } from '../../client/SOAP_client';
-import { validate } from '../../server/messages';
+import { check, validate } from '../../server/messages';
 
 
 suite('Validation Test Suite', () => {
     vscode.window.showInformationMessage('Start validation tests.');
+
+    suiteSetup(function (done) {
+        // Wait for the server to become responsive before continuing
+        this.timeout(8000);
+        check().then(done);
+    });
 
     test('Server results test when errors exist', async() => {
         //TODO Do we need the href html labels to make these errors clickable?

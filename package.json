@@ -288,7 +288,7 @@
         "typescript": "^5.8.3",
         "vscode-oniguruma": "^2.0.1",
         "vscode-textmate": "^9.2.0",
-        "webpack": "^5.101.0",
+        "webpack": "^5.101.3",
         "webpack-cli": "^6.0.1"
     },
     "extensionDependencies": [

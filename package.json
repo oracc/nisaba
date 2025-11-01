@@ -285,7 +285,7 @@
         "mocha": "^11.7.2",
         "tmp": "^0.2.5",
         "ts-loader": "^9.5.4",
-        "typescript": "^5.9.2",
+        "typescript": "^5.9.3",
         "vscode-oniguruma": "^2.0.1",
         "vscode-textmate": "^9.2.0",
         "webpack": "^5.101.3",

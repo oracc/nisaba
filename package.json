@@ -274,7 +274,7 @@
         "@types/mocha": "^10.0.10",
         "@types/node": "^24.10.1",
         "@types/node-fetch": "^2.6.13",
-        "@types/vscode": "^1.105.0",
+        "@types/vscode": "^1.106.1",
         "@types/xml2js": "^0.4.8",
         "@typescript-eslint/eslint-plugin": "^8.47.0",
         "@typescript-eslint/parser": "^8.47.0",

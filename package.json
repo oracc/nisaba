@@ -277,7 +277,7 @@
         "@types/vscode": "^1.118.0",
         "@types/xml2js": "^0.4.8",
         "@typescript-eslint/eslint-plugin": "^8.58.0",
-        "@typescript-eslint/parser": "^8.58.0",
+        "@typescript-eslint/parser": "^8.59.1",
         "@vscode/test-electron": "^2.1.2",
         "eslint": "^9.39.2",
         "glob": "^13.0.6",

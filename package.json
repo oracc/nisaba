@@ -289,7 +289,7 @@
         "vscode-oniguruma": "^2.0.1",
         "vscode-textmate": "^9.3.2",
         "webpack": "^5.110.1",
-        "webpack-cli": "^7.2.2"
+        "webpack-cli": "^7.2.3"
     },
     "extensionDependencies": [
         "ms-vscode-remote.remote-ssh"
